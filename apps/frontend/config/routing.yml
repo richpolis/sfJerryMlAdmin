@@ -1,0 +1,340 @@
+conceptos:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                Conceptos
+    module:               conceptos
+    prefix_path:          /conceptos
+    column:               id
+    with_wildcard_routes: true
+
+eventos_usuarios:
+  url:      /eventos_usuarios
+  param:    { module: eventos_usuarios, action: index }
+
+configuracion:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                Configuracion
+    module:               configuracion
+    prefix_path:          /configuracion
+    column:               id
+    with_wildcard_routes: true
+
+ks_wc_event:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                KsWCEvent
+    module:               eventos
+    prefix_path:          /eventos
+    column:               id
+    with_wildcard_routes: true
+
+pagos_talentos:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                PagosTalentos
+    module:               pagos_talentos
+    prefix_path:          /pagos_talentos
+    column:               id
+    with_wildcard_routes: true
+
+contratos:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                Contratos
+    module:               contratos
+    prefix_path:          /contratos
+    column:               id
+    with_wildcard_routes: true
+
+pagos:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                Pagos
+    module:               pagos
+    prefix_path:          /pagos
+    column:               id
+    with_wildcard_routes: true
+
+
+ejemplos_disenos_pdfs:
+  url: /ejemplos/disenos/pdfs
+  param: {module: cotizaciones, action: disenosPdfs}
+
+calendario:
+  url: /ksWdCalendar
+  param: {module: ksWdCalendar, action: index }
+
+calendario_usuarios:
+  url: /calendario
+  param: {module: calendario, action: index }
+  
+calendario_usuarios_accion:
+  url: /calendario/calendar/:accion
+  param: {module: calendario, action: calendar }
+  
+
+precotizaciones:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                Precotizaciones
+    module:               precotizaciones
+    prefix_path:          /precotizaciones
+    column:               id
+    with_wildcard_routes: true
+
+cotizaciones:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                Cotizaciones
+    module:               cotizaciones
+    prefix_path:          /cotizaciones
+    column:               id
+    with_wildcard_routes: true
+
+
+contactos:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                Contactos
+    module:               contactos
+    prefix_path:          /contactos
+    column:               slug
+    with_wildcard_routes: true
+
+talentos:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                Talentos
+    module:               talentos
+    prefix_path:          /talentos
+    column:               slug
+    with_wildcard_routes: true
+
+clientes:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                Clientes
+    module:               clientes
+    prefix_path:          /empresas
+    column:               slug
+    with_wildcard_routes: true
+
+#clientes
+seleccionar_cliente:
+  url:      /seleccionar/cliente
+  param:    { module: clientes, action: seleccionar }
+  
+cancelar_seleccionar_cliente:
+  url:  /cancelar/seleccion/cliente
+  param: {module: clientes, action: cancelarSeleccion}
+
+#contactos
+seleccionar_contacto:
+  url:  /seleccionar/contactos
+  param: {module: contactos, action: seleccionar}
+
+cancelar_seleccionar_contacto:
+  url:  /cancelar/seleccion/contacto
+  param: {module: contactos, action: cancelarSeleccion}
+
+#talentos
+seleccionar_talentos:
+  url:  /seleccionar/talentos
+  param: {module: talentos, action: seleccionar}
+
+cancelar_seleccionar_talento:
+  url:  /cancelar/seleccion/talento
+  param: {module: talentos, action: cancelarSeleccion}
+
+finalizar_seleccionar_talento:
+  url:  /finalizar/seleccion/talento
+  param: {module: talentos, action: finalizarSeleccion}
+
+ 
+#eventos
+seleccionar_eventos:
+  url:  /seleccionar/eventos
+  param: {module: eventos, action: seleccionar}
+
+quitar_seleccion_eventos:
+  url:  /quitar/seleccion/evento/:id
+  param: {module: eventos, action: quitarSeleccion}
+
+cancelar_seleccionar_eventos:
+  url:  /cancelar/seleccion/eventos
+  param: {module: eventos, action: cancelarSeleccion}
+
+finalizar_seleccionar_eventos:
+  url:  /finalizar/seleccion/eventos
+  param: {module: eventos, action: finalizarSeleccion}
+
+
+#precotizacion
+crear_precotizacion:
+  url:  /crear/precotizacion
+  param: {module: precotizaciones, action: crearPrecotizacion}
+  
+preparar_envio_precotizacion:
+  url:  /preparar/envio/precotizacion
+  param: {module: precotizaciones, action: prepararEnvioPrecotizacion}
+
+enviar_precotizacion:
+  url:  /enviar/precotizacion
+  param: {module: home, action: enviarPrecotizacion}
+
+aprobar_precotizacion:
+  url:  /aprobar/precotizacion
+  param: {module: precotizaciones, action: aprobarPrecotizacion}
+
+cancelar_precotizacion:
+  url:  /cancelar/precotizacion
+  param: {module: precotizaciones, action: cancelarPrecotizacion}
+
+vista_previa_precotizacion:
+  url:  /vista/previa/precotizacion
+  param: {module: precotizaciones, action: vistaPrevia}
+
+generar_pdf_precotizacion:
+  url:  /generar/pdf/precotizacion
+  param: {module: precotizaciones, action: generarPdf}
+  
+
+#cotizacion
+seleccionar_cotizaciones:
+  url:  /seleccionar/cotizacion
+  param: {module: cotizaciones, action: seleccionar}
+
+quitar_seleccion_cotizacion:
+  url:  /quitar/seleccion/cotizacion/:id
+  param: {module: cotizaciones, action: quitarSeleccion}
+
+cancelar_seleccionar_cotizacion:
+  url:  /cancelar/seleccion/cotizacion
+  param: {module: cotizaciones, action: cancelarSeleccion}
+
+finalizar_seleccionar_cotizacion:
+  url:  /finalizar/seleccion/cotizacion
+  param: {module: cotizaciones, action: finalizarSeleccion}
+  
+crear_cotizacion:
+  url:  /crear/cotizacion
+  param: {module: cotizaciones, action: crearCotizacion}
+  
+preparar_envio_cotizacion:
+  url:  /preparar/envio/cotizacion
+  param: {module: cotizaciones, action: prepararEnvioCotizacion }
+
+enviar_cotizacion: 
+  url:  /enviar/cotizacion
+  param: {module: home, action: enviarCotizacion }
+
+aprobar_cotizacion:
+  url:  /aprobar/cotizacion
+  param: { module: cotizaciones, action: aprobarCotizacion }
+
+cancelar_cotizacion:
+  url:  /cancelar/cotizacion
+  param: { module: cotizaciones, action: cancelarCotizacion}
+  
+liberar_pagos_cotizacion:
+  url:  /liberar/pagos/cotizacion
+  param: { module: cotizaciones, action: liberarPagosCotizacion}  
+  
+vista_previa_cotizacion:
+  url:  /vista/previa/cotizacion
+  param: { module: cotizaciones, action: vistaPrevia}
+
+generar_pdf_cotizacion:
+  url:  /generar/pdf/cotizacion
+  param: { module: cotizaciones, action: generarPdf}
+
+actualizar_importes_cotizacion:
+  url:  /actualizar/importes/cotizacion
+  param: { module: cotizaciones, action: calcularImportes}
+
+
+#contratos
+crear_contrato:
+  url:  /crear/contrato
+  param: { module: contratos, action: crearContrato}
+
+  
+#pagos clientes
+crear_pago:
+  url:  /crear/pago
+  param: {module: pagos, action: crearPago }  
+
+aprobar_pago:
+  url:  /pago/aprobar
+  param: {module: pagos, action: aprobarPago }
+  
+aprobar_pagos:
+  url:  /pagos/aprobar
+  param: {module: pagos, action: aprobarPagos }
+
+liberar_pago:
+  url:  /pago/liberar
+  param: {module: pagos, action: liberarPago }  
+
+  
+liberar_pagos:
+  url:  /pagos/liberar
+  param: {module: pagos, action: liberarPagos }  
+
+#pagos clientes
+crear_pago_talento:
+  url:  /crear/pago/talento
+  param: {module: pagos_talentos, action: crearPago }  
+  
+aprobar_pago_talento:
+  url:  /pago/talento/aprobar
+  param: {module: pagos_talentos, action: aprobarPago}
+  
+aprobar_pagos_talentos:
+  url:  /pagos/talentos/aprobar
+  param: {module: pagos_talentos, action: aprobarPagos}  
+
+  
+liberar_pago_talento:
+  url:  /pago/talento/liberar
+  param: {module: pagos_talentos, action: liberarPagoTalento }  
+  
+  
+liberar_pagos_talentos:
+  url:  /pagos/talentos/liberar
+  param: {module: pagos_talentos, action: liberarPagosTalentos }  
+  
+reportes:
+  url: /reportes
+  param: { module: home, action: reportes }
+
+# You can find more information about this file on the symfony website:
+# http://www.symfony-project.org/reference/1_4/en/10-Routing
+
+sf_guard_signin:
+  url:   /login
+  param: { module: sfGuardAuth, action: signin }
+
+sf_guard_signout:
+  url:   /logout
+  param: { module: sfGuardAuth, action: signout }
+
+sf_guard_password:
+  url:   /request_password
+  param: { module: sfGuardAuth, action: password }
+
+
+# default rules
+homepage:
+  url:   /
+  param: { module: home, action: index }
+
+# generic rules
+# please, remove them by adding more specific rules
+default_index:
+  url:   /:module
+  param: { action: index }
+
+default:
+  url:   /:module/:action/*

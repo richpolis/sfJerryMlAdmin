@@ -1,0 +1,49 @@
+generator:
+  class: sfDoctrineGenerator
+  param:
+    model_class:           sfGuardUser
+    theme:                 admin
+    non_verbose_templates: true
+    with_show:             false
+    singular:              ~
+    plural:                ~
+    route_prefix:          sf_guard_user
+    with_doctrine_route:   true
+
+    config:
+      fields:
+        first_name: { label: Nombre }
+        last_name:  { label: Apellidos }
+        email_address: { label: "Correo Electronico" }
+        password_again: { label: "Repetir contraseña" }
+        username: {label: Usuario }
+        password: {label: Contraseña }
+        updated_at: {label: Actualizacion, date_format: 'dd/MM/y'}
+        is_active: {label: "Activo?", help: "Para activar o desactivar usuario"}
+        is_super_user: { label: Super usuario }
+      list:
+        title:   Usuarios
+        table_method: retrieveBackendUsuariosList
+        display: [=username, first_name, last_name, email_address, updated_at]
+        object_actions:
+          _edit: ~
+          _delete: ~
+          calendario: {label: Calendario }
+        actions: 
+          _new: {label: Nuevo usuario}
+
+      form:
+        actions:
+          _list: {label: Regresar a Lista}
+          _save: {label: Guardar }
+          _delete: {label: Eliminar }
+        class: sfGuardUserAdminForm
+        display:
+          "Usuario":           [first_name, last_name, email_address,color, username, password, password_again]
+          "Permisos y grupos": [is_active, is_super_admin, groups_list, permissions_list]
+
+      edit:
+        title: Editar usuario "%%username%%"
+
+      new:
+        title: Nuevo usuario

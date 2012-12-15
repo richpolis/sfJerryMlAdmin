@@ -1,0 +1,52 @@
+# # Populate this file with data to be loaded by your ORM's *:data-load task.
+# # You can create multiple files in this directory (i.e. 010_users.yml,
+# # 020_articles.yml, etc) which will be loaded in alphabetical order.
+# # 
+# # See documentation for your ORM's *:data-load task for more information.
+# 
+
+#Representantes:
+#  contacto1:
+#    name: Contacto 1
+#    apellidos: Del artista 1
+#    direccion: alguna direccion del contacto
+#    telefono: 55555555
+#    celular: 5555555555
+#    email: contacto1@gmail.com
+#    is_active: true
+#  contacto2:
+#    name: Contacto 2
+#    apellidos: del artista 2
+#    direccion: direccion del contacto 
+#    telefono: 55555555
+#    celular: 5555555555
+#    email: contacto2@gmail.com
+#    is_active: true
+  
+Talentos:
+  artista1:
+#    Representantes: contacto1
+    name: Artista Numero 1
+    descripcion : 'Descripcion de lo que ha hecho el artista' 
+    calle: direccion de artista 1
+    telefono: 55555555
+    celular: 5555555555
+    email: artista1@gmail.com
+    rfc: AAAA19781978KGB
+    imagen: 'imagen_artista1.jpg'
+    margen_jerry_ml: 15
+    is_active: true
+    imagen: feb21df9afe3c59bccac4cf8d79c7adedd92cdd3.jpg
+  artista2:
+#    Representantes: contacto2
+    name: Artista Numero 2
+    descripcion : 'Descripcion de lo que ha hecho el artista' 
+    calle: direccion de artista 2
+    telefono: 55555555
+    celular: 5555555555
+    email: artista2@gmail.com
+    rfc: AAAA19781978KGB
+    imagen: 'imagen_artista2.jpg'
+    margen_jerry_ml: 15
+    is_active: true
+    imagen: 0d9f342ee75609ea27555cd9d34f572caa788a38.jpg

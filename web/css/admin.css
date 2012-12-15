@@ -1,0 +1,191 @@
+/* 
+    Document   : admin
+    Created on : 19/03/2012, 07:49:15 AM
+    Author     : richpolis
+    Description:
+        Estilos principales de maximilianovillegas.com backend.
+*/    
+
+#sf_admin_container{
+    padding-top: 0;
+}
+#sf_admin_container h1{
+    padding-top: 5px;
+    margin-top: 5px;
+}
+#sf_admin_container ul li.sf_admin_action_marcar a
+{
+      background: url(../images/arroba.png) no-repeat 0 0;
+}
+
+#sf_admin_container ul.gallery li a{
+    padding: 0;
+}
+#sf_admin_container ul.gallery li a.ui-icon-pencil{
+    background: url(/sfAdminDashPlugin/images/edit.png) no-repeat 0 0;
+}
+#sf_admin_container ul.gallery li a.ui-icon-trash{
+    background: url(/sfAdminDashPlugin/images/delete.png) no-repeat 0 0;
+}
+
+input[type="text"].required {
+ background-color: #F6DA07;   
+}
+input[type="text"].fields_normal {
+ width: 300px; font-size:12pt;padding: 5px;   
+}
+input[type="text"].readonly {
+  border: none;   
+}
+#tabs-dashboard{
+    width:740px; 
+    float: left;
+    min-height: 400px;
+}
+
+#eventos-dashboard{
+    width: 241px;
+    height: 1500px;
+    float: left;
+    background-image: url(../images/dashboard/recordatoriosheader.png);
+    background-repeat: no-repeat;
+    background-color: #f5f5f5;
+    position: relative;
+}
+
+.tab-dashboard{
+    float: left;
+    width: 350px;
+    height: 491px;
+    background-image: url(../images/dashboard/contenedor_notificaciones.png);
+    margin: 5px 10px 5px 10px;
+
+}
+#sf_admin_content.dashboard{
+    width: 1000px;
+    margin: 0 auto;
+    padding: 0;
+}
+.tab-dashboard-titulo{
+    top: -5px;
+    padding-left: 30px;
+    font-weight: normal;
+    color: white;
+    height: 10px;
+    width: 100%;
+    z-index: 1;
+}
+.tab-dashboard-contenedor{
+    height: 440px;
+    width: 355px;
+    overflow: auto;
+}
+#eventos-dashboard-contenedor{
+    margin-top: 40px;
+    background-image: url(../images/dashboard/recordatorioscentro.png);
+}
+.dash-registro{
+    padding: 10px;
+    margin-left: 15px;
+    margin-right: 17px;
+    border-bottom: 1px solid #00ADEE;
+}
+#eventos-dashboard-contenedor .dash-registro{
+    padding: 10px;
+    margin-left: 10px;
+    margin-right: 12px;
+    border-bottom: 1px solid gray;
+    
+}
+
+.eventos-dashboard-boton{
+    float: right;
+    position:absolute;
+    top: 5px;
+    right: 3px;
+    width: 32px;
+    height: 31px;
+   
+}
+.eventos-dashboard-boton:hover{
+  cursor: pointer;
+}
+
+.dash-registro a img {
+    float: right;
+    margin-right: 10px;
+    margin-top: 10px;
+        
+}
+
+#eventos-dashboard-contenedor .dash-registro a img {
+    float: right;
+    margin-right: 5px;
+    margin-top: 1px;
+        
+}
+
+.dash-registro .titulo-dash-registro{
+    width: 310px;
+    min-height: 10px;
+    color: grey;
+    font-size: 14px;
+    font-family: sans-serif;
+    font-weight: bold;
+}
+
+.dash-registro .contenido-dash-registro,.dash-registro .status-dash-registro{
+    width: 310px;
+    min-height: 10px;
+    color: #00ADEE;
+    font-size: 12px;
+    font-family: sans-serif;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+.modo-activo-seleccion{
+    /*background-image: url(/images/comercializacion/menuback.png);*/
+    height: 30px;
+    text-align: left;
+    padding-left: 10px;
+    padding-top: 10px;
+    width: 80%;
+    float: left;
+    font-size: 14px;
+    color: #006dcc;
+    
+}
+
+.ul-reporte{
+    width: 100%;
+    min-height: 400px;
+    list-style: none;
+    
+}
+
+.li-reporte{
+    width: 500px;
+    list-style: none;
+    margin-top: 5px;
+}
+
+.li-reporte input[type=button]{
+    width: 400px;
+}
+
+#sf_admin_container ul li.li-reporte a{
+    background: none;
+    padding: 10px 10px 10px 20px; 
+    text-transform: uppercase;
+    text-decoration: none;   
+}
+
+table.reportes{
+    background-color: white;
+    color: #006dcc;
+}
+
+.fform td{
+    padding: .5em;
+}

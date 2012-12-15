@@ -1,0 +1,98 @@
+sfGuardUser:
+  User_admin_richpolis:
+    first_name:     Richpolis
+    last_name:      Systems
+    email_address:  richpolis@gmail.com
+    username:       Richpolis
+    password:       D3m3s1s1
+    is_super_admin: true
+    Groups:         [grupo_admin]
+  User_admin_andrea:
+    first_name:     Andrea
+    last_name:      
+    email_address:  andrea@jerryml.com
+    username:       andrea
+    password:       jerryml3
+    is_super_admin: false
+    Groups:         [grupo_contratos,grupo_pagos]
+    Permissions:    [permiso_usuarios]
+  User_admin_eduardo:
+    first_name:     Eduardo
+    last_name:      
+    email_address:  eduardo@jerryml.com
+    username:       eduardo
+    password:       jerryml6
+    is_super_admin: true
+    Groups:         [grupo_admin]  
+  User_admin_lizzy:
+    first_name:     Lizzy
+    last_name:      
+    email_address:  lizzy@jerryml.com
+    username:       lizzy
+    password:       jerryml11
+    is_super_admin: true
+    Groups:         [grupo_admin]  
+  User_admin_manuel:
+    first_name:     Manuel
+    last_name:      
+    email_address:  manuel@jerryml.com
+    username:       manuel
+    password:       jerryml16
+    is_super_admin: false
+    Groups:         [grupo_cotizaciones,grupo_admin_clientes,grupo_admin_talentos]  
+    Permissions:    [permiso_usuarios]
+
+sfGuardGroup:
+  grupo_admin:
+    name:           admin
+    description:    Grupo administracion general
+    Permissions:    [permiso_admin]
+  grupo_cotizaciones:
+    name:           cotizaciones
+    description:    Grupo de colaboradores que pueden realizar cotizaciones y precotizaciones
+    Permissions:    [permiso_cotizaciones]
+  grupo_pagos:
+    name:           pagos
+    description:    Grupo de colaboradores para elaborar y recibir pagos
+    Permissions:    [permiso_pagos_clientes,permiso_pagos_talentos]
+  grupo_contratos:
+    name:           contratos
+    description:    Grupo de colaboradores para elaborar contratos
+    Permissions:    [permiso_contratos]
+  grupo_admin_clientes:
+    name:           clientes
+    description:    Grupo de administracion de clientes y contactos
+    Permissions:    [permiso_clientes]
+  grupo_admin_talentos:
+    name:           talentos
+    description:    Grupo de administracion de talentos y sus calendarios
+    Permissions:    [permiso_talentos]  
+    
+
+sfGuardPermission:
+  permiso_admin:
+    name:           admin
+    description:    Administrador general
+  permiso_usuarios:
+    name:           usuarios
+    description:    Permiso para visualizar los registros de usuarios
+  permiso_clientes:
+    name:           clientes
+    description:    Administracion de clientes
+  permiso_talentos:
+    name:           talentos
+    description:    Administracion de talentos y sus calendarios
+  permiso_cotizaciones:
+    name:           cotizaciones
+    description:    Administracion de precotizaciones y cotizaciones
+  permiso_contratos:
+    name:           contratos
+    description:    Administracion de contratos
+  permiso_pagos_clientes:
+    name:           pagos_clientes
+    description:    Administracion de pagos de clientes
+  permiso_pagos_talentos:
+    name:           pagos_talentos
+    description:    Administracion de pagos de talentos
+    
+    

@@ -1,0 +1,1 @@
+<img src="/uploads/talentos/<?php echo $talentos->getImagen()?>" style="max-height: 100px; max-width: 100px;"/>

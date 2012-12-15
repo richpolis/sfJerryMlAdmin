@@ -1,0 +1,58 @@
+generator:
+  class: sfDoctrineGenerator
+  param:
+    model_class:           Precotizaciones
+    theme:                 admin
+    non_verbose_templates: true
+    with_show:             false
+    singular:              ~
+    plural:                ~
+    route_prefix:          precotizaciones
+    with_doctrine_route:   true
+    actions_base_class:    sfActions
+
+    config:
+      actions: ~
+      fields:  
+        clientes: {label: Cliente }
+        contactos: {label: Contacto }
+        evento: { label: Evento }
+        descripcion: { label: Descripcion }
+        actividad_general: { label: Actividad General del Evento }
+        lugar_evento: {label: Lugar del Evento}
+        inicia_evento: { label: Inicia, date_format: 'DD-MM-YYYY HH24:MI:SS' }
+        termina_evento: { label: Termina, date_format: 'DD-MM-YYYY HH24:MI:SS' }
+        precotizaciones_by_cliente: {label: Cliente, help: Razon social o RFC }
+        precotizaciones_by_contacto: {label: Contacto, help: Nombre o apellidos }
+        pdf: {label: Archivo }
+        is_active: {label: Mostrar en Dashboard }
+      list:    
+        title: Pre-Cotizaciones
+        table_method: retrieveBackendPreCotizacionesList
+        sort: [inicia_evento, asc]
+        display: [id,clientes,contactos, evento, _lugar_evento,_inicia_evento,string_status]
+        batch_actions: {}
+        object_actions:
+          show: {label: Mostrar, action: show }
+          _delete: {label: Eliminar }
+        actions:
+          crear: {label: Nueva PreCotizacion, action: crearPrecotizacion}
+      filter:  
+        display: [precotizaciones_by_cliente, precotizaciones_by_contacto]
+      form: 
+        actions:
+          _list: {label: Regresar a Lista}
+          _save: {label: Guardar }
+          cancelEdit: {label: Cancelar, action: show }
+      edit: 
+        title: Editar Pre-Cotizacion %%evento%%
+        display:
+          Cliente:     [_cliente_contacto]
+          Evento:      [evento,lugar_evento,inicia_evento,termina_evento]
+          Descripcion: [descripcion,actividad_general,is_active]
+      new:
+        title: Crear Pre-Cotizacion
+        display:
+          Cliente:     [_cliente_contacto]
+          Evento:      [evento,lugar_evento,inicia_evento,termina_evento]
+          Descripcion: [descripcion,actividad_general,is_active]

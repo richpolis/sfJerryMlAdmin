@@ -1,0 +1,58 @@
+generator:
+  class: sfDoctrineGenerator
+  param:
+    model_class:           Talentos
+    theme:                 admin
+    non_verbose_templates: true
+    with_show:             true
+    singular:              ~
+    plural:                ~
+    route_prefix:          talentos
+    with_doctrine_route:   true
+    actions_base_class:    sfActions
+
+    config:
+      actions: ~
+      fields:  
+        name: {label: Nombre}
+        descripcion: { label: Descripcion }
+        direccion: { label: Dirección }
+        telefono: { label: Teléfono }
+        celular: { label: Celular }
+        email: { label: Email }
+        talento_by_name: {label: Talento, help: Nombre }
+        is_active: { label: 'Activo?', help: 'Para activar o desactivar registro' }
+      list:    
+        title: Lista de Talentos
+        display: [id,_imagen,name,_descripcion,is_active]
+        table_method: retrieveBackendTalentosList
+        sort: [name,asc]
+        batch_actions:
+          select: {label: Seleccionar}
+        object_actions:
+          show:  {label: Mostrar, action: show }
+          _edit: {label: Editar}
+          inactive: { label: Inactivar, action: inactive }
+          active: { label: Activar, action: active }
+          select: {label: Seleccionar}
+          remove: {label: Quitar Seleccion}
+          calendar: {label: Calendario}
+        actions:
+          _new: {label: Nuevo Talento}
+          cancelar: {label: 'Cancelar modo seleccion', action: cancelarSeleccion}  
+      filter:  
+        display: [talento_by_name]
+      form:    
+        actions:
+          _list: {label: Regresar a Lista }
+          _save: {label: Guardar }
+      edit:    
+        title: Editar talento %%name%%
+        display:
+          Talento: [name,descripcion, rfc, telefono, celular, email,imagen, margen_jerry_ml]
+          Direccion: [calle,numero_interior,numero_exterior,colonia, codigo_postal, cuidad, municipio, estado, pais]
+      new:     
+        title: Nuevo talento
+        display:
+          Talento: [name,descripcion, rfc, telefono, celular, email,imagen, margen_jerry_ml]
+          Direccion: [calle,numero_interior,numero_exterior,colonia, codigo_postal, cuidad, municipio, estado, pais]

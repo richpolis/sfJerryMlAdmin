@@ -1,0 +1,362 @@
+Configuracion:
+  actAs: 
+    Timestampable: true
+    Sluggable:
+      fields: [seccion]
+      unique: true
+  columns:
+    seccion: { type: string(255), notnull: true }
+    contenido: { type: text, notnull: true }
+    imagen: { type: string(255), notnull: true }
+
+Clientes:
+  actAs: 
+    Timestampable: true
+    Sluggable:
+      fields: [razon_social]
+      unique: true
+  columns:
+    razon_social:     { type: string(255), notnull: true , unique: true}
+    rfc:              { type: string(100), notnull: false }
+    calle:            { type: string(150), notnull: false }
+    numero_exterior:  { type: string(20), notnull: false }
+    numero_interior:  { type: string(20), notnull: false }
+    colonia:          { type: string(150), notnull: false }
+    codigo_postal:    { type: string(10), notnull: false }
+    cuidad:           { type: string(150), notnull: false }
+    municipio:        { type: string(150), notnull: false }
+    estado:           { type: string(150), notnull: false }
+    pais:             { type: string(150), notnull: false }
+    saldo:            { type: double, notnull: false, default: 0 }
+    is_active:        { type: boolean, notnull: false, default: true }
+  relations:
+    Contactos:
+      class: Contactos
+      refClass: ClientesContactos
+      local: contacto_id
+      foreign: cliente_id
+      foreignAlias: Clientes
+
+Contactos:
+  actAs: 
+    Timestampable: true
+    Sluggable:
+      fields: [name,apellidos]
+      unique: true
+      canUpdate: true
+  columns:
+    name:                 { type: string(100), notnull: true }
+    apellidos:            { type: string(150), notnull: true }
+    calle:                { type: string(150), notnull: false }
+    numero_exterior:      { type: string(20), notnull: false }
+    numero_interior:      { type: string(20), notnull: false }
+    colonia:              { type: string(150), notnull: false }
+    codigo_postal:        { type: string(10), notnull: false }
+    cuidad:               { type: string(150), notnull: false }
+    municipio:            { type: string(150), notnull: false }
+    estado:               { type: string(150), notnull: false }
+    pais:                 { type: string(150), notnull: false }
+    telefono:             { type: string(150), notnull: false }
+    celular:              { type: string(150), notnull: false }
+    email:                { type: string(150), notnull: true }
+    is_active:            { type: boolean, notnull: false, default: true }
+  relations:
+    Clientes:
+      class: Clientes
+      refClass: ClientesContactos
+      local: cliente_id
+      foreign: contacto_id
+      foreignAlias: Contactos
+
+ClientesContactos:
+  options:
+    symfony:
+      form:   false
+      filter: false
+  actAs: [Timestampable]
+  columns:
+    cliente_id:
+      type: integer
+      primary: true
+    contacto_id:
+      type: integer
+      primary: true
+  relations:
+    Clientes:
+      class: Clientes
+      local: cliente_id
+    Contactos:
+      class: Contactos
+      local: contacto_id
+
+#Representantes:
+#  actAs: 
+#    Timestampable: true
+#    Sluggable:
+#      fields: [name,apellidos]
+#      unique: true
+#      canUpdate: true
+#  columns:
+#    name: { type: string(100), notnull: true }
+#    apellidos: { type: string(150), notnull: true }
+#    direccion: { type: text, notnull: false }
+#    telefono: { type: string(150), notnull: false }
+#    celular: { type: string(150), notnull: false }
+#    email: { type: string(150), notnull: false }
+#    is_active: { type: boolean, notnull: false, default: true }
+
+Talentos:
+  actAs: 
+    Timestampable: true
+    Sluggable:
+      fields: [name]
+      unique: true
+      canUpdate: true
+  columns:
+    name:               { type: string(255), notnull: true , unique: true }
+    descripcion:        { type: text, notnull: true }
+    rfc:                { type: string(100), notnull: false }
+    calle:              { type: string(150), notnull: false }
+    numero_exterior:    { type: string(20), notnull: false }
+    numero_interior:    { type: string(20), notnull: false }
+    colonia:            { type: string(150), notnull: false }
+    codigo_postal:      { type: string(10), notnull: false }
+    cuidad:             { type: string(150), notnull: false }
+    municipio:          { type: string(150), notnull: false }
+    estado:             { type: string(150), notnull: false }
+    pais:               { type: string(150), notnull: false }
+    telefono:           { type: string(150), notnull: false }
+    celular:            { type: string(150), notnull: false }
+    email:              { type: string(150), notnull: false }
+    imagen:             { type: string(255), notnull: true, default: 'sin_imagen.jpg' }
+    margen_jerry_ml:    { type: float, notnull: false, default: 20}
+    saldo:              { type: double, notnull: false, default: 0 }
+    is_active:          { type: boolean, notnull: false, default: true }
+#  relations:
+#    Representantes: { local: representante_id, foreign: id ,foreignAlias: Talentos }
+
+
+    
+Precotizaciones:
+  actAs: 
+    Timestampable: true
+    Versionable: ~
+    Sluggable:
+      fields: [evento]
+      unique: true
+      canUpdate: true
+  columns:
+    cliente_id:         { type: integer }
+    contacto_id:        { type: integer }
+    user_id:            { type: integer }
+    evento:             { type: string(255), notnull: true }
+    descripcion:        { type: text, notnull: true }
+    actividad_general:  { type: text, notnull: true }
+    lugar_evento:       { type: string(255), notnull: false}
+    inicia_evento:      { type: datetime }
+    termina_evento:     { type: datetime }
+    pdf:                { type: string(255), default: 'sin_archivo.pdf'}
+    status:             { type: integer(1), notnull: false}
+    is_active:          { type: boolean, notnull: false, default: true }
+  relations:
+    Clientes:           { local: cliente_id, foreign: id, foreignAlias: Precotizaciones }
+    Contactos:          { local: contacto_id, foreign: id, foreignAlias: Precotizaciones }
+    User:               { local: user_id, foreign: id, class: sfGuardUser }
+ 
+DetallesPrecotizacion: 
+  actAs:
+    Timestampable: true
+  columns:
+    precotizacion_id:   { type: integer }
+    talento_id:         { type: integer}
+    actividad:          { type: text, notnull: true }
+    precio:             { type: double, default: 0}
+    margen_jerry_ml:    { type: float, default: 20 }
+    is_active:          { type: integer(1), notnull: false}
+    position:           { type: integer(4)}
+  relations:
+    Precotizaciones:    { local: precotizacion_id, foreign: id, foreignAlias: DetallesPrecotizacion}
+    Talentos:           { local: talento_id, foreign: id, foreignAlias: DetallesPrecotizacion}
+
+    
+Cotizaciones:
+  actAs: 
+    Timestampable: true
+    Versionable: ~
+    Sluggable:
+      fields: [evento]
+      unique: true
+      canUpdate: true
+  columns:
+    cliente_id:         { type: integer }
+    contacto_id:        { type: integer }
+    user_id:            { type: integer }
+    manager_id:         { type: integer }
+    evento:             { type: string(255), notnull: true, default: 'Titulo de cotizacion' }
+    descripcion:        { type: text, notnull: true }
+    pdf:                { type: string(255), default: 'sin_archivo.pdf'}
+    status:             { type: integer(1), notnull: false }
+    comisionista:       { type: string(255), notnull: false, default: '' }
+    subtotal:           { type: double,notnull: false, default: 0 }
+    iva:                { type: double,notnull: false, default: 0 }
+    is_pay:             { type: boolean, notnull: false, default: false }
+    is_active:          { type: boolean, notnull: false, default: true }
+  relations:
+    Clientes:           { local: cliente_id, foreign: id, foreignAlias: Cotizaciones }
+    Contactos:          { local: contacto_id, foreign: id, foreignAlias: Cotizaciones }
+    User:               { local: user_id, foreign: id, class: sfGuardUser  }
+    Manager:            { local: manager_id, foreign: id, class: sfGuardUser  }
+    Eventos:
+      class: KsWCEvent
+      refClass: CotizacionesEventos
+      local: evento_id
+      foreign: cotizacion_id
+      foreignAlias: Cotizaciones
+
+ 
+DetallesCotizacion: 
+  actAs:
+    Timestampable: true
+  columns:
+    cotizacion_id:      { type: integer }
+    talento_id:         { type: integer }
+    actividad:          { type: text, notnull: true }
+    ganancia_jerryml:   { type: double, default: 0 }
+    ganancia_comisionista: { type: double, default: 0 }
+    ganancia_talento:   { type: double, default: 0 }
+    margen_jerry_ml:    { type: float, default: 20 }
+    margen_comisionista: { type: float, default: 0 }
+    precio:             { type: double, default: 0 }
+    subtotal:           { type: double, default: 0 }
+    iva:                { type: double, default: 0 }
+    is_pay_talento:     { type: boolean, notnull: false, default: false }
+    is_active:          { type: boolean, notnull: false, default: true }
+    position:           { type: integer(4)}
+  relations:
+    Cotizaciones:       { local: cotizacion_id, foreign: id, foreignAlias: DetallesCotizacion}
+    Talentos:           { local: talento_id, foreign: id, foreignAlias: DetallesCotizacion}
+     
+      
+    
+        
+CotizacionesEventos:
+  options:
+    symfony:
+      form:   false
+      filter: false
+  actAs: [Timestampable]
+  columns:
+    cotizacion_id:
+      type: integer
+      primary: true
+    evento_id:
+      type: integer
+      primary: true
+  relations:
+    Cotizaciones:
+      class: Cotizaciones
+      local: cotizacion_id
+    Eventos:
+      class: KsWCEvent
+      local: evento_id
+
+
+Pagos: 
+  actAs:
+    Timestampable: true
+  columns:
+    referencia:       { type: string(100), notnull: false }
+    cliente_id:       { type: integer }
+    importe:          { type: double, notnull: false, default: 0 }
+    iva:              { type: double, notnull: false, default: 0 }
+    adeudo:           { type: double, notnull: false, default: 0 }
+    is_cerrado:       { type: boolean, notnull: false, default: 0 }
+  relations:
+    Clientes:         { local: cliente_id, foreign: id, foreignAlias: Pagos }
+   
+
+DetallesPagos: 
+  actAs:
+    Timestampable: true
+  columns:
+    fecha_pago:       { type: date, notnull: false }
+    user_id:          { type: integer }
+    pagos_id:         { type: integer }   
+    cotizacion_id:    { type: integer }
+    tipo_pago:        { type: integer(1), notnull: false, default: 0 }
+    importe:          { type: double, notnull: false, default: 0 }
+    iva:              { type: double, notnull: false, default: 0 }
+    status:           { type: integer(1), notnull: false, default: 0 } 
+  relations:
+    Pagos:            { local: pagos_id, foreign: id, foreignAlias: DetallesPagos }
+    Cotizaciones:     { local: cotizacion_id, foreign: id, foreignAlias: DetallesPagos }
+    User:             { local: user_id, foreign: id, class: sfGuardUser  }
+
+Contratos: 
+  actAs:
+    Timestampable: true
+  columns:
+    cotizacion_id:    { type: integer }
+    user_id:          { type: integer }
+    file:             { type: string(255), notnull: false, default: 'no_file.pdf'}
+    esta_firmado:     { type: boolean, notnull: false, default: false }
+    is_active:        { type: boolean, notnull: false, default: true }
+  relations:
+    Cotizaciones:     { local: cotizacion_id, foreign: id, foreignAlias: Contratos}
+    User:             { local: user_id, foreign: id, class: sfGuardUser  }
+
+PagosTalentos: 
+  actAs:
+    Timestampable: true
+  columns:
+    talento_id:       { type: integer }
+    referencia:       { type: string(100), notnull: false }
+    cuenta_deposito:  { type: string(255), notnull: false }
+    importe:          { type: double, notnull: false, default: 0  }
+    iva:              { type: double, notnull: false, default: 0 }
+    isr:              { type: double, notnull: false, default: 0 }
+    adeudo:           { type: double, notnull: false, default: 0 }
+    is_cerrado:       { type: boolean, notnull: false, default: 0 }
+  relations:
+    Talentos:         { local: talento_id, foreign: id, foreignAlias: PagosTalentos }
+    
+DetallesPagosTalentos: 
+  actAs:
+    Timestampable: true
+  columns:
+    fecha_pago:       { type: date, notnull: false }
+    user_id:          { type: integer }
+    pagos_talentos_id: { type: integer }
+    detalles_cotizacion_id:    { type: integer }
+    metodo_recibo:    { type: integer(1), notnull: false, default: 0  }
+    importe:          { type: double, notnull: false, default: 0  }
+    iva:              { type: double, notnull: false, default: 0 }
+    isr:              { type: double, notnull: false, default: 0 }
+    descuento:        { type: double, notnull: false, default: 0 }
+    status:           { type: integer(1), notnull: false, default: 0 } 
+  relations:
+    PagosTalentos:     { local: pagos_talentos_id, foreign: id, foreignAlias: DetallesPagosTalentos }
+    DetallesCotizacion: { local: detalles_cotizacion_id, foreign: id, foreignAlias: DetallesPagosTalentos }
+    User:              { local: user_id, foreign: id, class: sfGuardUser  }
+
+Conceptos: 
+  actAs:
+    Timestampable: true
+    Sluggable:
+      fields: [concepto]
+      unique: true
+      canUpdate: true
+  columns:
+    concepto:           { type: string(255), notnull: true }
+
+DetallesCotizacionConceptos: 
+  actAs:
+    Timestampable: true
+  columns:
+    detalles_cotizacion_id:      { type: integer }
+    concepto_id:         { type: integer }
+    precio:             { type: double, default: 0 }
+  relations:
+    DetallesCotizacion:  { local: detalles_cotizacion_id, foreign: id, foreignAlias: DetallesCotizacionConceptos}
+    Conceptos:           { local: concepto_id, foreign: id, foreignAlias: DetallesCotizacionConceptos}
+  

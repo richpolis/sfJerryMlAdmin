@@ -1,0 +1,64 @@
+generator:
+  class: sfDoctrineGenerator
+  param:
+    model_class:           Cotizaciones
+    theme:                 admin
+    non_verbose_templates: true
+    with_show:             true
+    singular:              ~
+    plural:                ~
+    route_prefix:          cotizaciones
+    with_doctrine_route:   true
+    actions_base_class:    sfActions
+
+    config:
+      actions: ~
+      fields:  
+        clientes: {label: Empresa }
+        contactos: {label: Contacto }
+        evento: { label: Titulo }
+        descripcion: { label: Descripcion }
+        manager: { label: Personal Manager }
+        total: {label: Total }
+        is_pay: {label: Pagado }
+        is_active: {label: Mostrar en Dashboard }
+        comisionista: {label: Intermediario }
+        cotizaciones_by_cliente: {label: Cliente, help: Razon social o RFC }
+        cotizaciones_by_contacto: {label: Contacto, help: Nombre o apellidos }
+        pdf: {label: Archivo }
+      list:    
+        title: Cotizaciones
+        table_method: retrieveBackendCotizacionesList
+        sort: [created_at, asc]
+        display: [id,clientes, contactos, manager, evento,_importe_sin_iva,is_pay,string_status]
+        batch_actions: {}
+        object_actions:
+          show:     { label: Mostrar, action: show  }
+          _delete:  { label: Desactivar }
+          select:   { label: Seleccionar }
+          remove:   { label: Quitar Seleccion }
+        actions:
+          crear:    { label: Nueva Cotizacion, action: crearCotizacion  }
+          cancelar: { label: 'Cancelar modo seleccion', action: cancelarSeleccion }  
+      filter:  
+        display: [cotizaciones_by_cliente, cotizaciones_by_contacto]
+      form: 
+        actions:
+          _list: {label: Regresar a Lista}
+          _save: {label: Guardar }
+          cancelEdit: {label: Cancelar , action: show }
+      edit: 
+        title: Editar Cotizacion %%evento%%
+        display:
+          Cliente:     [_cliente_contacto]
+          Manager:     [manager_id]
+          Comisionista: [comisionista]
+          Titulo y descripcion:      [evento,descripcion,is_active]
+      new:
+        title: Crear Cotizacion
+        display:
+          Cliente:     [_cliente_contacto]
+          Manager:     [manager_id]
+          Comisionista: [comisionista]
+          Titulo y descripcion:      [evento,descripcion,is_active]
+          

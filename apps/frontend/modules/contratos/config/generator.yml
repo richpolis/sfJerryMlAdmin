@@ -1,0 +1,49 @@
+generator:
+  class: sfDoctrineGenerator
+  param:
+    model_class:           Contratos
+    theme:                 admin
+    non_verbose_templates: true
+    with_show:             false
+    singular:              ~
+    plural:                ~
+    route_prefix:          contratos
+    with_doctrine_route:   true
+    actions_base_class:    sfActions
+
+    config:
+      actions: ~
+      fields:  
+        file: {label: Contrato, help: Maximo tamaño 2MB}
+        esta_firmado: {label: Firma, help: Marcar si esta firmado por el cliente }
+        created_at: {label: Creado, date_format: 'dd/MM/y' }
+        updated_at: {label: Actualizado, date_format: 'dd/MM/y'}
+        contratos_by_cliente: {label: Cliente, help: Razon social o RFC }
+        contratos_by_cotizacion: {label: Contacto, help: Nombre o apellidos }
+      list:     
+        title: Contratos
+        table_method: retrieveBackendContratosList
+        sort:     [created_at, asc]
+        display:  [id,_cliente, cotizaciones, _archivo, esta_firmado,created_at,updated_at]
+        batch_actions: {}
+        object_actions:
+          _edit: { label: Editar }
+          _delete: { label: Eliminar }
+        actions: {}
+        #  crear:  {  label: Nuevo contrato, action: crearContrato}
+      filter:  
+        display:  [contratos_by_cliente, contratos_by_cotizacion]  
+      form:    
+        actions:
+          _list: {label: Regresar a Lista}
+          _save: {label: Guardar }
+      edit:    
+        title: Editar registro
+        display:
+          Cotizacion:     [_cliente_cotizacion]
+          Contrato:       [_file, esta_firmado]
+      new:     
+        title: Nuevo registro
+        display:
+          Cotizacion:     [_cliente_cotizacion]
+          Contrato:       [_file, esta_firmado]

@@ -1,0 +1,36 @@
+# # Populate this file with data to be loaded by your ORM's *:data-load task.
+# # You can create multiple files in this directory (i.e. 010_users.yml,
+# # 020_articles.yml, etc) which will be loaded in alphabetical order.
+# # 
+# # See documentation for your ORM's *:data-load task for more information.
+# 
+#Clientes:
+#  richpolis:
+#    razon_social: Richpolis Systems
+#    rfc: AAGR781207LB3
+#    calle : Alguna direccion
+#    Contactos : [richpolis_systems]
+#  phrenesis:
+#    razon_social : Phrenesis Creative Works
+#    rfc : ALGUN771771HYN
+#    calle : Alguna direccion
+#    Contactos: [rafael]
+
+#Contactos:
+#  richpolis_systems:
+#    name: Ricardo
+#    apellidos: Alcantara Gomez
+#    calle: calle itzcuina mza. 42 lt. 69 col. adolfo ruiz cortinez
+#    telefono: 51211406
+#    celular: 5521093249
+#    email: richpolis@gmail.com
+#    is_active: true
+#  rafael:
+#    name: Rafael
+#    apellidos: Rios Kunkel
+#    calle: alguna direccion 
+#    telefono: 55555555
+#    celular: 5555555555
+#    email: phrenesis@gmail.com
+#   is_active: true
+    

@@ -1,0 +1,51 @@
+generator:
+  class: sfDoctrineGenerator
+  param:
+    model_class:           Contactos
+    theme:                 admin
+    non_verbose_templates: true
+    with_show:             true
+    singular:              ~
+    plural:                ~
+    route_prefix:          contactos
+    with_doctrine_route:   true
+    actions_base_class:    sfActions
+
+    config:
+      actions: ~
+      fields:
+        name: {label: Nombre}
+        nombre_completo: {label: Nombre}
+        apellidos: { label: Apellidos }
+        direccion: { label: Dirección }
+        telefono: { label: Teléfono }
+        celular: { label: Celular }
+        email: { label: Email }
+        clientes_contactos: {label: Empresa }
+        contacto_by_cliente: { label: Empresa , help: Razon social o RFC }
+        contacto_by_name: {label: Contacto , help: Nombre o apellidos }
+        clientes_list: {label: Empresa }
+        is_active: { label: 'Activo?', help: 'Para activar o desactivar registro' }
+      list:    
+        title: Lista de Contactos
+        display: [id, nombre_completo,telefono,celular,email,is_active]
+        sort: [apellidos, asc]
+        object_actions:
+          show:  {label: Mostrar }
+          _edit: {label: Editar }
+          inactive: { label: Inactivar, action: inactive }
+          active: { label: Activar, action: active }
+          select: {label: Seleccionar }
+        actions:
+          _new: {label: Nuevo Contacto}
+          cancelar: {label: 'Cancelar modo seleccion', action: cancelarSeleccion}
+      filter:  
+        display: [contacto_by_cliente, contacto_by_name]
+      form:    
+        actions:
+          _list: {label: Regresar a Lista}
+          _save: {label: Guardar }
+      edit:    
+        title: Editar contacto %%name%% %%apellidos%%
+      new:     
+        title: Nuevo contacto

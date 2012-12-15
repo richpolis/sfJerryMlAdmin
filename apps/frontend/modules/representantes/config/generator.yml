@@ -1,0 +1,44 @@
+generator:
+  class: sfDoctrineGenerator
+  param:
+    model_class:           Representantes
+    theme:                 admin
+    non_verbose_templates: true
+    with_show:             true
+    singular:              ~
+    plural:                ~
+    route_prefix:          representantes
+    with_doctrine_route:   true
+    actions_base_class:    sfActions
+
+    config:
+      actions: ~
+      fields:
+        name: {label: Nombre}
+        apellidos: { label: Apellidos }
+        direccion: { label: Dirección }
+        telefono: { label: Teléfono }
+        celular: { label: Celular }
+        email: { label: Email }
+        representante_by_name: {label: Representante }
+        representante_by_talentos: {label: Talentos }
+        is_active: { label: 'Activo?', help: 'Para activar o desactivar registro' }
+      list:    
+        title: Lista de Representantes
+        display: [name,apellidos,telefono,celular,email,is_active]
+        sort: [apellidos, asc]
+        object_actions:
+          show:  {label: Mostrar}
+          _edit: {label: Editar}
+          _delete: {label: Eliminar}
+          select: {label: Seleccionar}
+        actions:
+          _new: {label: Nuevo Representante}
+          cancelar: {label: 'Cancelar modo seleccion', action: cancelarSeleccion}
+      filter:  
+        display: [representante_by_name,representante_by_talentos]
+      form:    ~
+      edit:    
+        title: Editar representante %%name%% %%apellidos%%
+      new:     
+        title: Nuevo representante

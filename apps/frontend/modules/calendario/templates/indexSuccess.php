@@ -1,0 +1,1 @@
+<?php $calendar = $sf_data->getRaw("calendar"); echo $calendar->render() ?>

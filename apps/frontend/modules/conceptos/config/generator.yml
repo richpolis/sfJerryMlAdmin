@@ -1,0 +1,33 @@
+generator:
+  class: sfDoctrineGenerator
+  param:
+    model_class:           Conceptos
+    theme:                 admin
+    non_verbose_templates: true
+    with_show:             false
+    singular:              ~
+    plural:                ~
+    route_prefix:          conceptos
+    with_doctrine_route:   true
+    actions_base_class:    sfActions
+
+    config:
+      actions: ~
+      fields:  
+        concepto: {label: Concepto }
+        created_at: { label: Creado, date_format: 'dd/MM/y' }
+      list:    
+        title: Conceptos
+        sort: [concepto, asc]
+        display: [=concepto,created_at]
+        actions: 
+          _new:   { label: Nuevo concepto}
+      filter:  {}
+      form: 
+        actions:
+          _list: {label: Regresar a Lista}
+          _save: {label: Guardar }
+      edit:    
+        title: Editar concepto %%concepto%%
+      new:     
+        title: Nuevo concepto

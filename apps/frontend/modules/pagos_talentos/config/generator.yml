@@ -1,0 +1,52 @@
+generator:
+  class: sfDoctrineGenerator
+  param:
+    model_class:           PagosTalentos
+    theme:                 admin
+    non_verbose_templates: true
+    with_show:             true
+    singular:              ~
+    plural:                ~
+    route_prefix:          pagos_talentos
+    with_doctrine_route:   true
+    actions_base_class:    sfActions
+
+    config:
+      actions: ~
+      fields:  
+        talentos:         { label: Talento }
+        cuenta_deposito:  { label: Cuenta de Deposito }
+        pagos_by_talento: { label: Talento, help: Nombre }
+        pagos_by_cuenta_deposito: {label: Cuenta Deposito, help: Cuenta del deposito }
+        importe:          { label: Importe }
+        is_cerrado:       { label: Cerrado }
+        iva:              { label: IVA  }
+        isr:              { label: ISR  }
+      list:    
+        title: Pagos
+        table_method: retrieveBackendPagosTalentosList
+        sort:         [created_at, asc]
+        display:      [id,referencia,cuenta_deposito, talentos, _importe,_iva,_isr,_saldo, is_cerrado]
+        batch_actions: {}
+        object_actions:
+          show:     { label: Mostrar, action: show  }
+          close:    { label: Cerrar Lote, action: close }
+        actions: {}
+        #  crear:    { label: Nuevo Pago, action: crearPago  }
+      filter:  
+        display:      [pagos_by_talento, pagos_by_cuenta_deposito]
+      form: 
+        actions:
+          _list:    {label: Regresar a Lista}
+          _save:    {label: Guardar }
+      edit: 
+        title: Editar lote de pago %%referencia%%
+        display:
+          Talento:     [_talento]
+          Cuenta:      [referencia,cuenta_deposito]
+      new:
+        title: Crear lote de pago
+        display:
+          Talento: [_talento]
+          Cuenta:  [referencia,cuenta_deposito]
+          

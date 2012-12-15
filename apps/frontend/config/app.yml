@@ -1,0 +1,99 @@
+# You can find more information about this file on the symfony website:
+# http://www.symfony-project.org/reference/1_4/en/11-App
+
+# default values
+all:
+  sf_jerryml_admin:
+    iva: 0.16
+    con_iva: 1.16
+  dbformextraplugin:
+    include_jquery:      false
+    jquery_path:         /dbFormExtraPlugin/jquery/
+    jquery_version:      jquery-1.2.6.min.js
+    jqueryui_path:       /dbFormExtraPlugin/jquery_ui/js/
+    jqueryui_path_css:   /dbFormExtraPlugin/jquery_ui/css/
+    datetime_path_js:    /dbFormExtraPlugin/datetime/js/
+    datetime_path_css:   /dbFormExtraPlugin/datetime/css/
+  sf_admin_dash:
+    web_dir:                    /sfAdminDashPlugin
+    image_dir:                  /sfAdminDashPlugin/images/icons/
+    default_image:              config.png
+    resize_mode:                thumbnail
+    site:                       JerryMLAdmin
+    include_path:               false
+    include_jquery_no_conflict: false
+    logout:                     true
+    login_route:                '@sf_guard_signin'
+    logout_route:               '@sf_guard_signout'
+    categories:
+      Sistema:
+        items:
+          'Usuarios':
+            url:          sf_guard_user
+            image:        users.png
+            credentials:  [[usuarios,admin]]
+          Grupos:
+            url:          sf_guard_group
+            image:        addusers.png
+            credentials:  [admin]
+          Permisos:
+            url:          sf_guard_permission
+            image:        config.png
+            credentials:  [admin]
+          Configuracion:
+            url:          configuracion
+            image:        cpanel.png
+            credentials:  [admin]
+          Conceptos:
+            url:          conceptos
+            image:        cpanel.png
+            credentials:  [admin]  
+      Administracion:
+        items:
+          'Empresas':
+            url:          clientes
+            image:        mediamanager.png
+            credentials:  [[clientes,admin]]
+          'Contactos':
+            url:          contactos
+            image:        mediamanager.png
+            credentials:  [[clientes,admin]]  
+          'Talentos':
+            url:          talentos
+            image:        module.png
+            credentials:  [[talentos,admin]]
+          'Calendario Talentos':
+            url:          calendario
+            image:        support.png
+            credentials:  [[talentos,admin]] 
+          'Calendario Usuarios':
+            url:          eventos_usuarios
+            image:        support.png
+            credentials:  [[usuarios,admin]] 
+      Operaciones:
+        items:
+          'Pre-cotizaciones':
+            url:          precotizaciones
+            image:        mediamanager.png
+            credentials:  [[cotizaciones,admin]]  
+          'Cotizaciones':
+            url:          cotizaciones
+            image:        module.png
+            credentials:  [[cotizaciones,admin]]
+          'Contratos':
+            url:          contratos
+            image:        module.png
+            credentials:  [[contratos,admin]]
+          'Pagos Clientes':
+            url:          pagos
+            image:        module.png
+            credentials:  [[pagos_clientes,admin]]  
+          'Pagos Talentos':
+            url:          pagos_talentos
+            image:        module.png
+            credentials:  [[pagos_talentos,admin]]
+          'Reportes':
+            url:          reportes
+            image:        module.png
+            credentials:  [admin]  
+            

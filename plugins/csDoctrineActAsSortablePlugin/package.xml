@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" packagerversion="1.9.1" version="2.0" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
+ <name>csDoctrineActAsSortablePlugin</name>
+ <channel>plugins.symfony-project.org</channel>
+ <summary>A plugin that adds sorting functions to model</summary>
+ <description>Gives up and down arrows along with various methods to manipulate the position of a model in a list</description>
+ <lead>
+  <name>Travis Black</name>
+  <user>travib</user>
+  <email>travisb@vrazzle.com</email>
+  <active>yes</active>
+ </lead>
+ <developer>
+  <name>Brent Shaffer</name>
+  <user>bshaffer</user>
+  <email>bshaffer@centresource.com</email>
+  <active>yes</active>
+ </developer>
+ <date>2010-09-20</date>
+ <time>16:03:19</time>
+ <version>
+  <release>1.5.1</release>
+  <api>1.5.1</api>
+ </version>
+ <stability>
+  <release>stable</release>
+  <api>stable</api>
+ </stability>
+ <license uri="http://www.symfony-project.org/license">MIT license</license>
+ <notes>
+-
+ </notes>
+ <contents>
+  <dir name="/">
+   <file md5sum="b0dd2c78851b4212c07541988b2950a3" name="lib/listener/Sortable.php" role="data"/>
+   <file md5sum="3f7f2a18aaa1cc6d5da13d30a6eabf8f" name="lib/template/Sortable.php" role="data"/>
+   <file md5sum="0b042e2c3bf4a1a77e75cd9d548d9813" name="web/images/sortable/icons/promote.png" role="data"/>
+   <file md5sum="7e6d540c835e298eea292fb40a1e0dc5" name="web/images/sortable/icons/demote.png" role="data"/>
+   <file md5sum="4652a377aa946b44f4f3a78e1c015df2" name="web/css/sortable.css" role="data"/>
+   <file md5sum="2af0f304cc27dd930f691731a363d9bd" name="README" role="data"/>
+   <file md5sum="d41d8cd98f00b204e9800998ecf8427e" name="LICENSE" role="data"/>
+  </dir>
+ </contents>
+ <dependencies>
+  <required>
+   <php>
+    <min>5.1.0</min>
+   </php>
+   <pearinstaller>
+    <min>1.4.1</min>
+   </pearinstaller>
+   
+  </required>
+ </dependencies>
+ <phprelease/>
+ <changelog>
+  <release>
+   <version>
+    <release>1.5.1</release>
+    <api>1.5.1</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2010-09-20</date>
+   <license uri="http://www.symfony-project.org/license">MIT license</license>
+   <notes>
+* minor updates
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.0.0</release>
+    <api>1.0.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2009-04-24</date>
+   <license uri="http://www.symfony-project.org/license">MIT license</license>
+   <notes>
+* minor updates
+   </notes>
+  </release>
+ </changelog>
+</package>

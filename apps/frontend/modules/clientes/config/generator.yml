@@ -1,0 +1,45 @@
+generator:
+  class: sfDoctrineGenerator
+  param:
+    model_class:           Clientes
+    theme:                 admin
+    non_verbose_templates: true
+    with_show:             true
+    singular:              ~
+    plural:                ~
+    route_prefix:          clientes
+    with_doctrine_route:   true
+    actions_base_class:    sfActions
+
+    config:
+      actions: ~
+      fields:  
+        razon_social: {label: Razon Social}
+        rfc: {label: RFC}
+        cliente_by_razon_social: {label: Empresa , help: Razon Social o RFC }
+        cliente_by_contactos: {label: Contacto, help: Nombre o apellidos }
+        is_active: { label: 'Activo?', help: 'Para activar o desactivar registro' }
+      list:    
+        title: Lista de Empresas
+        table_method: retrieveBackendClientesList
+        display: [id,razon_social,rfc,is_active]
+        sort: [razon_social, asc]
+        object_actions:
+          show:  {label: Mostrar, action: show}
+          _edit: {label: Editar }
+          inactive: {label: Inactivar, action: inactive }
+          active: {label: Activar, action: active }
+          select: {label: Seleccionar }
+        actions:
+          _new: {label: Nueva Empresa }
+          cancelar: {label: 'Cancelar modo seleccion', action: cancelarSeleccion}
+      filter:  
+        display: [cliente_by_razon_social, cliente_by_contactos]
+      form:    
+        actions:
+          _list: {label: Regresar a Lista}
+          _save: {label: Guardar }
+      edit:    
+        title: Editar Empresa %%razon_social%%
+      new:     
+        title: Nueva Empresa  
