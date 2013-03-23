@@ -1,4 +1,0 @@
-all:
-  laigu_feyasoft_calendar_plugin:
-    web_dir_extjs:   /js/extjs
-
