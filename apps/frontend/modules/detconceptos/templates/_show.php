@@ -1,5 +1,6 @@
 <?php use_helper('Number') ?>
 <?php if (!isset($sin_div)) $sin_div = false; ?>
+<?php if (!isset($sin_botones)) $sin_botones = false; ?>
 <?php if(!$sin_div):?>
 <div class="li-concepto" id="dcc-<?php echo $dcc->getId() ?>" style="widith:100%;">
 <?php endif;?>    
@@ -12,8 +13,12 @@
             <?php echo format_currency($dcc->getPrecio(), 'USD') ?>
         </td>
         <td width="30%">
-            <input type="button" value="Editar" class="buttonEditarConcepto" onclick="$.editarConcepto('<?php echo $dcc->getId() ?>');" />
-            <input type="button" value="Eliminar" class="buttonEditarConcepto" onclick="$.eliminarConcepto('<?php echo $dcc->getId() ?>','<?php echo $dcc->getDetallesCotizacionId() ?>');" />
+        <?php if(!$sin_botones):?>    
+            <input type="button" value="Editar" class="buttonEditarRegistro" onclick="$.editarConcepto('<?php echo $dcc->getId() ?>','<?php echo $dcc->getDetallesCotizacionId() ?>');" />
+            <?php if(!$dcc->hasNivelCotizacion()):?>
+            <input type="button" value="Eliminar" class="buttonEditarRegistro" onclick="$.eliminarConcepto('<?php echo $dcc->getId() ?>','<?php echo $dcc->getDetallesCotizacionId() ?>');" />
+            <?php endif;?>
+        <?php endif;?>    
         </td>
     </tr>
 </table>

@@ -39,7 +39,7 @@ generator:
           _delete: {label: Eliminar }
         class: sfGuardUserAdminForm
         display:
-          "Usuario":           [first_name, last_name, email_address,color, username, password, password_again]
+          "Usuario":           [first_name, last_name, email_address,color,firma, username, password, password_again]
           "Permisos y grupos": [is_active, is_super_admin, groups_list, permissions_list]
 
       edit:

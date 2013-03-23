@@ -30,8 +30,9 @@
       <tr>
         <th><?php echo $form['fecha_pago']->renderLabel() ?></th>  
         <td>
-          <?php echo $form['fecha_pago']->renderError() ?>
-          <?php echo $form['fecha_pago']->render() ?>
+          <?php //echo $form['fecha_pago']->renderError() ?>
+          <?php //echo $form['fecha_pago']->render() ?>
+          <?php echo $form->getObject()->getFechaPago()?>  
         </td> 
         
       </tr>

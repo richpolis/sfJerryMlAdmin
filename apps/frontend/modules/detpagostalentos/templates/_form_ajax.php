@@ -13,9 +13,10 @@
       <tr>
         <th><?php echo $form['fecha_pago']->renderLabel() ?></th>  
         <td>
-          <?php echo $form['fecha_pago']->renderError() ?>
-          <?php echo $form['fecha_pago']->render() ?>
-        </td> 
+          <?php //echo $form['fecha_pago']->renderError() ?>
+          <?php //echo $form['fecha_pago']->render() ?>
+          <?php echo $form->getObject()->getFechaPago()?>  
+        </td>
         
       </tr>
       <tr>
@@ -35,15 +36,17 @@
       <tr>
         <th><?php echo $form['iva']->renderLabel() ?></th>  
         <td>
-          <?php echo $form['iva']->renderError() ?>
-          <?php echo $form['iva']->render() ?>  
+          <?php //echo $form['iva']->renderError() ?>
+          <?php //echo $form['iva']->render() ?>
+          <?php echo $form->getObject()->getIva()?>  
         </td>
       </tr>
       <tr>
         <th><?php echo $form['isr']->renderLabel() ?></th>  
         <td>
-          <?php echo $form['isr']->renderError() ?>
-          <?php echo $form['isr']->render() ?>  
+          <?php //echo $form['isr']->renderError() ?>
+          <?php //echo $form['isr']->render() ?>
+          <?php echo $form->getObject()->getIsr()?>  
         </td>
       </tr>
     </tbody>

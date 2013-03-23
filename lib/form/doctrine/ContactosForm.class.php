@@ -18,7 +18,7 @@ class ContactosForm extends BaseContactosForm
           $this->widgetSchema['email']=new sfWidgetFormInputText(array(),array('class'=>'fields_normal required'));
           $this->validatorSchema['email'] = new sfValidatorEmail(array('required'=>false),array('invalid'=>'La direccion de correo no es valida'));
           $this->widgetSchema['name']=new sfWidgetFormInputText(array(),array('class'=>'fields_normal required'));
-          $this->validatorSchema['name']=new sfValidatorString(array('required'=>true,'min_length'=>3),array('invalid'=>'Se debe ingresar la razon social del cliente'));  
+          $this->validatorSchema['name']=new sfValidatorString(array('required'=>true,'min_length'=>3),array('invalid'=>'Se debe ingresar la Nombre Empresa del cliente'));  
           $this->widgetSchema['apellidos']=new sfWidgetFormInputText(array(),array('class'=>'fields_normal required'));
           $this->validatorSchema['apellidos']=new sfValidatorString(array('required'=>true,'min_length'=>3),array('invalid'=>'Ingresar apellidos del contacto'));  
           

@@ -13,7 +13,10 @@ class KsWCEventForm extends PluginKsWCEventForm
   public function configure()
   {
       unset($this['created_at'], $this['updated_at'],$this['cotizaciones_list']);
-      
+      //$this->widgetSchema['cotizacion_id'] = new sfWidgetFormInputHidden();
+      $this->widgetSchema['detalles_cotizacion_id'] = new sfWidgetFormInputHidden();
+      $this->widgetSchema['nivel'] = new sfWidgetFormInputHidden();
+
       if($this->isNew()){
         $user= sfContext::getInstance()->getUser();
         if($user->getCalendarTalentoId()!=0){

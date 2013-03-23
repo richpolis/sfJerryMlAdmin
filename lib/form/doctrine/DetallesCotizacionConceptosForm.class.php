@@ -14,5 +14,19 @@ class DetallesCotizacionConceptosForm extends BaseDetallesCotizacionConceptosFor
   {
       unset($this['created_at'], $this['updated_at']);
       $this->widgetSchema['detalles_cotizacion_id'] = new sfWidgetFormInputHidden();
+      $this->widgetSchema['nivel'] = new sfWidgetFormInputHidden();
+      
+      if($this->getObject()->getConceptoId()>0){
+        $this->widgetSchema['concepto_id'] = new sfWidgetFormInputHidden();
+      }elseif($this->getObject()->getDetallesCotizacionId()>0){
+        $this->widgetSchema['concepto_id'] = new sfWidgetFormDoctrineChoice(
+                array(
+                  'model' => 'Conceptos',
+                  'query' => Doctrine_Core::getTable('Conceptos')
+                            ->getCriteriaFiltrarPorDetalleCotizacion($this->getObject()->getDetallesCotizacionId()),  
+                  'add_empty' => false
+                  ));
+      }
+      
   }
 }

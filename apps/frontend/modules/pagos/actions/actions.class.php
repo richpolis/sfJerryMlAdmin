@@ -59,6 +59,25 @@ class pagosActions extends autoPagosActions
         }  
     }
     
+    public function executeCancelarAprobarPago(sfWebRequest $request){
+        if($request->hasParameter('generar')){
+            $detalle=  Doctrine_Core::getTable('DetallesPagos')->find($request->getParameter('generar'));
+            $cont=0;
+            $importe=0;
+            if($detalle->getStatus()==PagosTable::$APROBADO){
+               $importe+=$detalle->getImporte();
+               $cont++; 
+               $detalle->setStatus(PagosTable::$INCOMPLETO); //status de aprobado, ya no se puede modificar
+               $detalle->save();
+            }
+            setlocale(LC_MONETARY, 'en_US');
+            $this->pagos=Doctrine_Core::getTable('Pagos')->find($detalle->getPagos()->getId());
+            $this->getUser()->setFlash('notice', "Se ha cancelado la aprobacion de $cont pago(s), operacion tiene un importe :.".  number_format($importe,2));
+            $this->redirect("pagos_show",$this->pagos);
+        }else{
+            $this->redirect('@pagos');
+        }
+    }
             
     public function executeAprobarPagos(sfWebRequest $request){
          if($request->hasParameter('generar')){
@@ -185,7 +204,8 @@ class pagosActions extends autoPagosActions
         $this->form=$this->crearFormulario($this->pagos);
     }
     public function executeShow(sfWebRequest $request) {
-        $this->pagos = $this->getRoute()->getObject();
+        //$this->pagos = $this->getRoute()->getObject();
+        $this->pagos=  Doctrine_Core::getTable('Pagos')->getPagosConClienteDetallesForId($request->getParameter('id'));
         
         if(count($this->getUser()->getCotizaciones())>0){
             $cotizaciones=  Doctrine_Core::getTable('Cotizaciones')->getCotizacionesPorArreglo($this->getUser()->getCotizaciones());

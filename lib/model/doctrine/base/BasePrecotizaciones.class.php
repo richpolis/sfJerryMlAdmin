@@ -8,6 +8,7 @@
  * @property integer $cliente_id
  * @property integer $contacto_id
  * @property integer $user_id
+ * @property integer $empresa_id
  * @property string $evento
  * @property text $descripcion
  * @property text $actividad_general
@@ -20,11 +21,13 @@
  * @property Clientes $Clientes
  * @property Contactos $Contactos
  * @property sfGuardUser $User
+ * @property Empresas $Empresas
  * @property Doctrine_Collection $DetallesPrecotizacion
  * 
  * @method integer             getClienteId()             Returns the current record's "cliente_id" value
  * @method integer             getContactoId()            Returns the current record's "contacto_id" value
  * @method integer             getUserId()                Returns the current record's "user_id" value
+ * @method integer             getEmpresaId()             Returns the current record's "empresa_id" value
  * @method string              getEvento()                Returns the current record's "evento" value
  * @method text                getDescripcion()           Returns the current record's "descripcion" value
  * @method text                getActividadGeneral()      Returns the current record's "actividad_general" value
@@ -37,10 +40,12 @@
  * @method Clientes            getClientes()              Returns the current record's "Clientes" value
  * @method Contactos           getContactos()             Returns the current record's "Contactos" value
  * @method sfGuardUser         getUser()                  Returns the current record's "User" value
+ * @method Empresas            getEmpresas()              Returns the current record's "Empresas" value
  * @method Doctrine_Collection getDetallesPrecotizacion() Returns the current record's "DetallesPrecotizacion" collection
  * @method Precotizaciones     setClienteId()             Sets the current record's "cliente_id" value
  * @method Precotizaciones     setContactoId()            Sets the current record's "contacto_id" value
  * @method Precotizaciones     setUserId()                Sets the current record's "user_id" value
+ * @method Precotizaciones     setEmpresaId()             Sets the current record's "empresa_id" value
  * @method Precotizaciones     setEvento()                Sets the current record's "evento" value
  * @method Precotizaciones     setDescripcion()           Sets the current record's "descripcion" value
  * @method Precotizaciones     setActividadGeneral()      Sets the current record's "actividad_general" value
@@ -53,6 +58,7 @@
  * @method Precotizaciones     setClientes()              Sets the current record's "Clientes" value
  * @method Precotizaciones     setContactos()             Sets the current record's "Contactos" value
  * @method Precotizaciones     setUser()                  Sets the current record's "User" value
+ * @method Precotizaciones     setEmpresas()              Sets the current record's "Empresas" value
  * @method Precotizaciones     setDetallesPrecotizacion() Sets the current record's "DetallesPrecotizacion" collection
  * 
  * @package    sfJerryMlAdmin
@@ -72,6 +78,9 @@ abstract class BasePrecotizaciones extends sfDoctrineRecord
              'type' => 'integer',
              ));
         $this->hasColumn('user_id', 'integer', null, array(
+             'type' => 'integer',
+             ));
+        $this->hasColumn('empresa_id', 'integer', null, array(
              'type' => 'integer',
              ));
         $this->hasColumn('evento', 'string', 255, array(
@@ -130,12 +139,15 @@ abstract class BasePrecotizaciones extends sfDoctrineRecord
              'local' => 'user_id',
              'foreign' => 'id'));
 
+        $this->hasOne('Empresas', array(
+             'local' => 'empresa_id',
+             'foreign' => 'id'));
+
         $this->hasMany('DetallesPrecotizacion', array(
              'local' => 'id',
              'foreign' => 'precotizacion_id'));
 
         $timestampable0 = new Doctrine_Template_Timestampable();
-        $versionable0 = new Doctrine_Template_Versionable();
         $sluggable0 = new Doctrine_Template_Sluggable(array(
              'fields' => 
              array(
@@ -145,7 +157,6 @@ abstract class BasePrecotizaciones extends sfDoctrineRecord
              'canUpdate' => true,
              ));
         $this->actAs($timestampable0);
-        $this->actAs($versionable0);
         $this->actAs($sluggable0);
     }
 }

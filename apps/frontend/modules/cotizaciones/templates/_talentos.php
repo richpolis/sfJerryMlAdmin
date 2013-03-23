@@ -1,6 +1,4 @@
 <?php use_helper('Escaping')?>
-<?php use_stylesheet('contacto.css')?>
-<?php slot('adicional-css')?>
 <?php
     $app_name = $sf_context->getConfiguration()->getApplication();
     if(strcmp($sf_context->getConfiguration()->getEnvironment(),'prod') != 0)
@@ -9,6 +7,7 @@
         $app_name="index";
     }
 ?>
+<?php slot('adicional-css')?>
 <style>
     input.text { margin-bottom:12px; width:95%; padding: .4em; }
     fieldset { padding:0; border:0; margin-top:25px; }
@@ -19,13 +18,37 @@
     .validateTips { border: 1px solid transparent; padding: 0.3em; }
 </style>
 <?php end_slot()?>
-<?php $contRegistros=0;?>
+<?php 
+$conn = Doctrine_Manager::getInstance()->getCurrentConnection();
+$conn->beginTransaction();
+$contRegistros=0;$calcularCotizacion=false;$precioTotal=0;
+?>
 <div id="talentos" class="sf_admin_form_row">
     <h2>Detalles de cotizacion</h2>
     <?php foreach($detalles_cotizaciones as $detalle): ?>
-        <?php $contRegistros++;?>
+        <?php 
+            $contRegistros++;
+            $precio=0;
+            $margenComisionista=0;
+            foreach($detalle->getDetallesCotizacionConceptos() as $dcc){
+                $precio+=$dcc->getPrecio();
+                $precioTotal+=$dcc->getPrecio();
+            }
+            foreach($detalle->getDetallesCotizacionComisionistas() as $dcco){
+                $margenComisionista+=$dcco->getMargen();
+            }
+            if($precio!=$detalle->getPrecio()){
+                $detalle->calcularConceptos();
+                $calcularCotizacion=true;
+            }elseif($margenComisionista!=$detalle->getMargenComisionistas()){
+                $detalle->calcularComisionistas();
+                $calcularCotizacion=true;
+            }
+        ?>
+        
         <?php include_partial('detcotizaciones/show',array('detalles_cotizacion'=>$detalle))?>
-    <?php endforeach;?>  
+    <?php endforeach;?>
+    <?php $conn->commit();?>  
 </div>
 <script>
   var overlay = {
@@ -96,9 +119,27 @@
    jQuery.editarEvento=function(EventoId,DetallesCotizacionId){
         overlay.show();
         $('#dialog-form-evento').attr('evento-id',EventoId).attr('detalles-cotizacion-id',DetallesCotizacionId);
+        $('#dialog-form-evento').attr('url','<?php echo url_for("mostrar_evento_talento")?>?id='+EventoId)
         $.get('/eventos/'+EventoId+'/edit',function(data){
             $('#dialog-form-evento').html(data).dialog('open');
             overlay.hide();
+        });
+   }
+   
+   jQuery.eliminarEvento=function(EventoId){
+        formu = document.createElement("form");// creamos el formulario
+        formu.action = "<?php echo url_for("eventos/delete")?>";
+        formu.method = "post";
+        overlay.show();        
+        $.post(formu.action,{id:EventoId},function(data){
+            if(data=="delete"){
+                $("#eventos-"+EventoId).fadeOut("fast");
+                overlay.hide();
+            }else{
+                 $( "#dialog-message p.mensaje" ).html(data);
+                 $( "#dialog-message" ).dialog("open");
+                overlay.hide();
+            }
         });
    }
    
@@ -113,31 +154,75 @@
    
    jQuery.crearConcepto=function(DetallesCotizacionId){
         overlay.show();
-        $('#dialog-form-concepto').attr('concepto-id',0).attr('detalles-cotizacion-id',DetallesCotizacionId);
+        $dialogo=$('#dialog-form-concepto');
+        $dialogo.attr('title','Concepto').attr('registro-id',0).attr('detalles-cotizacion-id',DetallesCotizacionId);
         $.get('<?php echo url_for('detconceptos/new')?>',{detalle_cotizacion: DetallesCotizacionId},function(data){
-            $('#dialog-form-concepto').html(data).dialog('open');
+            $dialogo.html(data).dialog('open');
             overlay.hide();
         });
    }
    jQuery.editarConcepto=function(ConceptoId,DetallesCotizacionId){
         overlay.show();
-        $('#dialog-form-concepto').attr('concepto-id',ConceptoId).attr('detalles-cotizacion-id',DetallesCotizacionId);
+        $dialogo=$('#dialog-form-concepto');
+        $dialogo.attr('title','Concepto').attr('registro-id',ConceptoId).attr('detalles-cotizacion-id',DetallesCotizacionId);
         var Url="<?php echo url_for("detconceptos/edit")?>";
         $.get(Url,{id: ConceptoId},function(data){
-            $('#dialog-form-concepto').html(data).dialog('open');
+            $dialogo.html(data).dialog('open');
             overlay.hide();
         });
    }
    jQuery.eliminarConcepto=function(ConceptoId,DetallesCotizacionId){
-        $('#dialog-form-concepto').attr('concepto-id',ConceptoId).attr('detalles-cotizacion-id',DetallesCotizacionId);
+        $dialogo=$('#dialog-form-concepto');
+        $dialogo.attr('title','Concepto').attr('registro-id',ConceptoId).attr('detalles-cotizacion-id',DetallesCotizacionId);
         formu = document.createElement("form");// creamos el formulario
         formu.action = "<?php echo url_for("detconceptos/delete")?>";
         formu.method = "post";
-                
+        overlay.show();        
         $.post(formu.action,{id:ConceptoId},function(data){
-            //alert(data);
+            //alert(DetallesCotizacionId);
             if(data=="ok"){
-                $.editarTalento(DetalleCotizacionId); 
+                $.editarTalento(DetallesCotizacionId);
+                overlay.hide();
+            }else{
+                 $( "#dialog-message p.mensaje" ).html(data);
+                 $( "#dialog-message" ).dialog("open");
+                overlay.hide();
+            }
+        });
+   }
+   
+   jQuery.crearComisionista=function(DetallesCotizacionId){
+        overlay.show();
+        $dialogo=$('#dialog-form-concepto');
+        $dialogo.attr('title','Comisionista').attr('registro-id',0).attr('detalles-cotizacion-id',DetallesCotizacionId);
+        $.get('<?php echo url_for('detcomisionistas/new')?>',{detalle_cotizacion: DetallesCotizacionId},function(data){
+            $dialogo.html(data).dialog('open');
+            overlay.hide();
+        });
+   }
+   
+   jQuery.editarComisionista=function(ComisionistaId,DetallesCotizacionId){
+        overlay.show();
+        $dialogo=$('#dialog-form-concepto');
+        $dialogo.attr('title','Comisionista').attr('registro-id',ComisionistaId).attr('detalles-cotizacion-id',DetallesCotizacionId);
+        var Url="<?php echo url_for("detcomisionistas/edit")?>";
+        $.get(Url,{id: ComisionistaId},function(data){
+            $dialogo.html(data).dialog('open');
+            overlay.hide();
+        });
+   }
+   jQuery.eliminarComisionista=function(ComisionistaId,DetallesCotizacionId){
+        $dialogo=$('#dialog-form-concepto');
+        $dialogo.attr('title','Comisionista').attr('registro-id',ComisionistaId).attr('detalles-cotizacion-id',DetallesCotizacionId);
+        formu = document.createElement("form");// creamos el formulario
+        formu.action = "<?php echo url_for("detcomisionistas/delete")?>";
+        formu.method = "post";
+        overlay.show();        
+        $.post(formu.action,{id:ComisionistaId},function(data){
+            //alert(DetallesCotizacionId);
+            if(data=="ok"){
+                $.editarTalento(DetallesCotizacionId);
+                overlay.hide();
             }else{
                  $( "#dialog-message p.mensaje" ).html(data);
                  $( "#dialog-message" ).dialog("open");
@@ -148,6 +233,13 @@
 </script>
 <script>
 $(function() {
+    
+<?php if ($calcularCotizacion || $precioTotal != $cotizaciones->getSubtotal()): ?>
+    $.get("<?php echo url_for('cotizaciones/calcularImportes') ?>",{id: <?php echo $cotizaciones->getId();?>},function(data){
+        $('#totales-cotizacion').html(data);
+    });
+<?php endif; ?>
+    
     
     // a workaround for a flaw in the demo system (http://dev.jqueryui.com/ticket/4375), ignore!
     $( "#dialog:ui-dialog" ).dialog( "destroy" );
@@ -178,6 +270,10 @@ $(function() {
                             
                         });
             },
+            Calendario: function() {
+                    var urlEvento=$('#dialog-form-evento').attr('url');
+                    location.href=urlEvento;
+            },
 	    Cancel: function() {
                 $( this ).dialog( "close" );
             }
@@ -194,21 +290,12 @@ $(function() {
 	buttons: {
             "Guardar": function() {
 			overlay.show();
-                        var form = $('form#form-conceptos-ajax');
+                        var form = $('form#form-ajax');
                         var variables=form.serialize();
                         $.post(form.attr('action'),variables,function(data){
                             if(data=="ok"){
-                               var ConceptoId=$('#dialog-form-concepto').attr('concepto-id');
                                var DetalleCotizacionId=$('#dialog-form-concepto').attr('detalles-cotizacion-id');
-                               /*if(ConceptoId){
-                                  $.get("<?php echo url_for('detconceptos/show')?>",{id: ConceptoId},function(data){
-                                   $('#dcc-'+ConceptoId).html(data);
-                                  });     
-                               }else{
-                                   $.get("<?php echo url_for('detconceptos/index')?>",{detalle_cotizacion: DetalleCotizacionId},function(data){
-                                    $('.li-conceptos').html(data);
-                                   });
-                               }*/
+                               
                                $.editarTalento(DetalleCotizacionId); 
                                
                                 overlay.hide();
@@ -283,7 +370,7 @@ $(function() {
 <div id="dialog-form-evento" title="Evento" evento-id="" detalles-cotizacion-id="">
     
 </div>
-<div id="dialog-form-concepto" title="concepto" detalles-cotizacion-id="">
+<div id="dialog-form-concepto" title="Registro" detalles-cotizacion-id="">
     
 </div>
 <div id="dialog-message" title="Borrar registro">

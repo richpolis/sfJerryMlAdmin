@@ -8,58 +8,64 @@
  * @property integer $cotizacion_id
  * @property integer $talento_id
  * @property text $actividad
- * @property double $ganancia_jerryml
- * @property double $ganancia_comisionista
+ * @property double $ganancia_jerry_ml
  * @property double $ganancia_talento
+ * @property double $ganancia_comisionistas
  * @property float $margen_jerry_ml
- * @property float $margen_comisionista
+ * @property float $margen_comisionistas
  * @property double $precio
- * @property double $subtotal
  * @property double $iva
  * @property boolean $is_pay_talento
  * @property boolean $is_active
+ * @property double $monto_pagado_talento
  * @property integer $position
  * @property Cotizaciones $Cotizaciones
  * @property Talentos $Talentos
+ * @property Doctrine_Collection $Eventos
  * @property Doctrine_Collection $DetallesPagosTalentos
  * @property Doctrine_Collection $DetallesCotizacionConceptos
+ * @property Doctrine_Collection $DetallesCotizacionComisionistas
  * 
- * @method integer             getCotizacionId()                Returns the current record's "cotizacion_id" value
- * @method integer             getTalentoId()                   Returns the current record's "talento_id" value
- * @method text                getActividad()                   Returns the current record's "actividad" value
- * @method double              getGananciaJerryml()             Returns the current record's "ganancia_jerryml" value
- * @method double              getGananciaComisionista()        Returns the current record's "ganancia_comisionista" value
- * @method double              getGananciaTalento()             Returns the current record's "ganancia_talento" value
- * @method float               getMargenJerryMl()               Returns the current record's "margen_jerry_ml" value
- * @method float               getMargenComisionista()          Returns the current record's "margen_comisionista" value
- * @method double              getPrecio()                      Returns the current record's "precio" value
- * @method double              getSubtotal()                    Returns the current record's "subtotal" value
- * @method double              getIva()                         Returns the current record's "iva" value
- * @method boolean             getIsPayTalento()                Returns the current record's "is_pay_talento" value
- * @method boolean             getIsActive()                    Returns the current record's "is_active" value
- * @method integer             getPosition()                    Returns the current record's "position" value
- * @method Cotizaciones        getCotizaciones()                Returns the current record's "Cotizaciones" value
- * @method Talentos            getTalentos()                    Returns the current record's "Talentos" value
- * @method Doctrine_Collection getDetallesPagosTalentos()       Returns the current record's "DetallesPagosTalentos" collection
- * @method Doctrine_Collection getDetallesCotizacionConceptos() Returns the current record's "DetallesCotizacionConceptos" collection
- * @method DetallesCotizacion  setCotizacionId()                Sets the current record's "cotizacion_id" value
- * @method DetallesCotizacion  setTalentoId()                   Sets the current record's "talento_id" value
- * @method DetallesCotizacion  setActividad()                   Sets the current record's "actividad" value
- * @method DetallesCotizacion  setGananciaJerryml()             Sets the current record's "ganancia_jerryml" value
- * @method DetallesCotizacion  setGananciaComisionista()        Sets the current record's "ganancia_comisionista" value
- * @method DetallesCotizacion  setGananciaTalento()             Sets the current record's "ganancia_talento" value
- * @method DetallesCotizacion  setMargenJerryMl()               Sets the current record's "margen_jerry_ml" value
- * @method DetallesCotizacion  setMargenComisionista()          Sets the current record's "margen_comisionista" value
- * @method DetallesCotizacion  setPrecio()                      Sets the current record's "precio" value
- * @method DetallesCotizacion  setSubtotal()                    Sets the current record's "subtotal" value
- * @method DetallesCotizacion  setIva()                         Sets the current record's "iva" value
- * @method DetallesCotizacion  setIsPayTalento()                Sets the current record's "is_pay_talento" value
- * @method DetallesCotizacion  setIsActive()                    Sets the current record's "is_active" value
- * @method DetallesCotizacion  setPosition()                    Sets the current record's "position" value
- * @method DetallesCotizacion  setCotizaciones()                Sets the current record's "Cotizaciones" value
- * @method DetallesCotizacion  setTalentos()                    Sets the current record's "Talentos" value
- * @method DetallesCotizacion  setDetallesPagosTalentos()       Sets the current record's "DetallesPagosTalentos" collection
- * @method DetallesCotizacion  setDetallesCotizacionConceptos() Sets the current record's "DetallesCotizacionConceptos" collection
+ * @method integer             getCotizacionId()                    Returns the current record's "cotizacion_id" value
+ * @method integer             getTalentoId()                       Returns the current record's "talento_id" value
+ * @method text                getActividad()                       Returns the current record's "actividad" value
+ * @method double              getGananciaJerryMl()                 Returns the current record's "ganancia_jerry_ml" value
+ * @method double              getGananciaTalento()                 Returns the current record's "ganancia_talento" value
+ * @method double              getGananciaComisionistas()           Returns the current record's "ganancia_comisionistas" value
+ * @method float               getMargenJerryMl()                   Returns the current record's "margen_jerry_ml" value
+ * @method float               getMargenComisionistas()             Returns the current record's "margen_comisionistas" value
+ * @method double              getPrecio()                          Returns the current record's "precio" value
+ * @method double              getIva()                             Returns the current record's "iva" value
+ * @method boolean             getIsPayTalento()                    Returns the current record's "is_pay_talento" value
+ * @method boolean             getIsActive()                        Returns the current record's "is_active" value
+ * @method double              getMontoPagadoTalento()              Returns the current record's "monto_pagado_talento" value
+ * @method integer             getPosition()                        Returns the current record's "position" value
+ * @method Cotizaciones        getCotizaciones()                    Returns the current record's "Cotizaciones" value
+ * @method Talentos            getTalentos()                        Returns the current record's "Talentos" value
+ * @method Doctrine_Collection getEventos()                         Returns the current record's "Eventos" collection
+ * @method Doctrine_Collection getDetallesPagosTalentos()           Returns the current record's "DetallesPagosTalentos" collection
+ * @method Doctrine_Collection getDetallesCotizacionConceptos()     Returns the current record's "DetallesCotizacionConceptos" collection
+ * @method Doctrine_Collection getDetallesCotizacionComisionistas() Returns the current record's "DetallesCotizacionComisionistas" collection
+ * @method DetallesCotizacion  setCotizacionId()                    Sets the current record's "cotizacion_id" value
+ * @method DetallesCotizacion  setTalentoId()                       Sets the current record's "talento_id" value
+ * @method DetallesCotizacion  setActividad()                       Sets the current record's "actividad" value
+ * @method DetallesCotizacion  setGananciaJerryMl()                 Sets the current record's "ganancia_jerry_ml" value
+ * @method DetallesCotizacion  setGananciaTalento()                 Sets the current record's "ganancia_talento" value
+ * @method DetallesCotizacion  setGananciaComisionistas()           Sets the current record's "ganancia_comisionistas" value
+ * @method DetallesCotizacion  setMargenJerryMl()                   Sets the current record's "margen_jerry_ml" value
+ * @method DetallesCotizacion  setMargenComisionistas()             Sets the current record's "margen_comisionistas" value
+ * @method DetallesCotizacion  setPrecio()                          Sets the current record's "precio" value
+ * @method DetallesCotizacion  setIva()                             Sets the current record's "iva" value
+ * @method DetallesCotizacion  setIsPayTalento()                    Sets the current record's "is_pay_talento" value
+ * @method DetallesCotizacion  setIsActive()                        Sets the current record's "is_active" value
+ * @method DetallesCotizacion  setMontoPagadoTalento()              Sets the current record's "monto_pagado_talento" value
+ * @method DetallesCotizacion  setPosition()                        Sets the current record's "position" value
+ * @method DetallesCotizacion  setCotizaciones()                    Sets the current record's "Cotizaciones" value
+ * @method DetallesCotizacion  setTalentos()                        Sets the current record's "Talentos" value
+ * @method DetallesCotizacion  setEventos()                         Sets the current record's "Eventos" collection
+ * @method DetallesCotizacion  setDetallesPagosTalentos()           Sets the current record's "DetallesPagosTalentos" collection
+ * @method DetallesCotizacion  setDetallesCotizacionConceptos()     Sets the current record's "DetallesCotizacionConceptos" collection
+ * @method DetallesCotizacion  setDetallesCotizacionComisionistas() Sets the current record's "DetallesCotizacionComisionistas" collection
  * 
  * @package    sfJerryMlAdmin
  * @subpackage model
@@ -81,11 +87,7 @@ abstract class BaseDetallesCotizacion extends sfDoctrineRecord
              'type' => 'text',
              'notnull' => true,
              ));
-        $this->hasColumn('ganancia_jerryml', 'double', null, array(
-             'type' => 'double',
-             'default' => 0,
-             ));
-        $this->hasColumn('ganancia_comisionista', 'double', null, array(
+        $this->hasColumn('ganancia_jerry_ml', 'double', null, array(
              'type' => 'double',
              'default' => 0,
              ));
@@ -93,19 +95,19 @@ abstract class BaseDetallesCotizacion extends sfDoctrineRecord
              'type' => 'double',
              'default' => 0,
              ));
+        $this->hasColumn('ganancia_comisionistas', 'double', null, array(
+             'type' => 'double',
+             'default' => 0,
+             ));
         $this->hasColumn('margen_jerry_ml', 'float', null, array(
              'type' => 'float',
              'default' => 20,
              ));
-        $this->hasColumn('margen_comisionista', 'float', null, array(
+        $this->hasColumn('margen_comisionistas', 'float', null, array(
              'type' => 'float',
              'default' => 0,
              ));
         $this->hasColumn('precio', 'double', null, array(
-             'type' => 'double',
-             'default' => 0,
-             ));
-        $this->hasColumn('subtotal', 'double', null, array(
              'type' => 'double',
              'default' => 0,
              ));
@@ -122,6 +124,11 @@ abstract class BaseDetallesCotizacion extends sfDoctrineRecord
              'type' => 'boolean',
              'notnull' => false,
              'default' => true,
+             ));
+        $this->hasColumn('monto_pagado_talento', 'double', null, array(
+             'type' => 'double',
+             'notnull' => false,
+             'default' => 0,
              ));
         $this->hasColumn('position', 'integer', 4, array(
              'type' => 'integer',
@@ -140,11 +147,19 @@ abstract class BaseDetallesCotizacion extends sfDoctrineRecord
              'local' => 'talento_id',
              'foreign' => 'id'));
 
+        $this->hasMany('KsWCEvent as Eventos', array(
+             'local' => 'id',
+             'foreign' => 'detalles_cotizacion_id'));
+
         $this->hasMany('DetallesPagosTalentos', array(
              'local' => 'id',
              'foreign' => 'detalles_cotizacion_id'));
 
         $this->hasMany('DetallesCotizacionConceptos', array(
+             'local' => 'id',
+             'foreign' => 'detalles_cotizacion_id'));
+
+        $this->hasMany('DetallesCotizacionComisionistas', array(
              'local' => 'id',
              'foreign' => 'detalles_cotizacion_id'));
 

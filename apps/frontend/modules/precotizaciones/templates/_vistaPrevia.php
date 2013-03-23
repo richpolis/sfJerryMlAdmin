@@ -79,8 +79,8 @@
                     <th style="color: white;">INFORMACIÓN</th>
                     <th style="color: white;">COSTO</th>
                 </tr>
-                <tr aling="center" valing="top" >
-                    <td width="20%">
+                <tr>
+                    <td width="20%"  style="text-align: center; vertical-align: central;">
                         <?php echo $detalle->getTalentos() ?> <br/>
                         <?php if(file_exists(sfConfig::get('sf_upload_dir').'/talentos/'.$detalle->getTalentos()->getImagen())):?>
                         <img src="http://<?php echo $sf_request->getHost()?>/uploads/talentos/<?php echo $detalle->getTalentos()->getImagen() ?>" style="max-height: 100px; max-width: 100px;" width="100" height="100"/>
@@ -88,9 +88,10 @@
                         <img src="http://<?php echo $sf_request->getHost()?>/uploads/assets/<?php echo $confPrecotizaciones->getImagen()?>" style="max-height: 100px; max-width: 100px;" />
                         <?php endif;?>    
                     </td>  
-                    <td width="60%" style=" text-align: justify;"><?php echo $detalle->getActividad(ESC_RAW) ?></td>
-                    
-                    <td width="20%">
+                    <td width="60%" style="vertical-align: central; text-align: justify;">
+                        <?php echo $detalle->getActividad(ESC_RAW) ?>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 </td>
+                    <td width="20%" style="text-align: center; vertical-align: central;">
                         <?php echo format_currency($detalle->getPrecio(), 'USD')  ?>
                     </td>
                 </tr>
@@ -104,5 +105,12 @@
   </div>
   <div id="sf_admin_footer">
     <?php include_partial('configuracion/contenido', array("configuracion"=>$confPrecotizaciones))?>
+  </div>
+  <div  style="width:100%; height: 30px;">
+          
+  </div>
+  <div  style="width:100%; height: 30px;">
+      Atte. <?php echo $sf_user->getGuardUser()->getNombreCompleto()?><br/>
+      <?php echo $sf_user->getGuardUser()->getEmail()?>
   </div>
 </div>

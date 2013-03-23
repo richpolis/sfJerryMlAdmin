@@ -39,11 +39,29 @@ class ClientesTable extends Doctrine_Table
         $cmd=$q->execute();
         return $cmd->count()+1;
     }
-    public function retrieveBackendClientesList(Doctrine_Query $q)
+    public function getClientesShow($id)
     {
         $q=$this->getCriteriaOrdenada();   
         $rootAlias = $q->getRootAlias();
-        $q->leftJoin($rootAlias . '.Contactos o');
+        $q->leftJoin($rootAlias . '.Contactos contacto');
+        $q->leftJoin($rootAlias . '.Pagos p');
+        $q->leftJoin($rootAlias . '.Cotizaciones cot');
+        $q->leftJoin('cot.Clientes cli');
+        $q->leftJoin('cot.Contactos cotcontacto');
+        $q->addWhere($rootAlias.'.id=?',$id);
+        if(sfContext::getInstance()->getUser()->getModoCotizacion()){
+            $q->addWhere($rootAlias.'.is_active=?',true);
+        }
+        return $q->fetchOne();
+    }
+    
+    public function retrieveBackendClientesList(Doctrine_Query $q)
+    {
+        //$q=$this->getCriteriaOrdenada();   
+        $rootAlias = $q->getRootAlias();
+        $q->leftJoin($rootAlias . '.Contactos contacto');
+        $q->leftJoin($rootAlias . '.Pagos p');
+        $q->leftJoin($rootAlias . '.Cotizaciones cot');
         if(sfContext::getInstance()->getUser()->getModoCotizacion()){
             $q->addWhere($rootAlias.'.is_active=?',true);
         }
@@ -59,6 +77,7 @@ class ClientesTable extends Doctrine_Table
         $q->leftJoin('p.DetallesPagos dp');
         $q->addWhere('dp.fecha_pago BETWEEN ? to ?',array($desde,$hasta));
         $q->addWhere('dp.status=?',$valores['status']);
+        $q->addOrderBy('dp.cotizacion_id asc');
         $q->addOrderBy('dp.fecha_pago asc');
         
         if($valores['cliente']>0){

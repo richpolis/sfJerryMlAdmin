@@ -25,12 +25,12 @@ use_javascripts_for_form($form);
       <tr>
         <th>Usuario</th>
         <td>
-          <?php if($form->getObject()->getUserId()>0):?>
+          <?php if($form->getObject()->getUserId()):?>
             <?php $usuario=Doctrine_Core::getTable("sfGuardUser")->find($form->getObject()->getUserId());?>
           <?php else: ?>
             <?php $usuario=$form->getObject()->getUser();?>
           <?php endif;?>
-            <?php echo $usuario; ?>
+         <?php echo $usuario; ?>
         </td>
       </tr>
       

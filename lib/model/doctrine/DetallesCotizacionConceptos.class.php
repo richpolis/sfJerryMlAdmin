@@ -13,13 +13,53 @@
 class DetallesCotizacionConceptos extends BaseDetallesCotizacionConceptos
 {
     public function save(\Doctrine_Connection $conn = null) {
+        /*if(!$this->getRequerimiento()){
+            $concepto=ConceptosTable::getInstance()->find($this->getConceptoId());
+            $this->setRequerimiento($concepto->getRequerimiento());
+        }*/
+                
         parent::save($conn);
-        $dc=$this->getDetallesCotizacion();
-        $dc->calcularConceptos();
+        //$dc=$this->getDetallesCotizacion();
+        //$dc->calcularConceptos();
     }
+    
+    public function saveOnly(\Doctrine_Connection $conn = null) {
+        parent::save($conn);
+    }
+    
     public function delete(\Doctrine_Connection $conn = null) {
         parent::delete($conn);
         return true;
     }
+    public function getNivelString(){
+        $resp="";
+        switch($this->getNivel()){
+            case CotizacionesTable::$NIVEL_DETALLE:
+               $resp="Detalle";
+                break;
+            case CotizacionesTable::$NIVEL_COTIZACION:
+                $resp="Cotizacion";
+                break;
+            case CotizacionesTable::$NIVEL_TEMPLATE:
+                $resp="Template";
+                break;
+        }
+        return $resp;
+    }
     
+    public function hasNivelCotizacion(){
+        if($this->getNivel()==CotizacionesTable::$NIVEL_COTIZACION){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    public function hasNivelDetalle(){
+        if($this->getNivel()==CotizacionesTable::$NIVEL_DETALLE){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

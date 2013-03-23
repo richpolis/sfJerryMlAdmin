@@ -1,0 +1,14 @@
+# # Populate this file with data to be loaded by your ORM's *:data-load task.
+# # You can create multiple files in this directory (i.e. 010_users.yml,
+# # 020_articles.yml, etc) which will be loaded in alphabetical order.
+# # 
+# # See documentation for your ORM's *:data-load task for more information.
+# 
+  
+Comisionistas:
+  comi1:
+    nombre: Ricardo Alcantara
+    margen: 20
+  comi2:
+    nombre: Pilar Alcantara
+    margen: 15

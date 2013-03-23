@@ -18,13 +18,23 @@
     <?php include_partial('cotizaciones/evento', array('cotizaciones' => $cotizaciones)) ?>
     <div id="talentos-cotizaciones">
         <?php include_partial('cotizaciones/talentos', array('cotizaciones' => $cotizaciones,"detalles_cotizaciones"=>$detalles_cotizaciones)) ?>
+    </div>
+    <div id="totales-cotizacion" style="display: none;">
+        
     </div>    
-    
+    <?php include_partial('cotizaciones/pie_evento', array('cotizaciones' => $cotizaciones)) ?>
     <ul class="sf_admin_actions">
          <li>
              <a href="<?php echo url_for('@cotizaciones')?>">Listado</a>
          </li>
+         <?php if(!$cotizaciones->statusIncompleto()):?>
+         <li>
+             <a href="<?php echo url_for('@reactivar_cotizacion?generar='.$cotizaciones->getId())?>" id="aprobar_cotizacion">Reactivar Cotizacion</a>
+         </li>
          <?php if(!$cotizaciones->statusAprobada()):?>
+            <?php echo $helper->linkToDelete($cotizaciones, array(  'label' => 'Eliminar',  'params' =>   array(  ),  'confirm' => 'Are you sure?',  'class_suffix' => 'delete',)) ?>
+        <?php endif;?>
+         <?php elseif(!$cotizaciones->statusAprobada()):?>
          <li>
              <a href="<?php echo url_for('@seleccionar_talentos')?><?php echo '?modo=cotizaciones&goto=/'.$app_name.'.php/cotizaciones/'.$cotizaciones->getId().'&cotizacion='.$cotizaciones->getId();?>" id="vista_previa">Agregar Talentos</a>
          </li>
@@ -37,6 +47,12 @@
          <li>
              <a href="<?php echo url_for('@aprobar_cotizacion?generar='.$cotizaciones->getId())?>" id="aprobar_cotizacion">Aprobar Cotizacion</a>
          </li>
+         <li>
+             <a href="<?php echo url_for('@se_cayo_cotizacion?generar='.$cotizaciones->getId())?>" id="se_cayo_cotizacion">Se Cayo Cotizacion</a>
+         </li>
+         <?php if(!$cotizaciones->statusAprobada()):?>
+            <?php echo $helper->linkToDelete($cotizaciones, array(  'label' => 'Eliminar',  'params' =>   array(  ),  'confirm' => 'Are you sure?',  'class_suffix' => 'delete',)) ?>
+         <?php endif;?>
          <?php elseif(!$cotizaciones->statusPagosLiberados()): ?>
          <li>
              <a href="<?php echo url_for('@cancelar_cotizacion?generar='.$cotizaciones->getId())?>" id="cancelar_cotizacion">Cancelar Aprobacion</a>

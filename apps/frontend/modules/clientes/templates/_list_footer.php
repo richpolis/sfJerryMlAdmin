@@ -28,7 +28,7 @@ $(document).ready(function(){
                     "Crear": function() {
                         var bValid = true;
                         allFields.removeClass( "ui-state-error" );
-                        bValid = bValid && checkLength( razon_social, "Razon Social", 3, 150 );
+                        bValid = bValid && checkLength( razon_social, "Nombre Empresa", 3, 150 );
                         
                         if ( bValid ) {
                                 overlay.show();

@@ -26,6 +26,18 @@ class eventosActions extends sfActions
     }
   }
 
+  public function executeShowEvento(sfWebRequest $request)
+  {
+    $this->ks_wc_event = Doctrine_Core::getTable('KsWCEvent')->find(array($request->getParameter('id')));
+    $this->forward404Unless($this->ks_wc_event);
+    $talento=$this->ks_wc_event->getTalentos();
+    $this->getUser()->setCalendarTalento($talento->getId(),$talento->getName());
+    $this->getUser()->setRegresarATalentos(false);
+    $this->getUser()->setRegresarA($this->generateUrl("cotizaciones_show", $this->ks_wc_event->getDetallesCotizacion()->getCotizaciones()));
+    $this->redirect('@calendario?showdate='.$this->ks_wc_event->getStartTime('Y-m-d'));
+    
+  }
+  
   public function executeNew(sfWebRequest $request)
   {
     $this->form = new KsWCEventForm();
@@ -86,9 +98,10 @@ class eventosActions extends sfActions
 
   public function executeDelete(sfWebRequest $request)
   {
-    $request->checkCSRFProtection();
-
-    $this->forward404Unless($ks_wc_event = Doctrine_Core::getTable('KsWCEvent')->find(array($request->getParameter('id'))), sprintf('Object ks_wc_event does not exist (%s).', $request->getParameter('id')));
+    //$request->checkCSRFProtection();
+    //$this->forward404Unless($ks_wc_event = Doctrine_Core::getTable('KsWCEvent')->find(array($request->getParameter('id'))), sprintf('Object ks_wc_event does not exist (%s).', $request->getParameter('id')));
+      
+    $ks_wc_event = Doctrine_Core::getTable('KsWCEvent')->find(array($request->getParameter('id')));
     $ks_wc_event->delete();
     
     if($request->isXmlHttpRequest()){

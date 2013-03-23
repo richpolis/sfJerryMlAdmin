@@ -13,10 +13,6 @@
     <?php include_partial('pagos_talentos/filters', array('form' => $filters, 'configuration' => $configuration)) ?>  
   </div>
 
-  <!--div id="sf_admin_bar">
-    <?php //include_partial('pagos_talentos/filters', array('form' => $filters, 'configuration' => $configuration)) ?>
-  </div-->
-
   <div id="sf_admin_content">
     <form action="<?php echo url_for('pagos_collection', array('action' => 'batch')) ?>" method="post">
     <?php include_partial('pagos_talentos/list', array('pager' => $pager, 'sort' => $sort, 'helper' => $helper)) ?>

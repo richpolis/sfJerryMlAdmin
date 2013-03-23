@@ -344,16 +344,16 @@ class sfRichSys
         $horas=   intval($fecha->format('H'));
         
         if($minutos!=0){
-            return $fecha->format('d/M/Y g:i a');
+            return $fecha->format('d/m/Y g:i a');
         }elseif($horas!=0){
-            return $fecha->format('d/M/Y g a');
+            return $fecha->format('d/m/Y g a');
         }else{
-            return $fecha->format('d/M/Y');
+            return $fecha->format('d/m/Y');
         }
         
     }
     
-    static public function getStringFechasInicialFinal($inicial,$final){
+    static public function getStringFechasInicialFinal($inicial,$final,$conHoras=true){
         //date_timezone_set($fechaInicial, timezone_open('America/Mexico_City'));
         //date_timezone_set($fechaFinal, timezone_open('America/Mexico_City'));
         date_default_timezone_set('America/Mexico_City');
@@ -365,17 +365,76 @@ class sfRichSys
         $dias= intval($intervalo->d);
         $horas = intval($intervalo->h);
         if($dias>0){
-            return $fechaInicial->format('d/M/Y g:i a') . ' a '.
-                $fechaFinal->format('d/M/Y g:i a');
+            if($conHoras){
+                return $fechaInicial->format('d/m/Y g:i a') . ' a '.
+                    $fechaFinal->format('d/m/Y g:i a');
+            }else{
+                return $fechaInicial->format('d/m/Y') . ' a '.
+                    $fechaFinal->format('d/m/Y');
+            }
         }else{
             if($horas>0){
-                return $fechaInicial->format('d/M/Y g:i a') . ' a '.
-                    $fechaFinal->format('g:i a');
+                if($conHoras){   
+                    return $fechaInicial->format('d/m/Y g:i a') . ' a '.
+                        $fechaFinal->format('g:i a');
+                }else{
+                    return $fechaInicial->format('d/m/Y');
+                }   
             }else{
-                return $fechaInicial->format('d/M/Y') . ' Todo el dia ';
+                return $fechaInicial->format('d/m/Y') . ' Todo el dia ';
             }
         }
         
+    }
+    
+    static public function getFechasTodoElDia($inicial,$final){
+        //date_timezone_set($fechaInicial, timezone_open('America/Mexico_City'));
+        //date_timezone_set($fechaFinal, timezone_open('America/Mexico_City'));
+        date_default_timezone_set('America/Mexico_City');
+        $fechaInicial=new DateTime($inicial);
+        $fechaFinal=new DateTime($final);
+        $intervalo=$fechaInicial->diff($fechaFinal);
+        
+        $horas = intval($intervalo->h);
+        if($intervalo->h==0 && $intervalo->i==0 && $intervalo->s==0){
+            return true;
+        }else{
+            return false;
+        }
+        
+    }
+    
+   /**
+   * Convert date from jsCulturedate in mysql format
+   * 
+   */
+    public static function js2PhpTime($js_date, $format = "Us" )
+    {
+      $date = Date("U" , strtotime($js_date)) ;
+      return $date;
+    }
+
+    /**
+     * Converti une date venant du PHP en date compatible JS
+     * @param   string      $js_date    La date venant du PHP
+     * @param   string      $culture    La culture de l'utilisateur
+     * @return  string                  La date au format JS
+     * @access  public
+     * @static
+     */
+    public static function php2JsTime($php_date, $format)
+    {
+      if(strtotime($php_date)){
+        return date($format ,strtotime($php_date));
+      } else {
+        return date($format ,$php_date);
+      }
+    }
+    
+    public static function getStringColor($c, $i=0) {
+      $d = "666666888888aaaaaabbbbbbdddddda32929cc3333d96666e69999f0c2c2b1365fdd4477e67399eea2bbf5c7d67a367a994499b373b3cca2cce1c7e15229a36633cc8c66d9b399e6d1c2f029527a336699668cb399b3ccc2d1e12952a33366cc668cd999b3e6c2d1f01b887a22aa9959bfb391d5ccbde6e128754e32926265ad8999c9b1c2dfd00d78131096184cb05288cb8cb8e0ba52880066aa008cbf40b3d580d1e6b388880eaaaa11bfbf4dd5d588e6e6b8ab8b00d6ae00e0c240ebd780f3e7b3be6d00ee8800f2a640f7c480fadcb3b1440edd5511e6804deeaa88f5ccb8865a5aa87070be9494d4b8b8e5d4d47057708c6d8ca992a9c6b6c6ddd3dd4e5d6c6274878997a5b1bac3d0d6db5a69867083a894a2beb8c1d4d4dae54a716c5c8d8785aaa5aec6c3cedddb6e6e41898951a7a77dc4c4a8dcdccb8d6f47b08b59c4a883d8c5ace7dcce";
+      $resultado="#".substr($d, $c * 30 + $i * 6, $c * 30 + ($i + 1) * 6);
+      return substr($resultado,0,7);
     }
     
 }

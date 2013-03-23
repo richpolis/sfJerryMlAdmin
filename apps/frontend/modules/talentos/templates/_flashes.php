@@ -14,5 +14,9 @@ $(document).ready(function(){
     $(".error").click(function(){
        $(this).fadeOut("slow"); 
     });
+    setTimeout(function(){
+    	$('.notice, .error').click();
+    },3000);
+    
 });
 </script>

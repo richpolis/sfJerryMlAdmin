@@ -54,6 +54,7 @@ class DetallesPrecotizacionTable extends Doctrine_Table
     public function getDetallesPrecotizacionPorPrecotizacion($precotizacion){
         $q=$this->getCriteriaOrdenada();
         $rootAlias = $q->getRootAlias();
+        $q->leftJoin($rootAlias . '.Talentos t');
         $q->addWhere($rootAlias.'.precotizacion_id=?',$precotizacion);
         return $q->execute();
     }

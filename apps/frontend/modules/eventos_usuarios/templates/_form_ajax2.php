@@ -12,7 +12,7 @@
     <script src="/ksWdCalendarPlugin/js/wdCalendar/Common.js" type="text/javascript"></script>        
     <script src="/ksWdCalendarPlugin/js/wdCalendar/jquery.form.js" type="text/javascript"></script>     
     <script src="/ksWdCalendarPlugin/js/wdCalendar/jquery.validate.js" type="text/javascript"></script>     
-    <script src="/ksWdCalendarPlugsf_calendar_url_add_detailin/js/wdCalendar/datepicker_lang_US.js" type="text/javascript"></script>        
+    <script src="/ksWdCalendarPlugin/js/wdCalendar/datepicker_lang_US.js" type="text/javascript"></script>        
     <script src="/ksWdCalendarPlugin/js/wdCalendar/jquery.datepicker.js" type="text/javascript"></script>     
     <script src="/ksWdCalendarPlugin/js/wdCalendar/jquery.dropdown.js" type="text/javascript"></script>     
     <script src="/ksWdCalendarPlugin/js/wdCalendar/jquery.colorselect.js" type="text/javascript"></script>    
@@ -92,8 +92,8 @@
             $("#Closebtn").click(function() { CloseModelWindow(); });
             $("#Deletebtn").click(function() {
                  if (confirm("Are you sure to remove this event")) {  
-                    var param = [{ "name": "calendarId", id: <?php echo $form->getObject()->getId()?>}];                
-                    $.post("<?php echo url_for("eventos_usuarios/delete")?>",
+                    var param = [{ "name": "calendarId", value: 8}];                
+                    $.post(DATA_FEED_URL + "?method=remove",
                         param,
                         function(data){
                               if (data.IsSuccess) {
@@ -165,9 +165,10 @@
         height:16px;     
         border:none;        
         cursor:pointer;        
-        background:url("/images/calendar.gif") no-repeat center 2px;        
+        background:url("sample-css/cal.gif") no-repeat center 2px;        
         margin-left:-22px;    
     }      
+
     </style>
   </head>
   <body>  
@@ -186,9 +187,9 @@
       <div style="clear: both">         
       </div>        
       <div class="infocontainer">            
-        <form action="<?php echo url_for('eventos_usuarios/'.($form->getObject()->isNew() ? 'create' : 'update').(!$form->getObject()->isNew() ? '?id='.$form->getObject()->getId() : '')) ?>" class="fform" id="fmEdit" method="post">                 
+        <form action="php/datafeed.php?method=adddetails" class="fform" id="fmEdit" method="post">                 
           <label>                    
-            <span>                        *Asunto:              
+            <span>                        *Subject:              
             </span>                    
             <div id="calendarcolor">
             </div>
@@ -226,3 +227,4 @@
     </div>
   </body>
 </html>
+

@@ -16,12 +16,27 @@
          <!--li>
              <a href="<?php echo url_for('@seleccionar_cotizaciones')?><?php echo '?modo=pagos_talentos&goto=/index.php/pagos_talentos/'.$pagos_talentos->getId().'&talento='.$pagos_talentos->getTalentoId()."&pago_talento=".$pagos_talentos->getId();?>" id="seleccionar_cotizacion">Agregar cotizaciones</a>
          </li-->
+         <?php 
+         $aprobarPagos=false;
+         $liberarPagos=false;
+         foreach($pagos_talentos->getDetallesPagosTalentos() as $dpt):
+             if($dpt->getStatus()==PagosTalentosTable::$INCOMPLETO){
+                 $aprobarPagos=true;
+             }elseif($dpt->getStatus()==PagosTalentosTable::$APROBADO){
+                 $liberarPagos=true;
+             }
+         endforeach;
+        ?>
+        <?php if($aprobarPagos):?>
          <li>
              <a href="<?php echo url_for('@aprobar_pagos_talentos?generar='.$pagos_talentos->getId())?>" id="aprobar_pago">Aprobar Pagos</a>
          </li>
+        <?php endif;?>
+        <?php if($liberarPagos):?>
          <li>
              <a href="<?php echo url_for('@liberar_pagos_talentos?generar='.$pagos_talentos->getId())?>" id="aprobar_pago">Liberar Pagos</a>
          </li>
+        <?php endif;?>
     </ul>
   </div>
 

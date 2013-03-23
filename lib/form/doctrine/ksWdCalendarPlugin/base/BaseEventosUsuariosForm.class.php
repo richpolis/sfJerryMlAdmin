@@ -17,6 +17,8 @@ abstract class BaseEventosUsuariosForm extends BaseFormDoctrine
     $this->setWidgets(array(
       'id'               => new sfWidgetFormInputHidden(),
       'user_id'          => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('User'), 'add_empty' => true)),
+      'cotizacion_id'    => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Cotizaciones'), 'add_empty' => true)),
+      'nivel'            => new sfWidgetFormInputText(),
       'subject'          => new sfWidgetFormInputText(),
       'description'      => new sfWidgetFormTextarea(),
       'start_time'       => new sfWidgetFormDateTime(),
@@ -30,6 +32,8 @@ abstract class BaseEventosUsuariosForm extends BaseFormDoctrine
     $this->setValidators(array(
       'id'               => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
       'user_id'          => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('User'), 'required' => false)),
+      'cotizacion_id'    => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Cotizaciones'), 'required' => false)),
+      'nivel'            => new sfValidatorInteger(array('required' => false)),
       'subject'          => new sfValidatorPass(array('required' => false)),
       'description'      => new sfValidatorString(array('max_length' => 4000, 'required' => false)),
       'start_time'       => new sfValidatorDateTime(array('required' => false)),

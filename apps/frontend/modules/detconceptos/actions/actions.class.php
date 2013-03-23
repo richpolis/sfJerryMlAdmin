@@ -51,8 +51,10 @@ class detconceptosActions extends sfActions
   public function executeNew(sfWebRequest $request)
   {
     if($request->hasParameter('detalle_cotizacion')){
+        $detalle=  Doctrine_Core::getTable('DetallesCotizacion')->find($request->getParameter('detalle_cotizacion'));
         $dcc = new DetallesCotizacionConceptos();
-        $dcc->setDetallesCotizacionId($request->getParameter('detalle_cotizacion'));
+        $dcc->setDetallesCotizacionId($detalle->getId());
+        //$dcc->setCotizacionId($detalle->getCotizacionId());
         $this->form = new DetallesCotizacionConceptosForm($dcc);
     }else{
         $this->form = new DetallesCotizacionConceptosForm();
@@ -73,11 +75,12 @@ class detconceptosActions extends sfActions
     $this->forward404Unless($request->isMethod(sfRequest::POST));
 
     $this->form = new DetallesCotizacionConceptosForm();
-
+    $parametros=$request->getParameter($this->form->getName());
+    
     $objeto=$this->processForm($request, $this->form);
     if($request->isXmlHttpRequest()){
         if(is_null($objeto)){
-         return $this->renderPartial('detconceptos/form_ajax',array('form'=>$this->form));
+         return $this->renderPartial('detconceptos/form_ajax',array('form'=>$this->form,"detalles_cotizacion_id"=>$parametros['detalles_cotizacion_id']));
      }else{
          return $this->renderText("ok");
      }   
@@ -121,18 +124,20 @@ class detconceptosActions extends sfActions
   public function executeDelete(sfWebRequest $request)
   {
     //$request->checkCSRFProtection();
-
     //$this->forward404Unless($detalles_cotizacion_conceptos = Doctrine_Core::getTable('DetallesCotizacionConceptos')->find(array($request->getParameter('id'))), sprintf('Object detalles_cotizacion_conceptos does not exist (%s).', $request->getParameter('id')));
     
     $dcc = Doctrine_Core::getTable('DetallesCotizacionConceptos')->find($request->getParameter('id'));  
     
     $dc=$dcc->getDetallesCotizacion();
-    
+    $conn = Doctrine_Manager::getInstance()->getCurrentConnection();
+    $conn->beginTransaction();
     $resp=$dcc->delete();
+    $conn->commit();
 
     if($request->isXmlHttpRequest()){
       if($resp){
           $dc->calcularConceptos();
+          $dc->getCotizaciones()->calcular();
           return $this->renderText('ok');
       }else{
           return $this->renderText('No fue posible eliminar el registro');
@@ -148,8 +153,13 @@ class detconceptosActions extends sfActions
     $form->bind($request->getParameter($form->getName()), $request->getFiles($form->getName()));
     if ($form->isValid())
     {
-      $detalles_cotizacion_conceptos = $form->save();
-      return $detalles_cotizacion_conceptos;
+      $conn = Doctrine_Manager::getInstance()->getCurrentConnection();
+      $conn->beginTransaction();  
+      $dcc = $form->save();
+      $dcc->getDetallesCotizacion()->calcularConceptos();
+      $dcc->getDetallesCotizacion()->getCotizaciones()->calcular();
+      $conn->commit();
+      return $dcc;
     }else{
       return null;
     }

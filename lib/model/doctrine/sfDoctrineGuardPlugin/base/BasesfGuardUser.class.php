@@ -9,6 +9,7 @@
  * @property string $last_name
  * @property string $email_address
  * @property varchar $color
+ * @property varchar $firma
  * @property string $username
  * @property string $algorithm
  * @property string $salt
@@ -27,12 +28,14 @@
  * @property Doctrine_Collection $Cotizaciones
  * @property Doctrine_Collection $DetallesPagos
  * @property Doctrine_Collection $Contratos
+ * @property Doctrine_Collection $Facturas
  * @property Doctrine_Collection $DetallesPagosTalentos
  * 
  * @method string                getFirstName()             Returns the current record's "first_name" value
  * @method string                getLastName()              Returns the current record's "last_name" value
  * @method string                getEmailAddress()          Returns the current record's "email_address" value
  * @method varchar               getColor()                 Returns the current record's "color" value
+ * @method varchar               getFirma()                 Returns the current record's "firma" value
  * @method string                getUsername()              Returns the current record's "username" value
  * @method string                getAlgorithm()             Returns the current record's "algorithm" value
  * @method string                getSalt()                  Returns the current record's "salt" value
@@ -51,11 +54,13 @@
  * @method Doctrine_Collection   getCotizaciones()          Returns the current record's "Cotizaciones" collection
  * @method Doctrine_Collection   getDetallesPagos()         Returns the current record's "DetallesPagos" collection
  * @method Doctrine_Collection   getContratos()             Returns the current record's "Contratos" collection
+ * @method Doctrine_Collection   getFacturas()              Returns the current record's "Facturas" collection
  * @method Doctrine_Collection   getDetallesPagosTalentos() Returns the current record's "DetallesPagosTalentos" collection
  * @method sfGuardUser           setFirstName()             Sets the current record's "first_name" value
  * @method sfGuardUser           setLastName()              Sets the current record's "last_name" value
  * @method sfGuardUser           setEmailAddress()          Sets the current record's "email_address" value
  * @method sfGuardUser           setColor()                 Sets the current record's "color" value
+ * @method sfGuardUser           setFirma()                 Sets the current record's "firma" value
  * @method sfGuardUser           setUsername()              Sets the current record's "username" value
  * @method sfGuardUser           setAlgorithm()             Sets the current record's "algorithm" value
  * @method sfGuardUser           setSalt()                  Sets the current record's "salt" value
@@ -74,6 +79,7 @@
  * @method sfGuardUser           setCotizaciones()          Sets the current record's "Cotizaciones" collection
  * @method sfGuardUser           setDetallesPagos()         Sets the current record's "DetallesPagos" collection
  * @method sfGuardUser           setContratos()             Sets the current record's "Contratos" collection
+ * @method sfGuardUser           setFacturas()              Sets the current record's "Facturas" collection
  * @method sfGuardUser           setDetallesPagosTalentos() Sets the current record's "DetallesPagosTalentos" collection
  * 
  * @package    sfJerryMlAdmin
@@ -105,6 +111,11 @@ abstract class BasesfGuardUser extends sfDoctrineRecord
              'notnull' => false,
              'default' => '',
              'length' => 30,
+             ));
+        $this->hasColumn('firma', 'varchar', 255, array(
+             'type' => 'varchar',
+             'notnull' => false,
+             'length' => 255,
              ));
         $this->hasColumn('username', 'string', 128, array(
              'type' => 'string',
@@ -193,6 +204,10 @@ abstract class BasesfGuardUser extends sfDoctrineRecord
              'foreign' => 'user_id'));
 
         $this->hasMany('Contratos', array(
+             'local' => 'id',
+             'foreign' => 'user_id'));
+
+        $this->hasMany('Facturas', array(
              'local' => 'id',
              'foreign' => 'user_id'));
 

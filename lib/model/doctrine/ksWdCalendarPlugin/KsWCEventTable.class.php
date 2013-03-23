@@ -40,6 +40,23 @@ class KsWCEventTable extends PluginKsWCEventTable
     	$q->leftJoin($rootAlias . '.Talentos t');
     	return $q;
     }
+
+    public function getCriteriaEventosPorDetalleCotizacion($id,$nivel){
+        $q=$this->getCriteriaOrdenadaPorActualizacion();
+        $rootAlias = $q->getRootAlias();
+        $q->addWhere($rootAlias . '.detalles_cotizacion_id=?',$id)
+          ->addWhere($rootAlias . '.nivel=?',$nivel);
+        return $q;
+    }
+
+    public function getCountEventosPorDetalleCotizacion($id,$nivel=0){
+        if($nivel==0){
+            $nivel=CotizacionesTable::$NIVEL_DETALLE;
+        }
+        $q=$this->getCriteriaEventosPorDetalleCotizacion($id,$nivel);
+        return $q->count();
+    }
+
     
     public function getEventosPorArreglo($arreglo){
     	$q=$this->getCriteriaOrdenada();
@@ -67,10 +84,19 @@ class KsWCEventTable extends PluginKsWCEventTable
     
     public function getEventosPorFecha($fecha_inicial,$fecha_final){
     	$q=$this->getCriteriaOrdenada();
+        $rootAlias = $q->getRootAlias();
     	$q->addWhere('e.start_time BETWEEN ? to ?',array($fecha_inicial,$fecha_final));
-    	$rootAlias = $q->getRootAlias();
     	$q->leftJoin($rootAlias . '.Talentos t');
     	return $q->execute();
+    }
+    
+    public function getEventosPorFechaYTalento($fecha_inicial,$fecha_final,$talentoId){
+    	$q=$this->getCriteriaOrdenada();
+    	$rootAlias = $q->getRootAlias();
+    	$q->addWhere($rootAlias.'.start_time >=?',$fecha_inicial)
+          ->addWhere($rootAlias.'.end_time<=?',$fecha_final)
+          ->addwhere($rootAlias.'.talento_id=?',$talentoId);    
+        return $q->execute();
     }
     
     

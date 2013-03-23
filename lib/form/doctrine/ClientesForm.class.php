@@ -24,7 +24,7 @@ class ClientesForm extends BaseClientesForm
           
           
           $this->widgetSchema['razon_social']=new sfWidgetFormInputText(array(),array('class'=>'fields_normal required'));
-          $this->validatorSchema['razon_social']=new sfValidatorString(array('required'=>true,'min_length'=>3),array('invalid'=>'Se debe ingresar la razon social del cliente'));
+          $this->validatorSchema['razon_social']=new sfValidatorString(array('required'=>true,'min_length'=>3),array('invalid'=>'Se debe ingresar la Nombre Empresa del cliente'));
           $this->widgetSchema['rfc']=new sfWidgetFormInputText(array(),array('class'=>'fields_normal'));
           $this->widgetSchema['calle']=new sfWidgetFormInputText(array(),array('class'=>'fields_normal'));
           $this->widgetSchema['numero_exterior']=new sfWidgetFormInputText(array(),array('class'=>'fields_normal'));
@@ -57,7 +57,7 @@ class ClientesForm extends BaseClientesForm
           $this->widgetSchema['slug'] = new sfWidgetFormInputHidden();
           $this->widgetSchema['is_active'] = new sfWidgetFormInputHidden();
           $this->widgetSchema['razon_social']=new sfWidgetFormInputText(array(),array('style'=>'background-color: yellow;'));
-          $this->validatorSchema['razon_social']=new sfValidatorString(array('required'=>true,'min_length'=>3),array('invalid'=>'Se debe ingresar la razon social del cliente'));  
+          $this->validatorSchema['razon_social']=new sfValidatorString(array('required'=>true,'min_length'=>3),array('invalid'=>'Se debe ingresar la Nombre Empresa del cliente'));  
           
           
   }

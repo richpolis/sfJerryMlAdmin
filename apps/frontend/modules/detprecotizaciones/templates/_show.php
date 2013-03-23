@@ -26,18 +26,21 @@
                     <?php
                     $precio = $detalles_precotizacion->getPrecio();
                     $margenJerry = $detalles_precotizacion->getMargenJerryMl() / 100;
-                    $gananciaJerryml = $precio * $margenJerry;
-                    $gananciaTalento = $precio - $gananciaJerryml;
+                    $gananciaJerryMl = $precio * $margenJerry;
+                    $gananciaTalento = $precio - $gananciaJerryMl;
                     ?>
                     <table width="100%">
                         <tr>
-                            <td>Importe <?php echo format_currency($precio, 'USD') ?></td>
+                            <td>Importe</td>
+                            <td style=" text-align: right;">  <?php echo format_currency($precio, 'USD') ?></td>
                         </tr>
                         <tr>
-                            <td>Talento <?php echo format_currency($gananciaTalento, 'USD') ?></td>
+                            <td>Talento</td>
+                            <td style=" text-align: right;">  <?php echo format_currency($gananciaTalento, 'USD') ?></td>
                         </tr>
                         <tr>
-                            <td>Jerry ML <?php echo format_currency($gananciaJerryml, 'USD') ?></td>
+                            <td>Jerry ML</td>
+                            <td style=" text-align: right;">  <?php echo format_currency($gananciaJerryMl, 'USD') ?></td>
                         </tr>
                     </table>    
                 </td>

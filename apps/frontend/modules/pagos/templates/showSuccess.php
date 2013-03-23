@@ -17,12 +17,28 @@
          <!--li>
              <a href="<?php echo url_for('@seleccionar_cotizaciones')?><?php echo '?modo=pagos&goto=/index.php/pagos/'.$pagos->getId().'&cliente='.$pagos->getClienteId()."&pago=".$pagos->getId();?>" id="seleccionar_cotizacion">Agregar cotizaciones</a>
          </li-->
+         
+         <?php 
+         $aprobarPagos=false;
+         $liberarPagos=false;
+         foreach($pagos->getDetallesPagos() as $dp):
+             if($dp->getStatus()==PagosTable::$INCOMPLETO){
+                 $aprobarPagos=true;
+             }elseif($dp->getStatus()==PagosTable::$APROBADO){
+                 $liberarPagos=true;
+             }
+         endforeach;
+        ?>
+        <?php if($aprobarPagos):?>
          <li>
              <a href="<?php echo url_for('@aprobar_pagos?generar='.$pagos->getId())?>" id="aprobar_pagos">Aprobar Pagos</a>
          </li>
+        <?php endif;?>
+        <?php if($liberarPagos):?>
          <li>
              <a href="<?php echo url_for('@liberar_pagos?generar='.$pagos->getId())?>" id="liberar_pagos">Liberar Pagos</a>
-         </li>
+        </li>
+        <?php endif;?>
     </ul>
   </div>
 </div>

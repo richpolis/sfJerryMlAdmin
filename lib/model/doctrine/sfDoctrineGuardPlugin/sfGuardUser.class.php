@@ -18,4 +18,39 @@ class sfGuardUser extends PluginsfGuardUser
     public function getNombreCompleto(){
         return sprintf("%s %s", $this->getFirstName(),$this->getLastName());
     }
+    
+    public function getEmail(){
+        return $this->getEmailAddress();
+    }
+    
+    public function addEventoDesdeCotizacion(Cotizaciones $cotizacion){
+        /*$dateInicial=new DateTime($cotizacion->getFechaDesde());
+        $dateFinal=new DateTime($cotizacion->getFechaHasta());
+        
+        try {
+            $eventos = EventosUsuariosTable::getInstance()->getEventosPorFechaYUsuario(
+                    $dateInicial->format("Y-m-d"), $dateFinal->format("Y-m-d"), $cotizacion->getManagerId()
+            );
+        } catch (PDOException $e) {
+            $eventos = array();
+        }*/
+
+        foreach ($cotizacion->getEventosUsuarios() as $evento) {
+            if ($evento->getNivel() == CotizacionesTable::$NIVEL_COTIZACION) {
+                $existeEvento = true;
+                $evento1 = $evento;
+                break;
+            } elseif ($evento->getStartTime() == $this->getFechaDesde()) {
+                $existeEvento = true;
+                $evento1 = $evento;
+                break;
+            }
+        }
+        if (!$existeEvento) {
+            $evento1 = new EventosUsuarios();
+            $evento1->crearEventoDesdeCotizacion($cotizacion);
+        } else {
+            $evento1->actualizarEventoDesdeCotizacion($cotizacion);
+        }
+    }
 }

@@ -1,3 +1,30 @@
+empresas:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                Empresas
+    module:               empresas
+    prefix_path:          /empresas
+    column:               id
+    with_wildcard_routes: true
+
+facturas:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                Facturas
+    module:               facturas
+    prefix_path:          /facturas
+    column:               id
+    with_wildcard_routes: true
+
+comisionistas:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                Comisionistas
+    module:               comisionistas
+    prefix_path:          /comisionistas
+    column:               id
+    with_wildcard_routes: true
+
 conceptos:
   class: sfDoctrineRouteCollection
   options:
@@ -65,7 +92,11 @@ calendario:
   url: /ksWdCalendar
   param: {module: ksWdCalendar, action: index }
 
-calendario_usuarios:
+mostrar_evento_talento:
+  url:      /mostrar/evento/talento
+  param:    { module: eventos, action: showEvento }
+
+calendario_usuarios2:
   url: /calendario
   param: {module: calendario, action: index }
   
@@ -116,7 +147,7 @@ clientes:
   options:
     model:                Clientes
     module:               clientes
-    prefix_path:          /empresas
+    prefix_path:          /clientes
     column:               slug
     with_wildcard_routes: true
 
@@ -169,6 +200,13 @@ finalizar_seleccionar_eventos:
   url:  /finalizar/seleccion/eventos
   param: {module: eventos, action: finalizarSeleccion}
 
+calendario_talentos:
+  url:  /ksWdCalendar/todos
+  param: {module: ksWdCalendar, action: calendarioTodos }
+  
+calendario_usuarios:  
+  url:  /usuarios/calendario
+  param: {module: eventos_usuarios, action: calendarioTodos }
 
 #precotizacion
 crear_precotizacion:
@@ -233,6 +271,14 @@ aprobar_cotizacion:
   url:  /aprobar/cotizacion
   param: { module: cotizaciones, action: aprobarCotizacion }
 
+se_cayo_cotizacion:
+  url:  /se/cayo/cotizacion
+  param: { module: cotizaciones, action: seCayoCotizacion }
+
+reactivar_cotizacion:
+  url:  /reactivar/cotizacion
+  param: { module: cotizaciones, action: reactivarCotizacion }
+
 cancelar_cotizacion:
   url:  /cancelar/cotizacion
   param: { module: cotizaciones, action: cancelarCotizacion}
@@ -276,11 +322,14 @@ aprobar_pagos:
 liberar_pago:
   url:  /pago/liberar
   param: {module: pagos, action: liberarPago }  
-
   
 liberar_pagos:
   url:  /pagos/liberar
   param: {module: pagos, action: liberarPagos }  
+  
+cancelar_aprobar_pago:
+  url:  /cancelar/aprobar/pago
+  param: {module: pagos, action: cancelarAprobarPago }    
 
 #pagos clientes
 crear_pago_talento:
@@ -290,6 +339,10 @@ crear_pago_talento:
 aprobar_pago_talento:
   url:  /pago/talento/aprobar
   param: {module: pagos_talentos, action: aprobarPago}
+
+cancelar_aprobar_pago_talento:
+  url:  /cancelar/aprobar/pago/talento
+  param: {module: pagos_talentos, action: cancelarAprobarPago}
   
 aprobar_pagos_talentos:
   url:  /pagos/talentos/aprobar

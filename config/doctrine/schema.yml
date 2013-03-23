@@ -1,3 +1,10 @@
+Empresas:
+  actAs: 
+    Timestampable: true
+  columns:
+    empresa:    { type: string(255), notnull: true }
+    inactivar:  { type: date, notnull: false }
+
 Configuracion:
   actAs: 
     Timestampable: true
@@ -5,9 +12,9 @@ Configuracion:
       fields: [seccion]
       unique: true
   columns:
-    seccion: { type: string(255), notnull: true }
-    contenido: { type: text, notnull: true }
-    imagen: { type: string(255), notnull: true }
+    seccion:    { type: string(255), notnull: true }
+    contenido:  { type: text, notnull: true }
+    imagen:     { type: string(255), notnull: true }
 
 Clientes:
   actAs: 
@@ -89,21 +96,6 @@ ClientesContactos:
       class: Contactos
       local: contacto_id
 
-#Representantes:
-#  actAs: 
-#    Timestampable: true
-#    Sluggable:
-#      fields: [name,apellidos]
-#      unique: true
-#      canUpdate: true
-#  columns:
-#    name: { type: string(100), notnull: true }
-#    apellidos: { type: string(150), notnull: true }
-#    direccion: { type: text, notnull: false }
-#    telefono: { type: string(150), notnull: false }
-#    celular: { type: string(150), notnull: false }
-#    email: { type: string(150), notnull: false }
-#    is_active: { type: boolean, notnull: false, default: true }
 
 Talentos:
   actAs: 
@@ -132,15 +124,11 @@ Talentos:
     margen_jerry_ml:    { type: float, notnull: false, default: 20}
     saldo:              { type: double, notnull: false, default: 0 }
     is_active:          { type: boolean, notnull: false, default: true }
-#  relations:
-#    Representantes: { local: representante_id, foreign: id ,foreignAlias: Talentos }
-
 
     
 Precotizaciones:
   actAs: 
     Timestampable: true
-    Versionable: ~
     Sluggable:
       fields: [evento]
       unique: true
@@ -149,6 +137,7 @@ Precotizaciones:
     cliente_id:         { type: integer }
     contacto_id:        { type: integer }
     user_id:            { type: integer }
+    empresa_id:         { type: integer }
     evento:             { type: string(255), notnull: true }
     descripcion:        { type: text, notnull: true }
     actividad_general:  { type: text, notnull: true }
@@ -162,6 +151,7 @@ Precotizaciones:
     Clientes:           { local: cliente_id, foreign: id, foreignAlias: Precotizaciones }
     Contactos:          { local: contacto_id, foreign: id, foreignAlias: Precotizaciones }
     User:               { local: user_id, foreign: id, class: sfGuardUser }
+    Empresas:           { local: empresa_id, foreign: id, foreignAlias: Precotizaciones }
  
 DetallesPrecotizacion: 
   actAs:
@@ -182,9 +172,8 @@ DetallesPrecotizacion:
 Cotizaciones:
   actAs: 
     Timestampable: true
-    Versionable: ~
     Sluggable:
-      fields: [evento]
+      fields: [descripcion]
       unique: true
       canUpdate: true
   columns:
@@ -192,75 +181,62 @@ Cotizaciones:
     contacto_id:        { type: integer }
     user_id:            { type: integer }
     manager_id:         { type: integer }
-    evento:             { type: string(255), notnull: true, default: 'Titulo de cotizacion' }
-    descripcion:        { type: text, notnull: true }
+    empresa_id:         { type: integer }
+    descripcion:        { type: string(255), notnull: true, default: 'Descripicon evento' }
+    actividad:          { type: text, notnull: true }
+    plaza:              { type: string(255), notnull: false}
+    fecha_desde:        { type: datetime, notnull: true }
+    fecha_hasta:        { type: datetime, notnull: true }
+    mostrar_horas:      { type: boolean, notnull: false, default: false }
+    vigencia:           { type: string(255), notnull: false, default: '1 año' }
+    medios:             { type: string(255), notnull: false }
+    #consideraciones:    { type: text, notnull: true }
+    requerimientos:     { type: text, notnull: true }
     pdf:                { type: string(255), default: 'sin_archivo.pdf'}
     status:             { type: integer(1), notnull: false }
-    comisionista:       { type: string(255), notnull: false, default: '' }
-    subtotal:           { type: double,notnull: false, default: 0 }
-    iva:                { type: double,notnull: false, default: 0 }
+    # 1.- cotizacion standart df, 2 .- cotizacion standart provicia, 3.- campaña
+    tipo_cotizacion:    { type: integer(1), notnull: false, default: 1 }
+    add_conceptos:      { type: boolean, notnull: false, default: true }
+    add_comisionistas:  { type: boolean, notnull: false, default: true }
+    add_eventos:        { type: boolean, notnull: false, default: true }
+    subtotal:           { type: double, notnull: false, default: 0 }
+    iva:                { type: double, notnull: false, default: 0 }
     is_pay:             { type: boolean, notnull: false, default: false }
     is_active:          { type: boolean, notnull: false, default: true }
+    monto_pagado_cliente: { type: double,notnull: false, default: 0 }
+    monto_pagado_talento: { type: double,notnull: false, default: 0 }
   relations:
     Clientes:           { local: cliente_id, foreign: id, foreignAlias: Cotizaciones }
     Contactos:          { local: contacto_id, foreign: id, foreignAlias: Cotizaciones }
     User:               { local: user_id, foreign: id, class: sfGuardUser  }
     Manager:            { local: manager_id, foreign: id, class: sfGuardUser  }
-    Eventos:
-      class: KsWCEvent
-      refClass: CotizacionesEventos
-      local: evento_id
-      foreign: cotizacion_id
-      foreignAlias: Cotizaciones
-
+    Empresas:           { local: empresa_id, foreign: id, foreignAlias: Cotizaciones }
+    
  
 DetallesCotizacion: 
   actAs:
     Timestampable: true
   columns:
-    cotizacion_id:      { type: integer }
-    talento_id:         { type: integer }
-    actividad:          { type: text, notnull: true }
-    ganancia_jerryml:   { type: double, default: 0 }
-    ganancia_comisionista: { type: double, default: 0 }
-    ganancia_talento:   { type: double, default: 0 }
-    margen_jerry_ml:    { type: float, default: 20 }
-    margen_comisionista: { type: float, default: 0 }
-    precio:             { type: double, default: 0 }
-    subtotal:           { type: double, default: 0 }
-    iva:                { type: double, default: 0 }
-    is_pay_talento:     { type: boolean, notnull: false, default: false }
-    is_active:          { type: boolean, notnull: false, default: true }
-    position:           { type: integer(4)}
+    cotizacion_id:          { type: integer }
+    talento_id:             { type: integer }
+    actividad:              { type: text, notnull: true }
+    ganancia_jerry_ml:      { type: double, default: 0 }
+    ganancia_talento:       { type: double, default: 0 }
+    ganancia_comisionistas: { type: double, default: 0 }
+    margen_jerry_ml:        { type: float, default: 20 }
+    margen_comisionistas:   { type: float, default: 0 }
+    precio:                 { type: double, default: 0 }
+    iva:                    { type: double, default: 0 }
+    is_pay_talento:         { type: boolean, notnull: false, default: false }
+    is_active:              { type: boolean, notnull: false, default: true }
+    monto_pagado_talento:   { type: double,notnull: false, default: 0 }
+    position:               { type: integer(4)}
   relations:
-    Cotizaciones:       { local: cotizacion_id, foreign: id, foreignAlias: DetallesCotizacion}
-    Talentos:           { local: talento_id, foreign: id, foreignAlias: DetallesCotizacion}
-     
-      
-    
+    Cotizaciones:           { local: cotizacion_id, foreign: id, foreignAlias: DetallesCotizacion }
+    Talentos:               { local: talento_id, foreign: id, foreignAlias: DetallesCotizacion }
+
+
         
-CotizacionesEventos:
-  options:
-    symfony:
-      form:   false
-      filter: false
-  actAs: [Timestampable]
-  columns:
-    cotizacion_id:
-      type: integer
-      primary: true
-    evento_id:
-      type: integer
-      primary: true
-  relations:
-    Cotizaciones:
-      class: Cotizaciones
-      local: cotizacion_id
-    Eventos:
-      class: KsWCEvent
-      local: evento_id
-
-
 Pagos: 
   actAs:
     Timestampable: true
@@ -274,7 +250,6 @@ Pagos:
   relations:
     Clientes:         { local: cliente_id, foreign: id, foreignAlias: Pagos }
    
-
 DetallesPagos: 
   actAs:
     Timestampable: true
@@ -304,6 +279,18 @@ Contratos:
   relations:
     Cotizaciones:     { local: cotizacion_id, foreign: id, foreignAlias: Contratos}
     User:             { local: user_id, foreign: id, class: sfGuardUser  }
+    
+Facturas: 
+  actAs:
+    Timestampable: true
+  columns:
+    cotizacion_id:    { type: integer }
+    user_id:          { type: integer }
+    file:             { type: string(255), notnull: false, default: 'no_file.pdf'}
+    is_active:        { type: boolean, notnull: false, default: true }
+  relations:
+    Cotizaciones:     { local: cotizacion_id, foreign: id, foreignAlias: Facturas}
+    User:             { local: user_id, foreign: id, class: sfGuardUser  }    
 
 PagosTalentos: 
   actAs:
@@ -324,20 +311,20 @@ DetallesPagosTalentos:
   actAs:
     Timestampable: true
   columns:
-    fecha_pago:       { type: date, notnull: false }
-    user_id:          { type: integer }
-    pagos_talentos_id: { type: integer }
-    detalles_cotizacion_id:    { type: integer }
-    metodo_recibo:    { type: integer(1), notnull: false, default: 0  }
-    importe:          { type: double, notnull: false, default: 0  }
-    iva:              { type: double, notnull: false, default: 0 }
-    isr:              { type: double, notnull: false, default: 0 }
-    descuento:        { type: double, notnull: false, default: 0 }
-    status:           { type: integer(1), notnull: false, default: 0 } 
+    fecha_pago:             { type: date, notnull: false }
+    user_id:                { type: integer }
+    pagos_talentos_id:      { type: integer }
+    detalles_cotizacion_id: { type: integer }
+    metodo_recibo:          { type: integer(1), notnull: false, default: 0  }
+    importe:                { type: double, notnull: false, default: 0  }
+    iva:                    { type: double, notnull: false, default: 0 }
+    isr:                    { type: double, notnull: false, default: 0 }
+    descuento:              { type: double, notnull: false, default: 0 }
+    status:                 { type: integer(1), notnull: false, default: 0 } 
   relations:
-    PagosTalentos:     { local: pagos_talentos_id, foreign: id, foreignAlias: DetallesPagosTalentos }
-    DetallesCotizacion: { local: detalles_cotizacion_id, foreign: id, foreignAlias: DetallesPagosTalentos }
-    User:              { local: user_id, foreign: id, class: sfGuardUser  }
+    PagosTalentos:          { local: pagos_talentos_id, foreign: id, foreignAlias: DetallesPagosTalentos }
+    DetallesCotizacion:     { local: detalles_cotizacion_id, foreign: id, foreignAlias: DetallesPagosTalentos }
+    User:                   { local: user_id, foreign: id, class: sfGuardUser  }
 
 Conceptos: 
   actAs:
@@ -347,16 +334,83 @@ Conceptos:
       unique: true
       canUpdate: true
   columns:
-    concepto:           { type: string(255), notnull: true }
+    concepto:       { type: string(255), notnull: true }
+    #requerimiento:  { type: string(255), notnull: true }
 
-DetallesCotizacionConceptos: 
+CotizacionesConceptos:
+  options:
+    symfony:
+      form:   true
+      filter: false 
   actAs:
     Timestampable: true
   columns:
-    detalles_cotizacion_id:      { type: integer }
-    concepto_id:         { type: integer }
-    precio:             { type: double, default: 0 }
+    cotizacion_id:          { type: integer }
+    concepto_id:            { type: integer }
+    precio:                 { type: double, notnull: false, default: 0 }
   relations:
-    DetallesCotizacion:  { local: detalles_cotizacion_id, foreign: id, foreignAlias: DetallesCotizacionConceptos}
-    Conceptos:           { local: concepto_id, foreign: id, foreignAlias: DetallesCotizacionConceptos}
+    Cotizaciones:           { local: cotizacion_id, foreign: id, foreignAlias: CotizacionesConceptos }
+    Conceptos:              { local: concepto_id, foreign: id, foreignAlias: CotizacionesConceptos }
+
+DetallesCotizacionConceptos:
+  options:
+    symfony:
+      form:   true
+      filter: false 
+  actAs:
+    Timestampable: true
+  columns:
+    detalles_cotizacion_id: { type: integer }
+    concepto_id:            { type: integer }
+    precio:                 { type: double, notnull: false, default: 0 }
+    #requerimiento:          { type: string(255), notnull: false }
+    #1.- detalle, 0.- encabezado
+    nivel:                  { type: integer(1), notnull: false, default: 1 } 
+  relations:
+    DetallesCotizacion:     { local: detalles_cotizacion_id, foreign: id, foreignAlias: DetallesCotizacionConceptos}
+    Conceptos:              { local: concepto_id, foreign: id, foreignAlias: DetallesCotizacionConceptos}
   
+Comisionistas: 
+  actAs:
+    Timestampable: true
+    Sluggable:
+      fields: [nombre]
+      unique: true
+      canUpdate: true
+  columns:
+    nombre: { type: string(255), notnull: true }
+    margen: { type: float, notnull: false, default: 0 }
+
+CotizacionesComisionistas:
+  options:
+    symfony:
+      form:   true
+      filter: false 
+  actAs:
+    Timestampable: true
+  columns:
+    cotizacion_id:          { type: integer }
+    comisionista_id:        { type: integer }
+    margen:                 { type: float, notnull: false, default: 0 }
+  relations:
+    Cotizaciones:           { local: cotizacion_id, foreign: id, foreignAlias: CotizacionesComisionistas}
+    Comisionistas:          { local: comisionista_id, foreign: id, foreignAlias: CotizacionesComisionistas}       
+    
+    
+DetallesCotizacionComisionistas:
+  options:
+    symfony:
+      form:   true
+      filter: false 
+  actAs:
+    Timestampable: true
+  columns:
+    detalles_cotizacion_id: { type: integer }
+    comisionista_id:        { type: integer }
+    margen:                 { type: float, notnull: false, default: 0 }
+    ganancia:               { type: double, notnull: false, default: 0 }
+    #1.- detalle, 0.- encabezado
+    nivel:                  { type: integer(1), notnull: false, default: 1 } 
+  relations:
+    DetallesCotizacion:     { local: detalles_cotizacion_id, foreign: id, foreignAlias: DetallesCotizacionComisionistas}
+    Comisionistas:          { local: comisionista_id, foreign: id, foreignAlias: DetallesCotizacionComisionistas}    

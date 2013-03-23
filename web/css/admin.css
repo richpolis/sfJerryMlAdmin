@@ -37,111 +37,125 @@ input[type="text"].fields_normal {
 input[type="text"].readonly {
   border: none;   
 }
-#tabs-dashboard{
-    width:740px; 
-    float: left;
-    min-height: 400px;
-}
 
 #eventos-dashboard{
-    width: 241px;
-    height: 1500px;
-    float: left;
-    background-image: url(../images/dashboard/recordatoriosheader.png);
-    background-repeat: no-repeat;
+    width: 1200px;
+    height: 64px;
+    /*background-image: url(../images/dashboard/recordatoriosheader.png);
+    background-repeat: no-repeat;*/
+    background-color: white;
     background-color: #f5f5f5;
-    position: relative;
 }
 
 .tab-dashboard{
     float: left;
-    width: 350px;
-    height: 491px;
-    background-image: url(../images/dashboard/contenedor_notificaciones.png);
-    margin: 5px 10px 5px 10px;
+    width: 199px;
+    height: 479px;
+    /*background-image: url(../images/dashboard/contenedor_notificaciones.png);*/
+    background: white;
+    margin: 0;
+    border-left: solid 1px black;
 
 }
 #sf_admin_content.dashboard{
-    width: 1000px;
+    width: 100%;
     margin: 0 auto;
     padding: 0;
 }
 .tab-dashboard-titulo{
-    top: -5px;
+    top: 0px;
     padding-left: 30px;
+    padding-bottom: 10px;
     font-weight: normal;
-    color: white;
-    height: 10px;
-    width: 100%;
+    font-size: medium;
+    color: black;
+    height: 20px;
     z-index: 1;
+    border-bottom: solid 1px black;
+    background-color: white;
+    max-width: 199px;
+
 }
 .tab-dashboard-contenedor{
-    height: 440px;
-    width: 355px;
-    overflow: auto;
+    width: 100%;
+    height: 100%;
 }
 #eventos-dashboard-contenedor{
-    margin-top: 40px;
-    background-image: url(../images/dashboard/recordatorioscentro.png);
+    /*background-image: url(../images/dashboard/recordatorioscentro.png);*/
+    background-color: white;
+    width: 100%;
+    height: 64px;
+    border: solid 1px black;
+    overflow-x: auto;
 }
 .dash-registro{
-    padding: 10px;
-    margin-left: 15px;
-    margin-right: 17px;
-    border-bottom: 1px solid #00ADEE;
+    padding: 0px;
+    margin-left: 5px;
+    margin-right: 7px;
+    margin-bottom: 5px;
+
 }
-#eventos-dashboard-contenedor .dash-registro{
-    padding: 10px;
-    margin-left: 10px;
-    margin-right: 12px;
-    border-bottom: 1px solid gray;
+
+#eventos-dashboard-contenedor ul.lista-registro-evento{
+    padding: 0;
+    margin: 0;
+    position: relative;
     
 }
 
+#eventos-dashboard-contenedor li.dash-registro{
+    padding: 5px;
+    margin: 5px;
+    border-bottom: 1px solid gray;
+    float: left;
+    width: 200px;
+    float: left;
+    list-style: none;
+}
 .eventos-dashboard-boton{
-    float: right;
-    position:absolute;
-    top: 5px;
-    right: 3px;
+    /*float: right;
+    position: absolute;*/
+    right: 0px;
+    bottom: 0px;
     width: 32px;
     height: 31px;
-   
+    padding-top: 17px;
 }
+
 .eventos-dashboard-boton:hover{
   cursor: pointer;
 }
 
 .dash-registro a img {
     float: right;
-    margin-right: 10px;
+    margin-right: 5px;
     margin-top: 10px;
-        
 }
 
 #eventos-dashboard-contenedor .dash-registro a img {
     float: right;
     margin-right: 5px;
     margin-top: 1px;
-        
 }
 
 .dash-registro .titulo-dash-registro{
-    width: 310px;
+    width: 100%;
     min-height: 10px;
     color: grey;
-    font-size: 14px;
-    font-family: sans-serif;
+    font-size: x-small;
     font-weight: bold;
+
 }
 
 .dash-registro .contenido-dash-registro,.dash-registro .status-dash-registro{
-    width: 310px;
+    width: 100%;
     min-height: 10px;
     color: #00ADEE;
     font-size: 12px;
     font-family: sans-serif;
     font-weight: bold;
     margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 .modo-activo-seleccion{
@@ -188,4 +202,19 @@ table.reportes{
 
 .fform td{
     padding: .5em;
+}
+table.no-padding{
+    padding: 0;
+    margin: 0;
+}
+
+td.borde-right{
+    border-left: solid 1px black;
+}
+
+#contenedor-cotizaciones{
+    overflow-y: auto;
+}
+#contenedor-precotizaciones{
+    overflow-y: auto;
 }

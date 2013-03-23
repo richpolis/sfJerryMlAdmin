@@ -12,8 +12,8 @@
             <th>Empresa</th>
             <th>Contacto</th>
             <th>Personal Manager</th>
-            <th>Titulo</th>
             <th>Descripcion</th>
+            <th>Actividad</th>
             <th>Status</th>
         <th>
             Acciones
@@ -34,10 +34,10 @@
             <?php echo $cotizacion->getManager()?>
         </td>
         <td>
-            <?php echo $cotizacion->getEvento()?>
+            <?php echo $cotizacion->getDescripcion()?>
         </td>
         <td>
-            <?php echo $cotizacion->getDescription(ESC_RAW)?>
+            <?php echo $cotizacion->getActividad(ESC_RAW)?>
         </td>
         <td>
             <?php echo $cotizacion->getStringStatus()?>

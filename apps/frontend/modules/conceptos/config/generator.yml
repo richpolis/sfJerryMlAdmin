@@ -15,7 +15,7 @@ generator:
       actions: ~
       fields:  
         concepto: {label: Concepto }
-        created_at: { label: Creado, date_format: 'dd/MM/y' }
+        created_at: { label: Creado, date_format: 'd/m/Y' }
       list:    
         title: Conceptos
         sort: [concepto, asc]
@@ -28,6 +28,10 @@ generator:
           _list: {label: Regresar a Lista}
           _save: {label: Guardar }
       edit:    
-        title: Editar concepto %%concepto%%
+        title: Editar concepto "%%concepto%%"
+        display:
+          Concepto:     [concepto]
       new:     
         title: Nuevo concepto
+        display:
+          Concepto:     [concepto]

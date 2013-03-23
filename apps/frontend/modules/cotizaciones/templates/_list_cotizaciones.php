@@ -7,7 +7,7 @@
             <th>Empresa</th>
             <th>Contacto</th>
             <th>Personal Manager</th>
-            <th>Titulo</th>
+            <th>Descripcion</th>
             <th>Importe sin iva</th>
             <th>Pagado</th>
             <th>Status</th>
@@ -26,7 +26,7 @@
             <td><?php echo $cotizacion->getClientes();?></td>
             <td><?php echo $cotizacion->getContactos();?></td>
             <td><?php echo $cotizacion->getManager();?></td>
-            <td><?php echo $cotizacion->getEvento();?></td>
+            <td><?php echo $cotizacion->getDescripcion();?></td>
             <td>
                 <?php include_partial('cotizaciones/importe_sin_iva',array('cotizaciones'=>$cotizacion))?>
             </td>
@@ -39,7 +39,7 @@
             <td>
                 <ul class="sf_admin_td_actions">
                     <li class="sf_admin_action_show">
-                       <?php echo link_to(__('Mostrar', array(), 'messages'), 'cotizaciones/show?slug=' . $cotizacion->getSlug(), array()) ?>
+                       <?php echo link_to(__('Mostrar', array(), 'messages'), 'cotizaciones/show?id=' . $cotizacion->getId(), array()) ?>
                     </li>
                 </ul>
             </td>

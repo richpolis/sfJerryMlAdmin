@@ -51,4 +51,13 @@ class EventosUsuariosTable extends PluginEventosUsuariosTable
         return $this->getEventosPorFecha($fecha_inicial->format('Y-m-d'), $fecha_final->format('Y-m-d'));
         
     }
+    
+    public function getEventosPorFechaYUsuario($fecha_inicial,$fecha_final,$usuarioId){
+    	$q=$this->getCriteriaOrdenada();
+    	$rootAlias = $q->getRootAlias();
+    	$q->addWhere($rootAlias.'.start_time >=?',$fecha_inicial)
+          ->addWhere($rootAlias.'.end_time<=?',$fecha_final)
+          ->addwhere($rootAlias.'.user_id=?',$usuarioId);    
+        return $q->execute();
+    }
 }

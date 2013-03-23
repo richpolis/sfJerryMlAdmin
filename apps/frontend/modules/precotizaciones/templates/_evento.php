@@ -5,6 +5,19 @@
     <table border="0" style="width: 100%">
         <tbody>
             <tr>
+                <td colspan="2">
+                    <label>Empresa Jerry ML: </label>
+                    <?php 
+                    if(!$precotizaciones->getEmpresaId()==null):
+                        echo $precotizaciones->getEmpresas();
+                    else:
+                        echo "Seleccionar Empresa Jerry ML";
+                    endif;
+                    ?>
+                </td>
+                
+            </tr>
+            <tr>
                 <td>
                     <label>Cliente: </label>
                     <?php echo $precotizaciones->getClientes()?>

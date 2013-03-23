@@ -1,1 +1,187 @@
-[22-Nov-2012 13:10:05 UTC] Object detalles_cotizacion does not exist ().
+[26-Jan-2013 16:29:12 UTC] Object detalles_cotizacion does not exist ().
+[26-Jan-2013 16:29:22 UTC] Object detalles_cotizacion does not exist ().
+[26-Jan-2013 18:37:15 UTC] PHP Fatal error:  Call to a member function getConsideraciones() on a non-object in /home/phrenesi/public_html/jerrymladmin4/apps/frontend/modules/configuracion/templates/_contenido.php on line 2
+[26-Jan-2013 18:37:33 UTC] PHP Fatal error:  Call to a member function getConsideraciones() on a non-object in /home/phrenesi/public_html/jerrymladmin4/apps/frontend/modules/configuracion/templates/_contenido.php on line 2
+[26-Jan-2013 18:38:44 UTC] PHP Fatal error:  Call to a member function getConsideraciones() on a non-object in /home/phrenesi/public_html/jerrymladmin4/apps/frontend/modules/configuracion/templates/_contenido.php on line 2
+[26-Jan-2013 18:45:56 UTC] SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`phrenesi_jerrymladmin4`.`detalles_cotizacion_comisionistas`, CONSTRAINT `dddi` FOREIGN KEY (`detalles_cotizacion_id`) REFERENCES `detalles_cotizacion` (`id`))
+[26-Jan-2013 18:45:58 UTC] Action "sf/sf_default" does not exist.
+[26-Jan-2013 18:45:58 UTC] Action "sf/sf_default" does not exist.
+[26-Jan-2013 18:45:58 UTC] Action "sf/sf_default" does not exist.
+[26-Jan-2013 18:55:01 UTC] Unknown record property / related component "cotizaciones_eventos" on "KsWCEvent"
+[26-Jan-2013 19:47:55 UTC] Action "uploads/assets" does not exist.
+[26-Jan-2013 19:48:02 UTC] Action "uploads/assets" does not exist.
+[26-Jan-2013 19:48:02 UTC] PHP Fatal error:  Uncaught exception 'sfStopException' in /home/phrenesi/public_html/jerrymladmin4/lib/vendor/symfony/lib/filter/sfBasicSecurityFilter.class.php:96
+Stack trace:
+#0 /home/phrenesi/public_html/jerrymladmin4/lib/vendor/symfony/lib/filter/sfBasicSecurityFilter.class.php(55): sfBasicSecurityFilter->forwardToLoginAction()
+#1 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(1031): sfBasicSecurityFilter->execute(Object(sfFilterChain))
+#2 /home/phrenesi/public_html/jerrymladmin4/plugins/sfDoctrineGuardPlugin/lib/sfGuardRememberMeFilter.class.php(56): sfFilterChain->execute()
+#3 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(1031): sfGuardRememberMeFilter->execute(Object(sfFilterChain))
+#4 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(995): sfFilterChain->execute()
+#5 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(1031): sfRender in /home/phrenesi/public_html/jerrymladmin4/lib/vendor/symfony/lib/filter/sfBasicSecurityFilter.class.php on line 96
+[26-Jan-2013 19:48:03 UTC] Action "uploads/assets" does not exist.
+[26-Jan-2013 19:48:03 UTC] PHP Fatal error:  Uncaught exception 'sfStopException' in /home/phrenesi/public_html/jerrymladmin4/lib/vendor/symfony/lib/filter/sfBasicSecurityFilter.class.php:96
+Stack trace:
+#0 /home/phrenesi/public_html/jerrymladmin4/lib/vendor/symfony/lib/filter/sfBasicSecurityFilter.class.php(55): sfBasicSecurityFilter->forwardToLoginAction()
+#1 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(1031): sfBasicSecurityFilter->execute(Object(sfFilterChain))
+#2 /home/phrenesi/public_html/jerrymladmin4/plugins/sfDoctrineGuardPlugin/lib/sfGuardRememberMeFilter.class.php(56): sfFilterChain->execute()
+#3 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(1031): sfGuardRememberMeFilter->execute(Object(sfFilterChain))
+#4 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(995): sfFilterChain->execute()
+#5 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(1031): sfRender in /home/phrenesi/public_html/jerrymladmin4/lib/vendor/symfony/lib/filter/sfBasicSecurityFilter.class.php on line 96
+[27-Jan-2013 00:10:46 UTC] SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`phrenesi_jerrymladmin4`.`cotizaciones_conceptos`, CONSTRAINT `cotizaciones_conceptos_cotizacion_id_cotizaciones_id` FOREIGN KEY (`cotizacion_id`) REFERENCES `cotizaciones` (`id`))
+[27-Jan-2013 00:10:47 UTC] Action "sf/sf_default" does not exist.
+[27-Jan-2013 00:10:47 UTC] Action "sf/sf_default" does not exist.
+[27-Jan-2013 00:10:48 UTC] Action "sf/sf_default" does not exist.
+[27-Jan-2013 00:11:11 UTC] PHP Fatal error:  Call to a member function getCotizaciones() on a non-object in /home/phrenesi/public_html/jerrymladmin4/apps/frontend/modules/cotconceptos/actions/actions.class.php on line 129
+[27-Jan-2013 00:18:49 UTC] Action "uploads/assets" does not exist.
+[27-Jan-2013 00:31:00 UTC] Action "uploads/assets" does not exist.
+[27-Jan-2013 00:31:00 UTC] PHP Fatal error:  Uncaught exception 'sfStopException' in /home/phrenesi/public_html/jerrymladmin4/lib/vendor/symfony/lib/filter/sfBasicSecurityFilter.class.php:96
+Stack trace:
+#0 /home/phrenesi/public_html/jerrymladmin4/lib/vendor/symfony/lib/filter/sfBasicSecurityFilter.class.php(55): sfBasicSecurityFilter->forwardToLoginAction()
+#1 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(1031): sfBasicSecurityFilter->execute(Object(sfFilterChain))
+#2 /home/phrenesi/public_html/jerrymladmin4/plugins/sfDoctrineGuardPlugin/lib/sfGuardRememberMeFilter.class.php(56): sfFilterChain->execute()
+#3 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(1031): sfGuardRememberMeFilter->execute(Object(sfFilterChain))
+#4 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(995): sfFilterChain->execute()
+#5 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(1031): sfRender in /home/phrenesi/public_html/jerrymladmin4/lib/vendor/symfony/lib/filter/sfBasicSecurityFilter.class.php on line 96
+[27-Jan-2013 00:31:00 UTC] Action "uploads/assets" does not exist.
+[27-Jan-2013 00:31:00 UTC] PHP Fatal error:  Uncaught exception 'sfStopException' in /home/phrenesi/public_html/jerrymladmin4/lib/vendor/symfony/lib/filter/sfBasicSecurityFilter.class.php:96
+Stack trace:
+#0 /home/phrenesi/public_html/jerrymladmin4/lib/vendor/symfony/lib/filter/sfBasicSecurityFilter.class.php(55): sfBasicSecurityFilter->forwardToLoginAction()
+#1 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(1031): sfBasicSecurityFilter->execute(Object(sfFilterChain))
+#2 /home/phrenesi/public_html/jerrymladmin4/plugins/sfDoctrineGuardPlugin/lib/sfGuardRememberMeFilter.class.php(56): sfFilterChain->execute()
+#3 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(1031): sfGuardRememberMeFilter->execute(Object(sfFilterChain))
+#4 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(995): sfFilterChain->execute()
+#5 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(1031): sfRender in /home/phrenesi/public_html/jerrymladmin4/lib/vendor/symfony/lib/filter/sfBasicSecurityFilter.class.php on line 96
+[27-Jan-2013 00:32:10 UTC] SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`phrenesi_jerrymladmin4`.`detalles_cotizacion_comisionistas`, CONSTRAINT `dddi` FOREIGN KEY (`detalles_cotizacion_id`) REFERENCES `detalles_cotizacion` (`id`))
+[27-Jan-2013 00:32:11 UTC] Action "sf/sf_default" does not exist.
+[27-Jan-2013 00:32:12 UTC] Action "sf/sf_default" does not exist.
+[27-Jan-2013 00:32:12 UTC] Action "sf/sf_default" does not exist.
+[27-Jan-2013 00:41:40 UTC] Action "uploads/assets" does not exist.
+[27-Jan-2013 00:41:40 UTC] PHP Fatal error:  Uncaught exception 'sfStopException' in /home/phrenesi/public_html/jerrymladmin4/lib/vendor/symfony/lib/filter/sfBasicSecurityFilter.class.php:96
+Stack trace:
+#0 /home/phrenesi/public_html/jerrymladmin4/lib/vendor/symfony/lib/filter/sfBasicSecurityFilter.class.php(55): sfBasicSecurityFilter->forwardToLoginAction()
+#1 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(1031): sfBasicSecurityFilter->execute(Object(sfFilterChain))
+#2 /home/phrenesi/public_html/jerrymladmin4/plugins/sfDoctrineGuardPlugin/lib/sfGuardRememberMeFilter.class.php(56): sfFilterChain->execute()
+#3 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(1031): sfGuardRememberMeFilter->execute(Object(sfFilterChain))
+#4 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(995): sfFilterChain->execute()
+#5 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(1031): sfRender in /home/phrenesi/public_html/jerrymladmin4/lib/vendor/symfony/lib/filter/sfBasicSecurityFilter.class.php on line 96
+[27-Jan-2013 00:41:40 UTC] Action "uploads/assets" does not exist.
+[27-Jan-2013 00:41:40 UTC] PHP Fatal error:  Uncaught exception 'sfStopException' in /home/phrenesi/public_html/jerrymladmin4/lib/vendor/symfony/lib/filter/sfBasicSecurityFilter.class.php:96
+Stack trace:
+#0 /home/phrenesi/public_html/jerrymladmin4/lib/vendor/symfony/lib/filter/sfBasicSecurityFilter.class.php(55): sfBasicSecurityFilter->forwardToLoginAction()
+#1 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(1031): sfBasicSecurityFilter->execute(Object(sfFilterChain))
+#2 /home/phrenesi/public_html/jerrymladmin4/plugins/sfDoctrineGuardPlugin/lib/sfGuardRememberMeFilter.class.php(56): sfFilterChain->execute()
+#3 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(1031): sfGuardRememberMeFilter->execute(Object(sfFilterChain))
+#4 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(995): sfFilterChain->execute()
+#5 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(1031): sfRender in /home/phrenesi/public_html/jerrymladmin4/lib/vendor/symfony/lib/filter/sfBasicSecurityFilter.class.php on line 96
+[27-Jan-2013 00:45:14 UTC] Action "uploads/assets" does not exist.
+[27-Jan-2013 00:45:35 UTC] Action "uploads/assets" does not exist.
+[27-Jan-2013 00:45:35 UTC] PHP Fatal error:  Uncaught exception 'sfStopException' in /home/phrenesi/public_html/jerrymladmin4/lib/vendor/symfony/lib/filter/sfBasicSecurityFilter.class.php:96
+Stack trace:
+#0 /home/phrenesi/public_html/jerrymladmin4/lib/vendor/symfony/lib/filter/sfBasicSecurityFilter.class.php(55): sfBasicSecurityFilter->forwardToLoginAction()
+#1 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(1031): sfBasicSecurityFilter->execute(Object(sfFilterChain))
+#2 /home/phrenesi/public_html/jerrymladmin4/plugins/sfDoctrineGuardPlugin/lib/sfGuardRememberMeFilter.class.php(56): sfFilterChain->execute()
+#3 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(1031): sfGuardRememberMeFilter->execute(Object(sfFilterChain))
+#4 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(995): sfFilterChain->execute()
+#5 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(1031): sfRender in /home/phrenesi/public_html/jerrymladmin4/lib/vendor/symfony/lib/filter/sfBasicSecurityFilter.class.php on line 96
+[27-Jan-2013 00:45:35 UTC] Action "uploads/assets" does not exist.
+[27-Jan-2013 00:45:35 UTC] PHP Fatal error:  Uncaught exception 'sfStopException' in /home/phrenesi/public_html/jerrymladmin4/lib/vendor/symfony/lib/filter/sfBasicSecurityFilter.class.php:96
+Stack trace:
+#0 /home/phrenesi/public_html/jerrymladmin4/lib/vendor/symfony/lib/filter/sfBasicSecurityFilter.class.php(55): sfBasicSecurityFilter->forwardToLoginAction()
+#1 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(1031): sfBasicSecurityFilter->execute(Object(sfFilterChain))
+#2 /home/phrenesi/public_html/jerrymladmin4/plugins/sfDoctrineGuardPlugin/lib/sfGuardRememberMeFilter.class.php(56): sfFilterChain->execute()
+#3 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(1031): sfGuardRememberMeFilter->execute(Object(sfFilterChain))
+#4 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(995): sfFilterChain->execute()
+#5 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(1031): sfRender in /home/phrenesi/public_html/jerrymladmin4/lib/vendor/symfony/lib/filter/sfBasicSecurityFilter.class.php on line 96
+[27-Jan-2013 00:49:17 UTC] Action "uploads/assets" does not exist.
+[27-Jan-2013 00:49:30 UTC] Action "uploads/assets" does not exist.
+[27-Jan-2013 15:16:57 UTC] Action "uploads/assets" does not exist.
+[27-Jan-2013 15:16:57 UTC] PHP Fatal error:  Uncaught exception 'sfStopException' in /home/phrenesi/public_html/jerrymladmin4/lib/vendor/symfony/lib/filter/sfBasicSecurityFilter.class.php:96
+Stack trace:
+#0 /home/phrenesi/public_html/jerrymladmin4/lib/vendor/symfony/lib/filter/sfBasicSecurityFilter.class.php(55): sfBasicSecurityFilter->forwardToLoginAction()
+#1 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(1031): sfBasicSecurityFilter->execute(Object(sfFilterChain))
+#2 /home/phrenesi/public_html/jerrymladmin4/plugins/sfDoctrineGuardPlugin/lib/sfGuardRememberMeFilter.class.php(56): sfFilterChain->execute()
+#3 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(1031): sfGuardRememberMeFilter->execute(Object(sfFilterChain))
+#4 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(995): sfFilterChain->execute()
+#5 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(1031): sfRender in /home/phrenesi/public_html/jerrymladmin4/lib/vendor/symfony/lib/filter/sfBasicSecurityFilter.class.php on line 96
+[27-Jan-2013 15:16:57 UTC] Action "uploads/assets" does not exist.
+[27-Jan-2013 15:16:57 UTC] PHP Fatal error:  Uncaught exception 'sfStopException' in /home/phrenesi/public_html/jerrymladmin4/lib/vendor/symfony/lib/filter/sfBasicSecurityFilter.class.php:96
+Stack trace:
+#0 /home/phrenesi/public_html/jerrymladmin4/lib/vendor/symfony/lib/filter/sfBasicSecurityFilter.class.php(55): sfBasicSecurityFilter->forwardToLoginAction()
+#1 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(1031): sfBasicSecurityFilter->execute(Object(sfFilterChain))
+#2 /home/phrenesi/public_html/jerrymladmin4/plugins/sfDoctrineGuardPlugin/lib/sfGuardRememberMeFilter.class.php(56): sfFilterChain->execute()
+#3 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(1031): sfGuardRememberMeFilter->execute(Object(sfFilterChain))
+#4 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(995): sfFilterChain->execute()
+#5 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(1031): sfRender in /home/phrenesi/public_html/jerrymladmin4/lib/vendor/symfony/lib/filter/sfBasicSecurityFilter.class.php on line 96
+[27-Jan-2013 15:17:24 UTC] Action "uploads/assets" does not exist.
+[27-Jan-2013 15:17:27 UTC] Action "uploads/assets" does not exist.
+[27-Jan-2013 15:17:50 UTC] Action "uploads/assets" does not exist.
+[27-Jan-2013 15:21:40 UTC] Action "uploads/assets" does not exist.
+[27-Jan-2013 15:22:21 UTC] Action "uploads/assets" does not exist.
+[27-Jan-2013 15:22:21 UTC] PHP Fatal error:  Uncaught exception 'sfStopException' in /home/phrenesi/public_html/jerrymladmin4/lib/vendor/symfony/lib/filter/sfBasicSecurityFilter.class.php:96
+Stack trace:
+#0 /home/phrenesi/public_html/jerrymladmin4/lib/vendor/symfony/lib/filter/sfBasicSecurityFilter.class.php(55): sfBasicSecurityFilter->forwardToLoginAction()
+#1 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(1031): sfBasicSecurityFilter->execute(Object(sfFilterChain))
+#2 /home/phrenesi/public_html/jerrymladmin4/plugins/sfDoctrineGuardPlugin/lib/sfGuardRememberMeFilter.class.php(56): sfFilterChain->execute()
+#3 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(1031): sfGuardRememberMeFilter->execute(Object(sfFilterChain))
+#4 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(995): sfFilterChain->execute()
+#5 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(1031): sfRender in /home/phrenesi/public_html/jerrymladmin4/lib/vendor/symfony/lib/filter/sfBasicSecurityFilter.class.php on line 96
+[27-Jan-2013 15:22:22 UTC] Action "uploads/assets" does not exist.
+[27-Jan-2013 15:22:22 UTC] PHP Fatal error:  Uncaught exception 'sfStopException' in /home/phrenesi/public_html/jerrymladmin4/lib/vendor/symfony/lib/filter/sfBasicSecurityFilter.class.php:96
+Stack trace:
+#0 /home/phrenesi/public_html/jerrymladmin4/lib/vendor/symfony/lib/filter/sfBasicSecurityFilter.class.php(55): sfBasicSecurityFilter->forwardToLoginAction()
+#1 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(1031): sfBasicSecurityFilter->execute(Object(sfFilterChain))
+#2 /home/phrenesi/public_html/jerrymladmin4/plugins/sfDoctrineGuardPlugin/lib/sfGuardRememberMeFilter.class.php(56): sfFilterChain->execute()
+#3 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(1031): sfGuardRememberMeFilter->execute(Object(sfFilterChain))
+#4 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(995): sfFilterChain->execute()
+#5 /home/phrenesi/public_html/jerrymladmin4/cache/frontend/prod/config/config_core_compile.yml.php(1031): sfRender in /home/phrenesi/public_html/jerrymladmin4/lib/vendor/symfony/lib/filter/sfBasicSecurityFilter.class.php on line 96
+[27-Jan-2013 22:10:40 UTC] Unknown record property / related component "cotizacion_id" on "DetallesCotizacionConceptos"
+[28-Jan-2013 03:05:26 UTC] Unknown record property / related component "eventos" on "Cotizaciones"
+[28-Jan-2013 03:05:27 UTC] Action "sf/sf_default" does not exist.
+[28-Jan-2013 03:05:28 UTC] Action "sf/sf_default" does not exist.
+[28-Jan-2013 03:05:28 UTC] Action "sf/sf_default" does not exist.
+[28-Jan-2013 03:05:40 UTC] Unknown record property / related component "eventos" on "Cotizaciones"
+[28-Jan-2013 03:05:41 UTC] Action "sf/sf_default" does not exist.
+[28-Jan-2013 03:05:42 UTC] Action "sf/sf_default" does not exist.
+[28-Jan-2013 03:05:42 UTC] Action "sf/sf_default" does not exist.
+[28-Jan-2013 18:43:37 UTC] PHP Fatal error:  Call to a member function getCotizaciones() on a non-object in /home/phrenesi/public_html/jerrymladmin4/apps/frontend/modules/cotconceptos/actions/actions.class.php on line 129
+[28-Jan-2013 18:45:32 UTC] Unknown record property / related component "fecha_desde" on "DetallesCotizacion"
+[28-Jan-2013 18:45:36 UTC] Action "sf/sf_default" does not exist.
+[28-Jan-2013 18:45:36 UTC] Action "sf/sf_default" does not exist.
+[28-Jan-2013 18:45:36 UTC] Action "sf/sf_default" does not exist.
+[28-Jan-2013 18:46:08 UTC] Unknown record property / related component "fecha_desde" on "DetallesCotizacion"
+[28-Jan-2013 18:46:09 UTC] Action "sf/sf_default" does not exist.
+[28-Jan-2013 18:46:09 UTC] Action "sf/sf_default" does not exist.
+[28-Jan-2013 18:46:09 UTC] Action "sf/sf_default" does not exist.
+[28-Jan-2013 18:46:40 UTC] Unknown record property / related component "fecha_desde" on "DetallesCotizacion"
+[28-Jan-2013 18:46:41 UTC] Action "sf/sf_default" does not exist.
+[28-Jan-2013 18:46:42 UTC] Action "sf/sf_default" does not exist.
+[28-Jan-2013 18:46:42 UTC] Action "sf/sf_default" does not exist.
+[29-Jan-2013 04:50:18 UTC] PHP Fatal error:  Call to a member function getCotizaciones() on a non-object in /home/phrenesi/public_html/jerrymladmin4/apps/frontend/modules/cotcomisionistas/actions/actions.class.php on line 127
+[29-Jan-2013 04:54:07 UTC] Unknown record property / related component "fecha_desde" on "DetallesCotizacion"
+[29-Jan-2013 04:54:08 UTC] Action "sf/sf_default" does not exist.
+[29-Jan-2013 04:54:08 UTC] Action "sf/sf_default" does not exist.
+[29-Jan-2013 04:54:09 UTC] Action "sf/sf_default" does not exist.
+[29-Jan-2013 04:54:19 UTC] Unknown record property / related component "fecha_desde" on "DetallesCotizacion"
+[29-Jan-2013 04:54:20 UTC] Action "sf/sf_default" does not exist.
+[29-Jan-2013 04:54:20 UTC] Action "sf/sf_default" does not exist.
+[29-Jan-2013 04:54:21 UTC] Action "sf/sf_default" does not exist.
+[29-Jan-2013 04:54:28 UTC] SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '' for key 'email_address'
+[29-Jan-2013 04:54:29 UTC] Action "sf/sf_default" does not exist.
+[29-Jan-2013 04:54:29 UTC] Action "sf/sf_default" does not exist.
+[29-Jan-2013 04:54:30 UTC] Action "sf/sf_default" does not exist.
+[29-Jan-2013 04:54:36 UTC] Unknown record property / related component "fecha_desde" on "DetallesCotizacion"
+[29-Jan-2013 04:54:37 UTC] Action "sf/sf_default" does not exist.
+[29-Jan-2013 04:54:37 UTC] Action "sf/sf_default" does not exist.
+[29-Jan-2013 04:54:38 UTC] Action "sf/sf_default" does not exist.
+[29-Jan-2013 04:54:43 UTC] SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '' for key 'email_address'
+[29-Jan-2013 04:54:44 UTC] Action "sf/sf_default" does not exist.
+[29-Jan-2013 04:54:44 UTC] Action "sf/sf_default" does not exist.
+[29-Jan-2013 04:54:45 UTC] Action "sf/sf_default" does not exist.
+[29-Jan-2013 04:55:21 UTC] Unknown record property / related component "fecha_desde" on "DetallesCotizacion"
+[29-Jan-2013 04:55:22 UTC] Action "sf/sf_default" does not exist.
+[29-Jan-2013 04:55:22 UTC] Action "sf/sf_default" does not exist.
+[29-Jan-2013 04:55:22 UTC] Action "sf/sf_default" does not exist.
+[29-Jan-2013 04:55:24 UTC] SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '' for key 'email_address'
+[29-Jan-2013 04:55:25 UTC] Action "sf/sf_default" does not exist.
+[29-Jan-2013 04:55:25 UTC] Action "sf/sf_default" does not exist.
+[29-Jan-2013 04:55:26 UTC] Action "sf/sf_default" does not exist.

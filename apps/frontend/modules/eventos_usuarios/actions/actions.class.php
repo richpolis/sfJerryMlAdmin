@@ -33,13 +33,18 @@ class eventos_usuariosActions extends sfActions
           ->createQuery('a')
           ->execute();
     }
-    
-    /*$this->getResponse()->addJavascript('jquery-1.6.1.min.js');
-    $this->getResponse()->addJavascript('jquery-ui-1.8.13.custom.min.js');
-    $this->getResponse()->removeJavascript('/../sfJqueryReloadedPlugin/js/jquery-1.6.1.min.js');
-    $this->getResponse()->addStylesheet('jquery-ui-1.8.9.custom.css');
-    
-    $this->setLayout('simple_layout');*/
+    if($request->hasParameter('showdate')){
+        $d = new DateTime($request->getParameter('showdate'));
+        $this->showdate=$d->format("Y-m-d");
+    }else{
+        $this->showdate=date("Y-m-d");
+    }    
+  }
+  
+  public function executeCalendarioTodos(sfWebRequest $request){
+      $this->getUser()->setCalendarUsuario(0,"",0);
+      $this->redirect("eventos_usuarios/index");
+      $this->getUser()->setRegresarA("homepage");
   }
   
   public function executeDashboard(sfWebRequest $request){

@@ -24,23 +24,7 @@ class pagos_talentosActions extends autoPagos_talentosActions
                $detalle->setStatus(PagosTalentosTable::$APROBADO); //status de aprobado, ya no se puede modificar
                $detalle->save();
             }
-            $dc=$detalle->getDetallesCotizacion();
-            foreach($dc->getDetallesPagosTalentos() as $dpt){
-                    //importe sin iva
-                    $importeAPagar+=$dpt->getImporte();
-            }
-            $total=$dc->getGananciaTalento();
-             if($importeAPagar<$total){
-                    $detallePagoTalento=new DetallesPagosTalentos();
-                    //$detallePagoTalento->setUserId($this->getUser()->getGuardUser()->getId());
-                    $detallePagoTalento->setDetallesCotizacionId($dc->getId());
-                    $detallePagoTalento->setPagosTalentosId($detalle->getPagosTalentos()->getId());
-                    $detallePagoTalento->setImporte($total-$importeAPagar);
-                    $detallePagoTalento->setMetodoRecibo($detalle->getMetodoRecibo());
-                    $detallePagoTalento->setIva(0.00);
-                    $detallePagoTalento->save();
-                    
-            }
+            
             setlocale(LC_MONETARY, 'en_US');
             $this->getUser()->setFlash('notice', "Se han aprobado $cont pago(s) talentos, operacion tiene un importe :.".  number_format($importe,2));
             $this->pagos_talentos=Doctrine_Core::getTable('PagosTalentos')->find($detalle->getPagosTalentos()->getId());
@@ -49,18 +33,37 @@ class pagos_talentosActions extends autoPagos_talentosActions
             $this->redirect('@pagos_talentos');
         }  
     }    
-                
+    
+    public function executeCancelarAprobarPago(sfWebRequest $request){
+         if($request->hasParameter('generar')){
+            $detalle=  Doctrine_Core::getTable('DetallesPagosTalentos')->find($request->getParameter('generar'));
+            $cont=0;
+            $importe=0;
+            if($detalle->getStatus()==PagosTalentosTable::$APROBADO){
+               $importe+=$detalle->getImporte();
+               $cont++; 
+               $detalle->setStatus(PagosTalentosTable::$INCOMPLETO); //status de aprobado, ya no se puede modificar
+               $detalle->save();
+            }
+            
+            setlocale(LC_MONETARY, 'en_US');
+            $this->getUser()->setFlash('notice', "Se ha cancelardo la aprobacion de $cont pago(s) talentos, operacion tiene un importe :.".  number_format($importe,2));
+            $this->pagos_talentos=Doctrine_Core::getTable('PagosTalentos')->find($detalle->getPagosTalentos()->getId());
+            $this->redirect("pagos_talentos_show",$this->pagos_talentos);
+        }else{
+            $this->redirect('@pagos_talentos');
+        }  
+    }
+    
     public function executeAprobarPagos(sfWebRequest $request){
          if($request->hasParameter('generar')){
             $detalles_cotizaciones=  Doctrine_Core::getTable('DetallesCotizacion')->getDetallesCotizacionPorPagosTalentos($request->getParameter('generar'),false);
             $importeTotal=0;
             $cont=0;
             foreach($detalles_cotizaciones as $dc){
-                $importe=0;
                 
                 foreach($dc->getDetallesPagosTalentos() as $dpt){
                     //importe sin iva
-                    $importe+=$dpt->getImporte();
                     if($dpt->getStatus()<PagosTalentosTable::$APROBADO && $dpt->EsValido()){
                         $dpt->setStatus(PagosTalentosTable::$APROBADO);  //aprobado
                         $dpt->save();
@@ -68,18 +71,7 @@ class pagos_talentosActions extends autoPagos_talentosActions
                         $cont++;
                     }
                 }
-                $total=$dc->getGananciaTalento();
-                if($importe<$total){
-                    $detallePagoTalento=new DetallesPagosTalentos();
-                    //$detallePagoTalento->setUserId($this->getUser()->getGuardUser()->getId());
-                    $detallePagoTalento->setDetallesCotizacionId($dc->getId());
-                    $detallePagoTalento->setPagosTalentosId($dpt->getPagosTalentos()->getId());
-                    $detallePagoTalento->setImporte($total-$importe);
-                    $detallePagoTalento->setMetodoRecibo($dpt->getMetodoRecibo());
-                    $detallePagoTalento->setIva(0.00);
-                    $detallePagoTalento->save();
-                    
-                }
+                
             }
             setlocale(LC_MONETARY, 'en_US');
             $this->getUser()->setFlash('notice', "Se han aprobado $cont pago(s), operacion tiene un importe :.".  money_format('%(#10n', $importeTotal));
@@ -95,12 +87,33 @@ class pagos_talentosActions extends autoPagos_talentosActions
             $detalle=  Doctrine_Core::getTable('DetallesPagosTalentos')->find($request->getParameter('generar'));
             $importe=0;
             $cont=0;
+            $importeAPagar=0;
+            $total=0; 
             if($detalle->getStatus()==PagosTalentosTable::$APROBADO){
                $importe+=$detalle->getImporte();
                $cont++;
                $detalle->liberarPago();
             }
             $detalle->getDetallesCotizacion()->calcularPagosTalentos();
+            
+            $dc=$detalle->getDetallesCotizacion();
+            foreach($dc->getDetallesPagosTalentos() as $dpt){
+                    //importe sin iva
+                    $importeAPagar+=$dpt->getImporte();
+            }
+            $total=$dc->getGananciaTalentoReal();
+             if($importeAPagar<$total){
+                    $detallePagoTalento=new DetallesPagosTalentos();
+                    //$detallePagoTalento->setUserId($this->getUser()->getGuardUser()->getId());
+                    $detallePagoTalento->setDetallesCotizacionId($dc->getId());
+                    $detallePagoTalento->setPagosTalentosId($detalle->getPagosTalentos()->getId());
+                    $detallePagoTalento->setImporte($total-$importeAPagar);
+                    $detallePagoTalento->setMetodoRecibo($detalle->getMetodoRecibo());
+                    $detallePagoTalento->setIva(0.00);
+                    $detallePagoTalento->save();
+                    
+            }
+            
             setlocale(LC_MONETARY, 'en_US');
             $this->pagos_talentos=Doctrine_Core::getTable('PagosTalentos')->find($detalle->getPagosTalentos()->getId());
             $this->getUser()->setFlash('notice', "Se han liberado $cont pago(s) talentos, operacion tiene un importe :.".  number_format($importe,2));
@@ -116,14 +129,29 @@ class pagos_talentosActions extends autoPagos_talentosActions
             $importe=0;
             $cont=0;
             foreach($detalles_cotizaciones as $dc){
+                $importe=0;
                 foreach($dc->getDetallesPagosTalentos() as $detalle){
+                    $importe+=$detalle->getImporte();
                     if($detalle->getStatus()==PagosTalentosTable::$APROBADO){
-                        $importe+=$detalle->getImporte();
                         $cont++;
                         $detalle->liberarPago();
+                        $importeTotal+=$dpt->getImporte();
                     }
                 }
                 $dc->calcularPagosTalentos();
+                $total=$dc->getGananciaTalentoReal();
+                if($importe<$total){
+                    $detallePagoTalento=new DetallesPagosTalentos();
+                    //$detallePagoTalento->setUserId($this->getUser()->getGuardUser()->getId());
+                    $detallePagoTalento->setDetallesCotizacionId($dc->getId());
+                    $detallePagoTalento->setPagosTalentosId($dpt->getPagosTalentos()->getId());
+                    $detallePagoTalento->setImporte($total-$importe);
+                    $detallePagoTalento->setMetodoRecibo($dpt->getMetodoRecibo());
+                    $detallePagoTalento->setIva(0.00);
+                    $detallePagoTalento->save();
+                    
+                }
+                
             }
             setlocale(LC_MONETARY, 'en_US');
             $this->pagos_talentos=Doctrine_Core::getTable('PagosTalentos')->find($request->getParameter('generar'));
@@ -189,7 +217,8 @@ class pagos_talentosActions extends autoPagos_talentosActions
         $this->form=$this->crearFormulario($this->pagos_talentos);
     }
     public function executeShow(sfWebRequest $request) {
-        $this->pagos_talentos = $this->getRoute()->getObject();
+        //$this->pagos_talentos = $this->getRoute()->getObject();
+        $this->pagos_talentos=  Doctrine_Core::getTable('PagosTalentos')->getPagosConTalentoDetallesForId($request->getParameter('id'));
         
         if(count($this->getUser()->getCotizaciones())>0){
             $cotizaciones=  Doctrine_Core::getTable('Cotizaciones')->getCotizacionesPorArreglo($this->getUser()->getCotizaciones());

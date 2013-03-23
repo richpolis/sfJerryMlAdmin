@@ -6,6 +6,7 @@
     <?php include_title() ?>
     <link rel="shortcut icon" href="/favicon.ico" />
     <?php include_javascripts() ?>
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/jquery-ui-1.8.9.custom.css" />
   </head>
   <body style="padding: 0px;">
       <div id="container" height="100%" width="100%">

@@ -44,8 +44,16 @@ all:
             url:          configuracion
             image:        cpanel.png
             credentials:  [admin]
+          Comisionistas:
+            url:          comisionistas
+            image:        cpanel.png
+            credentials:  [admin]  
           Conceptos:
             url:          conceptos
+            image:        cpanel.png
+            credentials:  [admin]
+          Empresas:
+            url:          empresas
             image:        cpanel.png
             credentials:  [admin]  
       Administracion:
@@ -63,11 +71,11 @@ all:
             image:        module.png
             credentials:  [[talentos,admin]]
           'Calendario Talentos':
-            url:          calendario
+            url:          calendario_talentos
             image:        support.png
             credentials:  [[talentos,admin]] 
           'Calendario Usuarios':
-            url:          eventos_usuarios
+            url:          calendario_usuarios
             image:        support.png
             credentials:  [[usuarios,admin]] 
       Operaciones:
@@ -84,6 +92,10 @@ all:
             url:          contratos
             image:        module.png
             credentials:  [[contratos,admin]]
+          'Facturas':
+            url:          facturas
+            image:        module.png
+            credentials:  [[contratos,admin]] 
           'Pagos Clientes':
             url:          pagos
             image:        module.png

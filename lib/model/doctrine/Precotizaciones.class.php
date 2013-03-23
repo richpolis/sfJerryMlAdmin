@@ -65,6 +65,45 @@ EOD;
     return $body;
     
     }
+    
+    public function getRenderMensaje2(){
+        $contacto = $this->getContactos();
+        $user= sfContext::getInstance()->getUser()->getGuardUser();
+        $usuario=$user->getFirstName()." ".$user->getLastName();
+        $email=$user->getEmailAddress();
+        $firma=$user->getFirma();
+        $direccion= sfContext::getInstance()->getRequest()->getHost();
+        
+        if(strlen($firma)==0){
+           $sFirma="<span style='text-transform:capitalize;'>$usuario</span> Ejecutivo de Cuenta.<br/>Email: $email.<br/>Teléfonos JerryML a especificar.<br/>";
+        }else{
+           $sFirma="<img src='http://$direccion/uploads/usuarios/$firma'/>"; 
+        }
+        
+$body = <<<EOD
+        <p>
+        Estimado {$contacto}<br/>
+
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        Atentamente:
+        <br/>
+        $sFirma
+        </p>
+EOD;
+
+    return $body;
+    
+    }
+    
     public function getCadenaTalentos(){
         $detalles=$this->getDetallesPrecotizacion();
         $talentos=array();
@@ -123,6 +162,12 @@ EOD;
     }
     
     public function save(\Doctrine_Connection $conn = null) {
+        
+        if(!$this->getEmpresaId()){
+            $empresas=  Doctrine_Core::getTable('Empresas')->getEmpresas();
+            $this->setEmpresaId($empresas[0]->getId());
+        }
+                
         if(!$this->getEvento()){
             $this->setEvento("Nueva Precotizacion");
         }

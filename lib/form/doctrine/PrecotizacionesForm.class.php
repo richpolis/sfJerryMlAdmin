@@ -17,6 +17,12 @@ class PrecotizacionesForm extends BasePrecotizacionesForm
       $this->widgetSchema['cliente_id'] = new sfWidgetFormInputHidden();
       $this->widgetSchema['contacto_id'] = new sfWidgetFormInputHidden();
       $this->widgetSchema['user_id'] = new sfWidgetFormInputHidden();
+       $this->widgetSchema['empresa_id'] = new sfWidgetFormDoctrineChoice(
+                array(
+                  'model' => 'Empresas',
+                  'table_method' => 'getEmpresas',  
+                  'add_empty' => true
+                  ));
       
       $this->widgetSchema['descripcion'] = new sfWidgetFormTextareaTinyMCE(array(
                 'width' => 500,

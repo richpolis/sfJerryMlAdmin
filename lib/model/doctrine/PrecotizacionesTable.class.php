@@ -50,6 +50,7 @@ class PrecotizacionesTable extends Doctrine_Table
     public function getPrecotizacionConClienteTalentoDetallesForId($id){
       $q=$this->createQuery('pre');  
       $rootAlias = $q->getRootAlias();
+      $q->leftJoin($rootAlias . '.Empresas empresa');
       $q->leftJoin($rootAlias . '.Clientes cli');
       $q->leftJoin($rootAlias . '.Contactos co');
       $q->leftJoin($rootAlias . '.DetallesPrecotizacion dp');

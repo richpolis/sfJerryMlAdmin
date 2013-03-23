@@ -28,8 +28,8 @@ class DetallesPagos extends BaseDetallesPagos
             
         }
         if($this->getImporte()>0){
-            $importeSinIva=$this->getImporte() / CotizacionesTable::$CON_IVA;
-            $this->setIva($this->getImporte()- $importeSinIva);
+            $iva=$this->getImporte() * CotizacionesTable::$IVA;
+            $this->setIva($iva);
         }else{
             if($this->getTipoPago()==2){
                 $this->setImporte($this->getSaldoLinea());
@@ -40,6 +40,12 @@ class DetallesPagos extends BaseDetallesPagos
             if($this->getStatus()==1){
                 $this->setUserId(sfContext::getInstance()->getUser()->getGuardUser()->getId());
             }
+        }
+        
+        if($this->getStatus()==PagosTable::$APROBADO){
+            $this->setFechaPago(date("Y-m-d"));
+        }elseif($this->getStatus()==PagosTable::$PAGOS_CALCULADOS){
+            $this->setFechaPago(date("Y-m-d"));
         }
         
         parent::save($conn);
@@ -56,8 +62,7 @@ class DetallesPagos extends BaseDetallesPagos
             $pago=$this->getPagos();
             $cliente=$pago->getClientes();
             $importe=$this->getImporte();
-            $importeSinIva=$importe / CotizacionesTable::$CON_IVA;
-            $iva=$importe - $importeSinIva;
+            $iva=$importe * CotizacionesTable::$IVA;
             $cliente->setSaldo($cliente->getSaldo()-$importe);
             $pago->setImporte($pago->getImporte()+$importe);
             $pago->setIva($pago->getIva()+$iva);
@@ -72,7 +77,7 @@ class DetallesPagos extends BaseDetallesPagos
         $cotizacion=$this->getCotizaciones();
         $pago=$this->getPagos();
         $importePagado=0;
-        $totalCotizacion=$cotizacion->getTotal();
+        $totalCotizacion=$cotizacion->getSubtotal();
         foreach($pago->getDetallesPagos() as $dp){
             if($dp->getCotizacionId()==$cotizacion->getId() && $dp->getStatus()==PagosTable::$PAGOS_CALCULADOS){
                 $importePagado+=$dp->getImporte();
@@ -81,5 +86,8 @@ class DetallesPagos extends BaseDetallesPagos
         return $totalCotizacion-$importePagado;
     }
     
+    public function getTotal(){
+        return $this->getImporte()+$this->getIva();
+    }
     
 }

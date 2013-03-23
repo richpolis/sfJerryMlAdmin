@@ -113,9 +113,15 @@ class cotizacionesActions extends autoCotizacionesActions {
         ProjectConfiguration::registerMPDF();
         $html = $request->getPostParameter('html');
         
-        $mpdf = new mPDF('es_ES','Letter','','',32,25,27,25,16,13);
+        $footer=  Doctrine_Core::getTable('Configuracion')->getSeccion('footer-cotizacion');
+        
+        $mpdf = new mPDF('es_ES','Letter','12px','Arial',15,15,15,15,16,13);
         $mpdf->useOnlyCoreFonts = true;
-
+        
+        if(!$footer==null){
+            $mpdf->SetHTMLFooter($footer->getContenido());
+        }
+        
         // load a stylesheet
         //$stylesheet = file_get_contents(sfConfig::get('sf_web_dir').'/css/mypdf.css');
         //$mpdf->WriteHTML($stylesheet,1); // el parámetro le dice que sólo es css y no contenido html
@@ -127,10 +133,17 @@ class cotizacionesActions extends autoCotizacionesActions {
     protected function generarPdf($cotizacion,$html) {
         ProjectConfiguration::registerMPDF();
         
-        $mpdf = new mPDF('es_ES','Letter','','',32,25,27,25,16,13);
+        $footer=  Doctrine_Core::getTable('Configuracion')->getSeccion('footer-cotizacion');
+        
+        $mpdf = new mPDF('es_ES','Letter','12px','Arial',15,15,15,15,16,13);
         $mpdf->useOnlyCoreFonts = true;
-
+        
+        if(!$footer==null){
+            $mpdf->SetHTMLFooter($footer->getContenido());
+        }
+        
         $mpdf->WriteHTML($html,2);
+        
         $file="Cotizacion_".$cotizacion->getId().'.pdf';
         if(!file_exists(sfConfig::get('sf_upload_dir').'/cotizaciones/'.$cotizacion->getId().'/')){
             mkdir(sfConfig::get('sf_upload_dir').'/cotizaciones/'.$cotizacion->getId().'/', 0777);
@@ -150,6 +163,9 @@ class cotizacionesActions extends autoCotizacionesActions {
     public function executeAprobarCotizacion(sfWebRequest $request){
          if($request->hasParameter('generar')){
             $cotizacion=  Doctrine_Core::getTable('Cotizaciones')->getCotizacionConClienteTalentoDetallesForId($request->getParameter('generar'));
+            if($cotizacion->getSubtotal()==0){
+                $cotizacion->calcular();
+            }
             if($cotizacion->validarAprobar()){
                 if($cotizacion->getPdf()=="sin_archivo.pdf"){
                     $html=$this->getPartial('vistaPrevia',array('cotizaciones'=>$cotizacion,'detalles_cotizaciones'=>$cotizacion->getDetallesCotizacion()));
@@ -263,6 +279,8 @@ class cotizacionesActions extends autoCotizacionesActions {
                 $cotizacion->setClienteId($cliente);
                 $cotizacion->setContactoId($contacto);
                 $cotizacion->setUserId($this->getUser()->getGuardUser()->getId());
+                $cotizacion->setFechaDesde(date("Y-m-d"));
+                $cotizacion->setFechaHasta(date("Y-m-d"));
                 $form = new CotizacionesForm($cotizacion);
             } else {
                 $this->getUser()->setFlash('error', 'No se ha seleccionado correctamente el cliente y contacto.');
@@ -289,16 +307,20 @@ class cotizacionesActions extends autoCotizacionesActions {
         $this->form=$this->crearFormulario($this->cotizaciones);
     }
     public function executeShow(sfWebRequest $request) {
-        $this->cotizaciones = $this->getRoute()->getObject();
+        //$this->cotizaciones = $this->getRoute()->getObject();
+        $this->cotizaciones=Doctrine_Core::getTable('Cotizaciones')->getCotizacionConClienteTalentoDetallesForId($request->getParameter('id'));
         
         if(count($this->getUser()->getTalentos())>0){
+            $conn = Doctrine_Manager::getInstance()->getCurrentConnection();
+            $conn->beginTransaction();
             $talentos=  Doctrine_Core::getTable('Talentos')->getTalentosPorArreglo($this->getUser()->getTalentos());
             foreach($talentos as $talento){
                 $existeTalento=false;
-                
+                $DetalleDeCotizacionId=0;
                 foreach($this->cotizaciones->getDetallesCotizacion() as $detalle){
                     if($detalle->getTalentoId()==$talento->getId()){
                         $existeTalento=true;
+                        $DetalleDeCotizacionId=$detalle->getId();
                     }
                 }
                 if(!$existeTalento){
@@ -308,29 +330,30 @@ class cotizacionesActions extends autoCotizacionesActions {
                     $dt->setActividad($talento->getDescripcion());
                     $dt->setMargenJerryMl($talento->getMargenJerryMl());
                     $dt->save();
+                    $this->addTalentoConceptosComisionistasEventos($this->cotizaciones,$dt);
+                    $DetalleDeCotizacionId=$dt->getId();
                 }
                 if(count($this->getUser()->getEventos($talento->getId()))){
                     
                     $eventos=  Doctrine_Core::getTable('KsWCEvent')->getEventosPorArreglo($this->getUser()->getEventos($talento->getId()));
                     foreach($eventos as $evento){
                         $existeEvento=false;
-                        $cotizacionEventos=$this->cotizaciones->getCotizacionesEventos();
+                        $cotizacionEventos=Doctrine_Core::getTable('KsWCEvent')->findBy('detalles_cotizacion_id', $DetalleDeCotizacionId);
                         foreach($cotizacionEventos as $cotizacionEvento){
-                            if($evento->getId()==$cotizacionEvento->getEventoId()){
+                            if($evento->getId()==$cotizacionEvento->getId()){
                                 $existeEvento=true;
                             }
                         }
                         if(!$existeEvento){
-                            $CotizacionEvento=new CotizacionesEventos();
-                            $CotizacionEvento->setCotizacionId($this->cotizaciones->getId());
-                            $CotizacionEvento->setEventoId($evento->getId());
-                            $CotizacionEvento->save();
+                            $evento->setDetallesCotizacionId($DetalleDeCotizacionId);
+                            $evento->save();
                         }
                     }
                     $this->getUser()->setEventos(array(),$talento->getId());
                 }
                 
             }
+            $conn->commit();
         }
         $this->getUser()->setModoCotizacion(false);
         $this->getUser()->setTalentosCotizacion(array());
@@ -357,7 +380,7 @@ class cotizacionesActions extends autoCotizacionesActions {
 
             try {
                 $cotizaciones = $form->save();
-                //$this->getUser()->setModoCotizacion(false);
+                $cotizaciones->actualizarEventos();
             } catch (Doctrine_Validator_Exception $e) {
 
                 $errorStack = $form->getObject()->getErrorStack();
@@ -416,22 +439,7 @@ class cotizacionesActions extends autoCotizacionesActions {
     {
         if($request->hasParameter('id')){
             $this->cotizaciones=Doctrine_Core::getTable('Cotizaciones')->getCotizacionConClienteTalentoDetallesForId($request->getParameter('id'));
-            
-            $detalles_cotizacion=$this->cotizaciones->getDetallesCotizacion();
-            $importe=0;
-            $iva=0;
-            $precio=0;
-            $margen_jerryml=0;
-            foreach($detalles_cotizacion as $detalle){
-                $precio=$detalle->getPrecio();
-                $margen_jerryml=($detalle->getMargenJerryMl()/100);
-                $importe+=($precio+($precio*$margen_jerryml));
-            }
-            $iva=$importe * CotizacionesTable::$IVA; // iva .16;
-            $this->cotizaciones->setSubtotal($importe);
-            $this->cotizaciones->setIva($iva);
-            $this->cotizaciones->save();
-            
+            $this->cotizaciones->calcular();
             if($request->isXmlHttpRequest()){
                 try{
                    return $this->renderPartial('calculo_importes', array('cotizaciones' => $this->cotizaciones));
@@ -484,6 +492,90 @@ class cotizacionesActions extends autoCotizacionesActions {
                 }
             }
         }
+    }
+    
+    public function executeSeCayoCotizacion(sfWebRequest $request){
+        if($request->hasParameter('generar')){
+            $cotizacion=  Doctrine_Core::getTable("Cotizaciones")->findOneBy('id',$request->getParameter('generar'));
+            if(!$cotizacion==null){
+                $cotizacion->setIsActive(false);
+                $cotizacion->setStatus(CotizacionesTable::$CAYO_COTIZACION);
+                $cotizacion->save();
+                $this->getUser()->setFlash('notice', 'Se cayo cotizacion.');
+                $this->redirect("cotizaciones_show",$cotizacion);
+            }
+        }
+    }
+    
+    public function executeReactivarCotizacion(sfWebRequest $request){
+        if($request->hasParameter('generar')){
+            $cotizacion=  Doctrine_Core::getTable("Cotizaciones")->findOneBy('id',$request->getParameter('generar'));
+            if(!$cotizacion==null){
+                $cotizacion->setIsActive(true);
+                $cotizacion->setStatus(CotizacionesTable::$INCOMPLETO);
+                $cotizacion->save();
+                $this->getUser()->setFlash('notice', 'Se reactivo la cotizacion.');
+                $this->redirect("cotizaciones_show",$cotizacion);
+            }
+        }
+    }
+    
+    /*
+     * function inactivada
+     */
+    public function executeInactivarShowPay(sfWebRequest $request){
+        if($request->hasParameter('id')){
+            $cotizacion=  Doctrine_Core::getTable("Cotizaciones")->findOneBy('id',$request->getParameter('id'));
+            if(!$cotizacion==null){
+                $cotizacion->setIsShowPay(false);
+                $cotizacion->save();
+                if($request->isXmlHttpRequest()){
+                    return $this->renderText("ok");
+                }else{
+                    $this->redirect("@cotizaciones");
+                }
+            }
+        }
+    }
+    
+    protected function addTalentoConceptosComisionistasEventos(Cotizaciones $cot, DetallesCotizacion $dc){
+        
+        $totalConceptos=0; $margenComisionistas=0;
+        foreach($cot->getCotizacionesConceptos() as $cotc){
+            $dcc1=new DetallesCotizacionConceptos();
+            //$dcc1->setCotizacionId($cot->getId());
+            $dcc1->setDetallesCotizacionId($dc->getId());
+            $dcc1->setConceptoId($cotc->getConceptoId());
+            $dcc1->setPrecio($cotc->getPrecio());
+            $dcc1->setNivel(CotizacionesTable::$NIVEL_COTIZACION);
+            $dcc1->saveOnly();
+            $totalConceptos+=$cotc->getPrecio();
+        }
+        
+        $margenJerryMl=$dc->getMargenJerryMl();
+        $gananciaJerryMl=$totalConceptos*($margenJerryMl/100);
+        $gananciaTalento=$totalConceptos-$gananciaJerryMl;
+        
+        foreach($cot->getCotizacionesComisionistas() as $cotco){
+            $dcco1=new DetallesCotizacionComisionistas();
+            //$dcco1->setCotizacionId($cot->getId());
+            $dcco1->setDetallesCotizacionId($dc->getId());
+            $dcco1->setComisionistaId($cotco->getComisionistaId());
+            $dcco1->setMargen($cotco->getMargen());
+            $dcco1->setNivel(CotizacionesTable::$NIVEL_COTIZACION);
+            $dcco1->setGanancia($gananciaTalento*($cotco->getMargen()/100));
+            $dcco1->saveOnly();
+            $margenComisionistas+=$cotco->getMargen();
+        }
+        $dc->setPrecio($totalConceptos);
+        $dc->setMargenComisionistas($margenComisionistas);
+        $dc->save();
+        
+        $dateInicial=new DateTime($cot->getFechaDesde());
+        $dateFinal= new DateTime($cot->getFechaHasta());
+        $dc->actualizarEventosDesdeCotizacion($dateInicial, $dateFinal, $cot, $dc);
+        
+        
     }
    
 }

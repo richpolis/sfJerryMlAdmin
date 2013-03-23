@@ -14,6 +14,8 @@ abstract class BaseEventosUsuariosFormFilter extends BaseFormFilterDoctrine
   {
     $this->setWidgets(array(
       'user_id'          => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('User'), 'add_empty' => true)),
+      'cotizacion_id'    => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Cotizaciones'), 'add_empty' => true)),
+      'nivel'            => new sfWidgetFormFilterInput(),
       'subject'          => new sfWidgetFormFilterInput(),
       'description'      => new sfWidgetFormFilterInput(),
       'start_time'       => new sfWidgetFormFilterDate(array('from_date' => new sfWidgetFormDate(), 'to_date' => new sfWidgetFormDate())),
@@ -26,6 +28,8 @@ abstract class BaseEventosUsuariosFormFilter extends BaseFormFilterDoctrine
 
     $this->setValidators(array(
       'user_id'          => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('User'), 'column' => 'id')),
+      'cotizacion_id'    => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Cotizaciones'), 'column' => 'id')),
+      'nivel'            => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
       'subject'          => new sfValidatorPass(array('required' => false)),
       'description'      => new sfValidatorPass(array('required' => false)),
       'start_time'       => new sfValidatorDateRange(array('required' => false, 'from_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 00:00:00')), 'to_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 23:59:59')))),
@@ -55,6 +59,8 @@ abstract class BaseEventosUsuariosFormFilter extends BaseFormFilterDoctrine
     return array(
       'id'               => 'Number',
       'user_id'          => 'ForeignKey',
+      'cotizacion_id'    => 'ForeignKey',
+      'nivel'            => 'Number',
       'subject'          => 'Text',
       'description'      => 'Text',
       'start_time'       => 'Date',

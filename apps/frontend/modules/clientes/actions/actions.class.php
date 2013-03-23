@@ -214,6 +214,7 @@ class clientesActions extends autoClientesActions
     public function executeShow(sfWebRequest $request)
     {
       $this->clientes = $this->getRoute()->getObject();
+      //$this->clientes=  Doctrine_Core::getTable('Clientes')->getClientesShow($request->getParameter('id'));
       $this->pagos=$this->clientes->getPagos();
       $this->cotizaciones=$this->clientes->getCotizaciones();
       $this->contactos=$this->clientes->getContactos();

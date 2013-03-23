@@ -13,60 +13,37 @@
   <div  style="width:100%; height: 30px;">
           
   </div>  
-  <!--h1><?php echo __('Cotizacion JerryML', array(), 'messages') ?></h1-->
   <div id="sf_admin_content">
-      <!--table border="0">
-          <tbody>
-              <tr>
-                  <td class="titulo_celda" style="background-color: #1188FF; color: white; font-weight: bold;">
-                      Cliente:
-                  </td>
-                  <td>
-                      <?php echo $cotizaciones->getClientes()?>
-                  </td>
-              </tr>
-              <tr>
-                  <td class="titulo_celda" style="background-color: #1188FF; color: white; font-weight: bold;">
-                      Evento:
-                  </td>
-                  <td>
-                      <?php echo $cotizaciones->getEvento()?>
-                  </td>
-              </tr>
-              <tr>
-                  <td class="titulo_celda" style="background-color: #1188FF; color: white; font-weight: bold;">
-                      Descripcion:
-                  </td>
-                  <td>
-                      <?php echo $cotizaciones->getDescripcion(ESC_RAW)?>
-                  </td>
-              </tr>
-          </tbody>
-      </table-->
+      
       <?php echo $cotizaciones->getContactos()?>,<br/>
-      <?php echo $cotizaciones->getEvento()?><br/>
+      <?php echo $cotizaciones->getClientes()?><br/>
       Presente. 
       
       <div  style="width:100%; height: 30px;">
           
       </div>
+      Te envío la información que me solicitaste referente a las siguiente(s) celebridad(es):<br/> 
+      <?php if($cotizaciones->getTipoCotizacion()==CotizacionesTable::$TIPO_COTIZACION_CAMPANA):?>
+      Descripción: <?php echo $cotizaciones->getDescripcion();?><br/>
+      Vigencia: <?php echo $cotizaciones->getVigencia();?><br/>
+      Territorio: <?php echo $cotizaciones->getPlaza();?><br/>
+      Dias de trabajo: <?php echo $cotizaciones->getActividad(ESC_RAW);?><br/>
+      <?php else:?>
+      Descripción: <?php echo $cotizaciones->getDescripcion();?><br/>
+      Actividad: <?php echo $cotizaciones->getActividadLimpia(ESC_RAW);?><br/>
+      Fecha: <?php echo sfRichSys::getStringFechasInicialFinal($cotizaciones->getFechaDesde(), $cotizaciones->getFechaHasta());?><br/>
+      Plaza: <?php echo $cotizaciones->getPlaza();?><br/>
+      <?php endif;?>
       <?php foreach($detalles_cotizaciones as $detalle):?>
-        <table style="width: 100%;">
-            <thead>
-                <tr>
-                    <th colspan="3" style="font-size: small; text-transform: uppercase;">
-                            
-                    </th>
-                </tr>
-            </thead> 
+        <table style="width: 100%; border: 1px solid grey;">
             <tbody>
                 <tr aling="center" valing="middle"  style="background-color: #1188FF;  text-transform: uppercase; font-weight: bold;">
                     <th style="color: white;">ARTISTA</th>
                     <th style="color: white;">INFORMACIÓN</th>
                     <th style="color: white;">COSTO</th>
                 </tr>
-                <tr aling="center" valing="top" >
-                    <td width="20%">
+                <tr>
+                    <td width="20%" style="text-align: center; vertical-align: central;">
                         <?php echo $detalle->getTalentos() ?><br/>
                         <?php if(file_exists(sfConfig::get('sf_upload_dir').'/talentos/'.$detalle->getTalentos()->getImagen())):?>
                         <img src="http://<?php echo $sf_request->getHost()?>/uploads/talentos/<?php echo $detalle->getTalentos()->getImagen() ?>" style="max-height: 100px; max-width: 100px;" width="100" height="100"/>
@@ -75,25 +52,29 @@
                         <?php endif;?>
                             
                     </td>  
-                    <td width="60%" style=" font-style: normal; text-align: justify; " ><?php echo $detalle->getActividad(ESC_RAW) ?></td>
-                    
-                    <td width="20%">
+                    <td width="60%" style=" vertical-align: central; font-style: normal; text-align: justify; " >
+                      <?php echo $detalle->getActividad(ESC_RAW) ?>
+                    </td>
+                    <td width="20%" style="text-align: center; vertical-align: central;">
                         <?php echo format_currency($detalle->getSubtotal(), 'USD') ?>
                     </td>
                 </tr>
+                <?php $registros=KsWCEventTable::getInstance()->getCountEventosPorDetalleCotizacion($detalle->getId());?>
+                <?php if($registros>0):?>
                 <tr aling="center" valing="top">
                     <td style=" padding-top: 20px;">Actividades:</td>
                     <td aling="center" valing="top" style=" padding-top: 20px;">
-                        <?php foreach($cotizaciones->getCotizacionesEventos() as $evento):?>
-                            <?php if($evento->getEventos()->getTalentoId()==$detalle->getTalentoId()):?>
-                            <div id="evento<?php echo $evento->getEventos()->getId()?>">
-                                <?php echo sfRichSys::getStringFechasInicialFinal($evento->getEventos()->getStartTime(), $evento->getEventos()->getEndTime())?> - <?php echo $evento->getEventos()->getSubject()?> - <?php echo $evento->getEventos()->getLugarEvento()?>
+                        <?php foreach($detalle->getEventos() as $evento):?>
+                            <?php if($evento->getNivel()==CotizacionesTable::$NIVEL_DETALLE):?>
+                            <div id="evento<?php echo $evento->getId()?>">
+                                <?php echo sfRichSys::getStringFechasInicialFinal($evento->getStartTime(), $evento->getEndTime())?> - <?php echo $evento->getSubject()?> - <?php echo $evento->getLugarEvento()?>
                             </div>
                             <?php endif; ?>
                         <?php endforeach; ?>
                     </td>
                     <td></td>
                 </tr>
+               <?php endif; ?> 
             </tbody>
         </table>
       <?php endforeach;?>
@@ -103,6 +84,13 @@
           
   </div>
   <div id="sf_admin_footer">
-    <?php include_partial('configuracion/contenido', array("configuracion"=>$confCotizacion))?>
+    <?php include_partial('configuracion/contenido_vista_previa', array("configuracion"=>$confCotizacion,"cotizaciones"=>$cotizaciones))?>
   </div>
+  <div  style="width:100%; height: 30px;">
+          
+  </div>
+  <div  style="width:100%; height: 30px;">
+      Atte. <?php echo $sf_user->getGuardUser()->getNombreCompleto()?><br/>
+      <?php echo $sf_user->getGuardUser()->getEmail()?>
+  </div>  
 </div>

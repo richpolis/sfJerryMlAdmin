@@ -26,9 +26,9 @@
             <td><?php echo $dc->getCotizaciones()->getClientes();?></td>
             <td><?php echo $dc->getCotizaciones();?></td>
             <td><?php echo format_currency($dc->getPrecio(), 'USD') ?></td>
-            <td><?php echo format_currency($dc->getGananciaTalento(), 'USD') ?></td>
-            <td><?php echo format_currency($dc->getGananciaJerryml(), 'USD') ?></td>
-            <td><?php echo format_currency($dc->getGananciaComisionista(), 'USD') ?></td>
+            <td><?php echo format_currency($dc->getGananciaTalentoReal(), 'USD') ?></td>
+            <td><?php echo format_currency($dc->getGananciaJerryMl(), 'USD') ?></td>
+            <td><?php echo format_currency($dc->getGananciaComisionistas(), 'USD') ?></td>
             <td><?php echo ($dc->getIsPayTalento()?'Si': 'No') ?></td>
             <td>
                 <ul class="sf_admin_td_actions">

@@ -1,0 +1,3 @@
+<td colspan="8">
+  <?php echo __('%%id%% - %%clientes%% - %%contactos%% - %%manager%% - %%descripcion%% - %%importe_sin_iva%% - %%is_pay%% - %%string_status%%', array('%%id%%' => link_to($cotizaciones->getId(), 'cotizaciones_edit', $cotizaciones), '%%clientes%%' => $cotizaciones->getClientes(), '%%contactos%%' => $cotizaciones->getContactos(), '%%manager%%' => $cotizaciones->getManager(), '%%descripcion%%' => $cotizaciones->getDescripcion(), '%%importe_sin_iva%%' => get_partial('cotizaciones/importe_sin_iva', array('type' => 'list', 'cotizaciones' => $cotizaciones)), '%%is_pay%%' => get_partial('cotizaciones/list_field_boolean', array('value' => $cotizaciones->getIsPay())), '%%string_status%%' => $cotizaciones->getStringStatus()), 'messages') ?>
+</td>

@@ -45,4 +45,26 @@ class DetallesCotizacionConceptosTable extends Doctrine_Table
         $q->addOrderBy('dp.fecha_pago asc');
         return $q->execute();
     }
+    
+    public function getHistorialPagosTalentos(array $valores){
+        $q=$this->getCriteriaOrdenada();
+        $rootAlias = $q->getRootAlias();
+        $desde=$valores['desde']['year']."-".$valores['desde']['month']."-".$valores['desde']['day'];
+        $hasta=$valores['hasta']['year']."-".$valores['hasta']['month']."-".$valores['hasta']['day'];
+        $q->leftJoin($rootAlias . '.DetallesCotizacion dc');
+        $q->leftJoin($rootAlias . '.Conceptos conc');
+        $q->leftJoin('dc.Cotizaciones cot');
+        $q->leftJoin('dc.Talentos talento');
+        $q->leftJoin('cot.DetallesPagos dp');
+        $q->addWhere('dp.fecha_pago BETWEEN ? to ?',array($desde,$hasta));
+        $q->addWhere('dc.is_pay_talento=?',true);
+        $q->addOrderBy('talento.id asc');
+        $q->addWhere('dp.status=?',$valores['status']);
+        $q->addOrderBy('dp.fecha_pago asc');
+        
+        if($valores['talento']>0){
+            $q->addWhere('talento.id=?',$valores['talento']);
+        }
+        return $q->execute();
+    }
 }

@@ -41,6 +41,34 @@ sfGuardUser:
     is_super_admin: false
     Groups:         [grupo_cotizaciones,grupo_admin_clientes,grupo_admin_talentos]  
     Permissions:    [permiso_usuarios]
+  User_admin_manuel1:
+    first_name:     Pamela
+    last_name:      
+    email_address:  pamela@jerryml.com
+    username:       pamela
+    password:       pamela
+    is_super_admin: false
+    Groups:         [grupo_cotizaciones,grupo_admin_clientes,grupo_admin_talentos]  
+    Permissions:    [permiso_usuarios]
+  User_admin_manuel2:
+    first_name:     Nayeli
+    last_name:      
+    email_address:  nayeli@jerryml.com
+    username:       nayeli
+    password:       nayeli
+    is_super_admin: false
+    Groups:         [grupo_cotizaciones,grupo_admin_clientes,grupo_admin_talentos]  
+    Permissions:    [permiso_usuarios]
+  User_admin_manuel3:
+    first_name:     Alma
+    last_name:      
+    email_address:  alma@jerryml.com
+    username:       alma
+    password:       alma
+    is_super_admin: false
+    Groups:         [grupo_cotizaciones,grupo_admin_clientes,grupo_admin_talentos]  
+    Permissions:    [permiso_usuarios]  
+    
 
 sfGuardGroup:
   grupo_admin:

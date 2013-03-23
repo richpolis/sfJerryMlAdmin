@@ -3,7 +3,7 @@
 <?php use_helper('Number') ?>
 <?php include_partial('precotizaciones/assets') ?>
 <div>
-    <a class="button" href="javascript:void(0);" id="pdf">Generar PDF</a>
+    <a class="generarPDF" href="javascript:void(0);" id="pdf">Generar PDF</a>
 </div>
 <div  style="width:100%; height: 30px;">
           
@@ -11,6 +11,8 @@
 <?php echo include_partial('vistaPrevia', array('precotizaciones'=>$precotizaciones,'detalles_precotizacion'=>$detalles_precotizacion))?>
 <script>
     $(document).ready(function(){
+         $('#pdf').button();
+        
         $('#pdf').click(function(){
             var f = document.createElement('form');
             f.style.display = 'none';

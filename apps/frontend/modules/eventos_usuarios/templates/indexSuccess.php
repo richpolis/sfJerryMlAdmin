@@ -165,7 +165,7 @@ $(document).ready(function() {
   var op = {
     view: view,
     theme:<?php echo $theme?>,
-    showday: new Date(),
+    showday: new Date('<?php echo $showdate?>'),
     EditCmdhandler:Edit,
     DeleteCmdhandler:Delete,
     ViewCmdhandler:View,

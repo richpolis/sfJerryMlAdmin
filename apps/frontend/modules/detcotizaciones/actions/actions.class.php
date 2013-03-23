@@ -23,7 +23,7 @@ class detcotizacionesActions extends sfActions
     $this->forward404Unless($this->detalles_cotizacion);
     if($request->isXmlHttpRequest()){
         try{
-           return $this->renderPartial('detcotizaciones/show', array('detalles_cotizacion' => $this->detalles_cotizacion));
+           return $this->renderPartial('detcotizaciones/show', array('detalles_cotizacion' => $this->detalles_cotizacion,"sin_div"=>true));
        } catch(Exception $e){
            throw $e->getMessage();
        }
@@ -95,12 +95,13 @@ class detcotizacionesActions extends sfActions
 
     //$this->forward404Unless($detalles_cotizacion = Doctrine_Core::getTable('DetallesCotizacion')->find(array($request->getParameter('id'))), sprintf('Object detalles_cotizacion does not exist (%s).', $request->getParameter('id')));
     $arreglo= $request->getParameter('detalles_cotizacion'); 
-      
-    $detalles_cotizacion = Doctrine_Core::getTable('DetallesCotizacion')->find($arreglo['id']);  
+    $dc = Doctrine_Core::getTable('DetallesCotizacion')->find($arreglo['id']);  
+    $cotizacion=$dc->getCotizaciones();
     
-    $cotizacion=$detalles_cotizacion->getCotizaciones();
-    
-    $resp=$detalles_cotizacion->delete();
+    $conn = Doctrine_Manager::getInstance()->getCurrentConnection();
+    $conn->beginTransaction();
+    $resp=$dc->delete();
+    $conn->commit();
 
     if($request->isXmlHttpRequest()){
       if($resp){
@@ -120,9 +121,13 @@ class detcotizacionesActions extends sfActions
     $form->bind($request->getParameter($form->getName()), $request->getFiles($form->getName()));
     if ($form->isValid())
     {
-      $detalles_cotizacion = $form->save();
+      $conn = Doctrine_Manager::getInstance()->getCurrentConnection();
+      $conn->beginTransaction();
+      $dc = $form->save();
+      $dc->getCotizaciones()->calcular();
+      $conn->commit();
       
-      return $detalles_cotizacion;
+      return $dc;
       
     }else{
         return null;
@@ -134,11 +139,7 @@ class detcotizacionesActions extends sfActions
     $arreglo=$request->getParameter('detalles_cotizacion');  
     $this->precio=$arreglo['precio'];
     $this->margen_jerry_ml=$arreglo['margen_jerry_ml'];
-    if(isset($arreglo['margen_comisionista'])){
-        $this->margen_comisionista=$arreglo['margen_comisionista'];
-    }else{
-        $this->margen_comisionista=0;
-    }
+    $this->margen_comisionistas=$arreglo['margen_comisionistas'];
     
    
     if($request->isXmlHttpRequest()){
@@ -146,11 +147,27 @@ class detcotizacionesActions extends sfActions
           return $this->renderPartial('calculo', array(
               'precio' => $this->precio,
               'margen_jerry_ml' => $this->margen_jerry_ml,
-              'margen_comisionista' => $this->margen_comisionista
+              'margen_comisionistas' => $this->margen_comisionistas
                   ));
        } catch(Exception $e){
           throw $e->getMessage();
        }
     }
   }
+  
+  public function executeInactivarShowPayTalento(sfWebRequest $request){
+        if($request->hasParameter('id')){
+            $dc=  Doctrine_Core::getTable("DetallesCotizacion")->findOneBy('id',$request->getParameter('id'));
+            if(!$dc==null){
+                $dc->setIsShowPayTalento(false);
+                $dc->save();
+                if($request->isXmlHttpRequest()){
+                    return $this->renderText("ok");
+                }else{
+                    $this->redirect("@facturas");
+                }
+            }
+        }
+  }
+  
 }

@@ -10,10 +10,17 @@ use_javascripts_for_form($form);
 <input type="hidden" name="sf_method" value="put" />
 <?php endif; ?>
   <table>
-    
+    <tfoot>
+      <tr>
+        <td colspan="2">
+          <?php echo $form->renderHiddenFields(false) ?>
+         
+        </td>
+      </tr>
+    </tfoot>
     <tbody>
       <?php echo $form->renderGlobalErrors() ?>
-      <?php if(!$form["talento_id"]->isHidden()):?>  
+      <?php if($form->getObject()->getTalentoId()==0):?>  
       <tr>
         <th><?php echo $form['talento_id']->renderLabel() ?></th>
         <td>
@@ -29,7 +36,8 @@ use_javascripts_for_form($form);
         </td>
       </tr>
       
-      <?php endif;?>    
+      <?php endif;?>  
+        
       <tr>
         <th><?php echo $form['subject']->renderLabel() ?></th>
         <td>
@@ -62,7 +70,77 @@ use_javascripts_for_form($form);
         <th><?php echo $form['is_all_day_event']->renderLabel() ?></th>
         <td>
           <?php echo $form['is_all_day_event']->renderError() ?>
-          <?php echo $form['is_all_day_event']->render(Array("id" => "IsAllDayEvent")) ?>
+          <?php echo $form['is_all_day_event'] ?>
+        </td>
+      </tr>
+      <tr>
+        <th><?php echo $form['lugar_evento']->renderLabel() ?></th>
+        <td>
+          <?php echo $form['lugar_evento']->renderError() ?>
+          <?php echo $form['lugar_evento'] ?>
+        </td>
+      </tr>
+      <tr>
+        <th><?php echo $form['calle']->renderLabel() ?></th>
+        <td>
+          <?php echo $form['calle']->renderError() ?>
+          <?php echo $form['calle'] ?>
+        </td>
+      </tr>
+      <tr>
+        <th><?php echo $form['numero_exterior']->renderLabel() ?></th>
+        <td>
+          <?php echo $form['numero_exterior']->renderError() ?>
+          <?php echo $form['numero_exterior'] ?>
+        </td>
+      </tr>
+      <tr>
+        <th><?php echo $form['numero_interior']->renderLabel() ?></th>
+        <td>
+          <?php echo $form['numero_interior']->renderError() ?>
+          <?php echo $form['numero_interior'] ?>
+        </td>
+      </tr>
+      <tr>
+        <th><?php echo $form['colonia']->renderLabel() ?></th>
+        <td>
+          <?php echo $form['colonia']->renderError() ?>
+          <?php echo $form['colonia'] ?>
+        </td>
+      </tr>
+      <tr>
+        <th><?php echo $form['codigo_postal']->renderLabel() ?></th>
+        <td>
+          <?php echo $form['codigo_postal']->renderError() ?>
+          <?php echo $form['codigo_postal'] ?>
+        </td>
+      </tr>
+      <tr>
+        <th><?php echo $form['cuidad']->renderLabel() ?></th>
+        <td>
+          <?php echo $form['cuidad']->renderError() ?>
+          <?php echo $form['cuidad'] ?>
+        </td>
+      </tr>
+      <tr>
+        <th><?php echo $form['municipio']->renderLabel() ?></th>
+        <td>
+          <?php echo $form['municipio']->renderError() ?>
+          <?php echo $form['municipio'] ?>
+        </td>
+      </tr>
+      <tr>
+        <th><?php echo $form['estado']->renderLabel() ?></th>
+        <td>
+          <?php echo $form['estado']->renderError() ?>
+          <?php echo $form['estado'] ?>
+        </td>
+      </tr>
+      <tr>
+        <th><?php echo $form['pais']->renderLabel() ?></th>
+        <td>
+          <?php echo $form['pais']->renderError() ?>
+          <?php echo $form['pais'] ?>
         </td>
       </tr>
     </tbody>
