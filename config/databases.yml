@@ -14,6 +14,6 @@ all:
   doctrine:
     class: sfDoctrineDatabase
     param:
-      dsn:      mysql:host=localhost;dbname=sfjerrymladmin
+      dsn:      mysql:host=localhost;dbname=sfjerrymladmin5
       username: root
       password: root

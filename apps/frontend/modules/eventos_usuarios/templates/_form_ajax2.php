@@ -12,11 +12,17 @@
     <script src="/ksWdCalendarPlugin/js/wdCalendar/Common.js" type="text/javascript"></script>        
     <script src="/ksWdCalendarPlugin/js/wdCalendar/jquery.form.js" type="text/javascript"></script>     
     <script src="/ksWdCalendarPlugin/js/wdCalendar/jquery.validate.js" type="text/javascript"></script>     
-    <script src="/ksWdCalendarPlugsf_calendar_url_add_detailin/js/wdCalendar/datepicker_lang_US.js" type="text/javascript"></script>        
+    <script src="/ksWdCalendarPlugin/js/wdCalendar/datepicker_lang_US.js" type="text/javascript"></script>        
     <script src="/ksWdCalendarPlugin/js/wdCalendar/jquery.datepicker.js" type="text/javascript"></script>     
     <script src="/ksWdCalendarPlugin/js/wdCalendar/jquery.dropdown.js" type="text/javascript"></script>     
     <script src="/ksWdCalendarPlugin/js/wdCalendar/jquery.colorselect.js" type="text/javascript"></script>    
-     
+    
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/jquery-ui-1.8.9.custom.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/jquery-ui-timepicker-addon.css" />
+    <script type="text/javascript" src="/js/jquery-ui-1.8.13.custom.min.js"></script>
+    <script type="text/javascript" src="/js/jquery-ui-timepicker-addon.js"></script>
+    
+    
     <script type="text/javascript">
         if (!DateAdd || typeof (DateDiff) != "function") {
             var DateAdd = function(interval, number, idate) {
@@ -92,8 +98,8 @@
             $("#Closebtn").click(function() { CloseModelWindow(); });
             $("#Deletebtn").click(function() {
                  if (confirm("Are you sure to remove this event")) {  
-                    var param = [{ "name": "calendarId", id: <?php echo $form->getObject()->getId()?>}];                
-                    $.post("<?php echo url_for("eventos_usuarios/delete")?>",
+                    var param = [{ "name": "calendarId", value: 8}];                
+                    $.post(DATA_FEED_URL + "?method=remove",
                         param,
                         function(data){
                               if (data.IsSuccess) {
@@ -165,9 +171,10 @@
         height:16px;     
         border:none;        
         cursor:pointer;        
-        background:url("/images/calendar.gif") no-repeat center 2px;        
+        background:url("sample-css/cal.gif") no-repeat center 2px;        
         margin-left:-22px;    
     }      
+
     </style>
   </head>
   <body>  
@@ -186,43 +193,78 @@
       <div style="clear: both">         
       </div>        
       <div class="infocontainer">            
-        <form action="<?php echo url_for('eventos_usuarios/'.($form->getObject()->isNew() ? 'create' : 'update').(!$form->getObject()->isNew() ? '?id='.$form->getObject()->getId() : '')) ?>" class="fform" id="fmEdit" method="post">                 
-          <label>                    
-            <span>                        *Asunto:              
-            </span>                    
-            <div id="calendarcolor">
-            </div>
-            <input MaxLength="200" class="required safe" id="Subject" name="Subject" style="width:85%;" type="text" value="" />                     
-            <input id="colorvalue" name="colorvalue" type="hidden" value="" />                
-          </label>                 
-          <label>                    
-            <span>*Time:
-            </span>                    
-            <div>  
-                                  
-              <input MaxLength="10" class="required date" id="stpartdate" name="stpartdate" style="padding-left:2px;width:90px;" type="text" value="" />                       
-              <input MaxLength="5" class="required time" id="stparttime" name="stparttime" style="width:40px;" type="text" value="" />To                       
-              <input MaxLength="10" class="required date" id="etpartdate" name="etpartdate" style="padding-left:2px;width:90px;" type="text" value="" />                       
-              <input MaxLength="50" class="required time" id="etparttime" name="etparttime" style="width:40px;" type="text" value="" />                                            
-              <label class="checkp"> 
-                <input id="IsAllDayEvent" name="IsAllDayEvent" type="checkbox" value="1" />          All Day Event                      
-              </label>                    
-            </div>                
-          </label>                 
-          <label>                    
-            <span>                        Location:
-            </span>                    
-            <input MaxLength="200" id="Location" name="Location" style="width:95%;" type="text" value="" />                 
-          </label>                 
-          <label>                    
-            <span>                        Remark:
-            </span>                    
-<textarea cols="20" id="Description" name="Description" rows="2" style="width:95%; height:70px">
-</textarea>                
-          </label>                
-          <input id="timezone" name="timezone" type="hidden" value="" />           
+        <form action="<?php echo url_for('eventos_usuarios/'.($form->getObject()->isNew() ? 'createAjax' : 'updateAjax').(!$form->getObject()->isNew() ? '?id='.$form->getObject()->getId() : '')) ?>" class="fform" id="fmEdit" method="post">                 
+          <?php echo $form->renderHiddenFields(false) ?>
+        <?php if (!$form->getObject()->isNew()): ?>
+        <input type="hidden" name="sf_method" value="put" />
+        <?php endif; ?>
+          <table>
+
+            <tbody>
+              <?php echo $form->renderGlobalErrors() ?>
+              <?php if(!$form["user_id"]->isHidden()):?>  
+              <tr>
+                <th><?php echo $form['user_id']->renderLabel() ?></th>
+                <td>
+                  <?php echo $form['user_id']->renderError() ?>
+                  <?php echo $form['user_id'] ?>
+                </td>
+              </tr>
+              <?php else: ?>
+              <tr>
+                <th>Usuario</th>
+                <td>
+                  <?php if($form->getObject()->getUserId()):?>
+                    <?php $usuario=Doctrine_Core::getTable("sfGuardUser")->find($form->getObject()->getUserId());?>
+                  <?php else: ?>
+                    <?php $usuario=$form->getObject()->getUser();?>
+                  <?php endif;?>
+                 <?php echo $usuario; ?>
+                </td>
+              </tr>
+
+              <?php endif;?>    
+              <tr>
+                <th><?php echo $form['subject']->renderLabel() ?></th>
+                <td>
+                  <?php echo $form['subject']->renderError() ?>
+                  <?php echo $form['subject'] ?>
+                </td>
+              </tr>
+              <tr>
+                <th><?php echo $form['description']->renderLabel() ?></th>
+                <td>
+                  <?php echo $form['description']->renderError() ?>
+                  <?php echo $form['description'] ?>
+                </td>
+              </tr>
+              <tr>
+                <th><?php echo $form['start_time']->renderLabel() ?></th>
+                <td>
+                  <?php echo $form['start_time']->renderError() ?>
+                  <?php echo $form['start_time'] ?>
+                </td>
+              </tr>
+              <tr>
+                <th><?php echo $form['end_time']->renderLabel() ?></th>
+                <td>
+                  <?php echo $form['end_time']->renderError() ?>
+                  <?php echo $form['end_time'] ?>
+                </td>
+              </tr>
+              <tr>
+                <th><?php echo $form['is_all_day_event']->renderLabel() ?></th>
+                <td>
+                  <?php echo $form['is_all_day_event']->renderError() ?>
+                  <?php echo $form['is_all_day_event']->render(Array("id" => "IsAllDayEvent")) ?>
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
         </form>         
       </div>         
     </div>
   </body>
 </html>
+

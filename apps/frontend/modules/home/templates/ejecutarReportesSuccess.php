@@ -13,7 +13,7 @@
   </div>
     <div class="contenedor-reporte">
         <h1 style="text-align: center"><?php echo __('Reporte Jerry ML', array(), 'messages') ?></h1>
-        <p style="text-align: center; font-size: x-small; font-weight: bold;"><?php echo date("d/M/Y",  strtotime($desde))?> - <?php echo date("d/M/Y",  strtotime($hasta))?></p>
+        <p style="text-align: center; font-size: x-small; font-weight: bold;"><?php echo date("d/m/Y",  strtotime($desde))?> - <?php echo date("d/m/Y",  strtotime($hasta))?></p>
       
     
         <?php if($tipo=="jerryml"):?>
@@ -24,6 +24,8 @@
             <?php include_partial('reportePagosClientes', array("clientes"=>$clientes)) ?>
         <?php elseif($tipo=="jerryml-por-concepto"):?>
             <?php include_partial('reportePagosJerrymlPorConcepto', array("dccs"=>$dccs)) ?>
+        <?php elseif($tipo=="talentos-por-concepto"):?>
+            <?php include_partial('reportePagosTalentosPorConcepto', array("talentos"=>$talentos)) ?>
         <?php endif;?>
     </div>
   <div style="clear: both;"></div>
@@ -32,7 +34,7 @@
   </div>
 </div>
 <div style="width:100%; height: 30px;">
-    <a class="button" href="javascript:void(0);" id="pdf">Generar PDF</a>
+    <a class="button" href="javascript:void(0);" id="pdf" target="_blank">Generar PDF</a>
     <a class="button" href="javascript:void(0);" id="excel">Generar Excel</a>
 </div>
 <script>

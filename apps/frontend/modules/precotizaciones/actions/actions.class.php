@@ -22,7 +22,7 @@ class precotizacionesActions extends autoPrecotizacionesActions
         ProjectConfiguration::registerMPDF();
         $html = $request->getPostParameter('html');
         
-        $mpdf = new mPDF('es_ES','Letter','','',32,25,27,25,16,13);
+        $mpdf = new mPDF('es_ES','Letter','12px','Arial',15,15,15,15,16,13);
         $mpdf->useOnlyCoreFonts = true;
 
         // load a stylesheet
@@ -36,7 +36,7 @@ class precotizacionesActions extends autoPrecotizacionesActions
     protected function generarPdf($precotizacion,$html) {
         ProjectConfiguration::registerMPDF();
         
-        $mpdf = new mPDF('es_ES','Letter','','',32,25,27,25,16,13);
+        $mpdf = new mPDF('es_ES','Letter','12px','Arial',15,15,15,15,16,13);
         $mpdf->useOnlyCoreFonts = true;
 
         $mpdf->WriteHTML($html,2);
@@ -184,7 +184,8 @@ class precotizacionesActions extends autoPrecotizacionesActions
         $this->form=$this->crearFormulario($this->precotizaciones);
     }
     public function executeShow(sfWebRequest $request) {
-        $this->precotizaciones = $this->getRoute()->getObject();
+        //$this->precotizaciones = $this->getRoute()->getObject();
+        $this->precotizaciones=  Doctrine_Core::getTable('Precotizaciones')->getPrecotizacionConClienteTalentoDetallesForId($request->getParameter('id'));
         
         if(count($this->getUser()->getTalentos())>0){
             $talentos=  Doctrine_Core::getTable('Talentos')->getTalentosPorArreglo($this->getUser()->getTalentos());

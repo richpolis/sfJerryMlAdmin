@@ -22,7 +22,7 @@ generator:
         lugar_evento: {label: Lugar del Evento}
         inicia_evento: { label: Inicia, date_format: 'DD-MM-YYYY HH24:MI:SS' }
         termina_evento: { label: Termina, date_format: 'DD-MM-YYYY HH24:MI:SS' }
-        precotizaciones_by_cliente: {label: Cliente, help: Razon social o RFC }
+        precotizaciones_by_cliente: {label: Cliente, help: Nombre Empresa o RFC }
         precotizaciones_by_contacto: {label: Contacto, help: Nombre o apellidos }
         pdf: {label: Archivo }
         is_active: {label: Mostrar en Dashboard }
@@ -47,12 +47,14 @@ generator:
       edit: 
         title: Editar Pre-Cotizacion %%evento%%
         display:
+          Empresa:     [empresa_id]
           Cliente:     [_cliente_contacto]
           Evento:      [evento,lugar_evento,inicia_evento,termina_evento]
           Descripcion: [descripcion,actividad_general,is_active]
       new:
         title: Crear Pre-Cotizacion
         display:
+          Empresa:     [empresa_id]
           Cliente:     [_cliente_contacto]
           Evento:      [evento,lugar_evento,inicia_evento,termina_evento]
           Descripcion: [descripcion,actividad_general,is_active]

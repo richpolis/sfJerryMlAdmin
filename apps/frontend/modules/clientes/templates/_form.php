@@ -5,7 +5,7 @@
 <?php if(!isset($ajax)) $ajax=false; ?>
 
 <div class="sf_admin_form">
-  <p class="validateTips" style="border: 1px solid transparent; padding: 0.3em;display: none;">Razon Social es campo requerido.</p>
+  <p class="validateTips" style="border: 1px solid transparent; padding: 0.3em;display: none;">"Nombre empresa" es campo requerido.</p>
   <?php echo form_tag_for($form, '@clientes') ?>
     <?php echo $form->renderHiddenFields(false) ?>
 

@@ -19,18 +19,25 @@ class DetallesCotizacion extends BaseDetallesCotizacion
         //$this->save();
         return $this->getSubtotal()+$this->getIva();
     }
+
+    public function getSubtotal(){
+        return $this->getPrecio();
+    }
+    public function setSubtotal($valor){
+        $this->setPrecio($valor);
+    }
+
     public function save(\Doctrine_Connection $conn = null) {
         
         if($this->getPrecio()){
             $precio=$this->getPrecio();
-            $gananciaJerryml=$precio*($this->getMargenJerryMl()/100);
-            $gananciaTalento=$precio-$gananciaJerryml;
-            $gananciaComisionista=$gananciaJerryml*($this->getMargenComisionista()/100);
+            $gananciaJerryMl=$precio*($this->getMargenJerryMl()/100);
+            $gananciaTalento=$precio-$gananciaJerryMl;
+            $gananciaComisionista=$gananciaTalento*($this->getMargenComisionistas()/100);
             $this->setGananciaTalento($gananciaTalento);
-            $this->setGananciaJerryml($gananciaJerryml);
-            $this->setGananciaComisionista($gananciaComisionista);
-            $this->setSubtotal($precio);
-            $this->setIva($this->getSubtotal() * CotizacionesTable::$IVA);
+            $this->setGananciaJerryMl($gananciaJerryMl);
+            $this->setGananciaComisionistas($gananciaComisionista);
+            $this->setIva($precio * CotizacionesTable::$IVA);
         }
         
         if(!$this->getPosition()){
@@ -39,9 +46,14 @@ class DetallesCotizacion extends BaseDetallesCotizacion
         
         parent::save($conn);
         
-        $cotizacion=$this->getCotizaciones();
-        $cotizacion->calcular();
+        //$cotizacion=$this->getCotizaciones();
+        //$cotizacion->calcular();
     }
+    
+    public function getGananciaTalentoReal(){
+        return $this->getGananciaTalento()-$this->getGananciaComisionistas();
+    }
+    
     public function getPrecioConIva(){
         return $this->getPrecio() * CotizacionesTable::$CON_IVA;
     }
@@ -71,21 +83,17 @@ class DetallesCotizacion extends BaseDetallesCotizacion
     public function delete(\Doctrine_Connection $conn = null) {
         
         if($this->validarCancelarAprobacion()){
-            $ces=Doctrine_Core::getTable('CotizacionesEventos')->getCotizacionesEventosPorCotizacionYTalento($this->getCotizacionId(),$this->getTalentoId());
-            foreach($ces as $ce){
-               $evento=$ce->getEventos();
-               $evento->setSubject("Evento disponible");
-               $evento->setDescription("Evento disponible o eliminar");
-               $evento->setStatus(KsWCEventTable::$DISPONIBLE);
-               $evento->save();
-               $ce->delete();
+            $eventos=$this->getEventos();
+            foreach($eventos as $evento){
+               $evento->delete();
             }
-            foreach($this->getDetallesPagosTalentos() as $dpt){
-                $dpt->delete();
-            }
+            
             foreach($this->getDetallesCotizacionConceptos() as $dcc){
                 $dcc->delete();
-            }  
+            }
+            foreach($this->getDetallesCotizacionComisionistas() as $dcco){
+                $dcco->delete();
+            }
             parent::delete($conn);
             return true;
         }else{
@@ -97,11 +105,117 @@ class DetallesCotizacion extends BaseDetallesCotizacion
         if($calcular){
             $dccs=$this->getDetallesCotizacionConceptos();
             $precio=0;
+            $precioInicial=$this->getPrecio();
             foreach ($dccs as $dcc){
                 $precio+=$dcc->getPrecio();
             }
             $this->setPrecio($precio);
+
+            if($precioInicial!=$precio){
+                $this->calcularComisionistas();    
+            }else{
+                $this->save();
+            }
+            
+        }
+    }
+
+    public function calcularComisionistas($calcular=true){
+        if($calcular){
+            $dccos=$this->getDetallesCotizacionComisionistas();
+            $margen=0;
+            $margenTotal=0;
+            $gananciaJerryMl=($this->getPrecio()*($this->getMargenJerryMl()/100));
+            $gananciaTalento=($this->getPrecio()-$gananciaJerryMl);
+            
+
+            foreach ($dccos as $dcco){
+                $margen=$dcco->getMargen();
+                $dcco->setGanancia($gananciaTalento*($margen/100));    
+                $dcco->saveOnly();
+                $margenTotal+=$margen;
+            }
+            $this->setMargenComisionistas($margenTotal);
             $this->save();
         }
     }
+    
+    public function actualizarEventosDesdeCotizacion(
+            DateTime $dateInicial,
+            DateTime $dateFinal, 
+            Cotizaciones $cot,
+            DetallesCotizacion $dc) {
+        $existeEvento = false;
+        try {
+            $eventos = KsWCEventTable::getInstance()->getEventosPorFechaYTalento(
+                    $dateInicial->format("Y-m-d"), $dateFinal->format("Y-m-d"), $dc->getTalentoId()
+            );
+        } catch (PDOException $e) {
+            $eventos = array();
+        }
+
+        foreach ($dc->getEventos() as $evento) {
+            if ($evento->getNivel() == CotizacionesTable::$NIVEL_COTIZACION) {
+                $existeEvento = true;
+                $evento1 = $evento;
+                break;
+            } elseif ($evento->getStartTime() == $this->getFechaDesde()) {
+                $existeEvento = true;
+                $evento1 = $evento;
+                break;
+            }
+        }
+        if (!$existeEvento) {
+            $existeEventoApartado = false;
+            $contEventosDisponibles = 0;
+            foreach ($eventos as $e) {
+                if ($e->getStatus() == KsWcEventTable::$APARTADO) {
+                    $existeEventoApartado = true;
+                } else {
+                    $contEventosDisponibles++;
+                }
+            }
+            if (count($eventos) == $contEventosDisponibles) {
+                $evento1 = new KsWCEvent();
+                $evento1->crearEventoDesdeCotizacion($cot, $dc);
+            }
+        } else {
+            $evento1->actualizarEventoDesdeCotizacion($cot);
+        }
+    }
+    
+    public function getConceptosString() {
+        $dccs = $this->getDetallesCotizacionConceptos();
+        $sConceptos = "";
+        foreach ($dccs as $dcc) {
+            if(strlen($sConceptos)>0){
+                $sConceptos.=', '.$dcc->getConceptos();
+            }else{
+                $sConceptos.=$dcc->getConceptos();
+            }
+        }
+        return $sConceptos;
+    }
+    public function getTalentosArray(){
+        return array($this->getTalentos());
+    }
+    public function getComisionistasArray(){
+        $arreglo=array();
+        foreach($this->getDetallesCotizacionComisionistas() as $dcco){
+            $arreglo[]=$dcco->getComisionistas();
+        }
+        return $arreglo;
+    }
+    public function getComisionistasString(){
+        $sComisionista="";
+        foreach($this->getDetallesCotizacionComisionistas() as $dcco){
+            if(strlen($sComisionista)>0){
+                $sComisionista.=', '.$dcco->getComisionistas();
+            }else{
+                $sComisionista.=$dcco->getComisionistas();
+            }
+        }
+        return $sComisionista;
+    }
+    
 }

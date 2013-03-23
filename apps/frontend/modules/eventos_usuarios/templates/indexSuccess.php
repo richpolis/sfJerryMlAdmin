@@ -15,11 +15,6 @@ use_stylesheet('/ksWdCalendarPlugin/css/calendar.css');
 use_stylesheet('/ksWdCalendarPlugin/css/alert.css');
 //use_stylesheet('colorselect.css');
 
-
-//use_stylesheet('jquery-ui-1.8.9.custom.css');
-use_stylesheet('jquery-ui-timepicker-addon.css');
-
-
 /*
   use_javascript('http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js');
   use_javascript("https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/jquery-ui.min.js");
@@ -39,8 +34,7 @@ use_javascript("/ksWdCalendarPlugin/js/wdCalendar/wdCalendar_lang_" . $arrayCult
 use_javascript("/ksWdCalendarPlugin/js/wdCalendar/jquery.calendar.js");
 //use_javascript("/ksWdCalendarPlugin/js/wdCalendar/index.js");
 include_partial('jsVars');
-//use_javascript('jquery-ui-1.8.9.custom.min.js');
-use_javascript('jquery-ui-timepicker-addon.js');
+
 ?>
 <div>
 
@@ -165,7 +159,7 @@ $(document).ready(function() {
   var op = {
     view: view,
     theme:<?php echo $theme?>,
-    showday: new Date(),
+    showday: new Date('<?php echo $showdate?>'),
     EditCmdhandler:Edit,
     DeleteCmdhandler:Delete,
     ViewCmdhandler:View,
@@ -244,18 +238,29 @@ $(document).ready(function() {
   function Edit(data)
   {
     //var eurl=sf_calendar_url_edit + "?id={0}&start={2}&end={3}&isallday={4}&title={1}";
-    var eurl= "?id={0}&start={2}&end={3}&isallday={4}&title={1}";
+    var eurl= sf_calendar_url_edit + "?id={0}&start={2}&end={3}&isallday={4}&title={1}";
     if (data) {
       var url = StrFormat(eurl,data);
       //alert(url);
-      //OpenModelWindow(url,{ width: 600, height: 400, caption:sf_calendar_manage,onclose:function(){
-      //  $("#gridcontainer").reload();
-      //}});
-      editarEvento(url);
+      OpenModelWindow(url,{ width: 500, height: 600, caption:sf_calendar_manage,onclose:function(){
+        $("#gridcontainer").reload();
+      }});
+      //editarEvento(url);
     }
   }
   
   function View(data)
+  {
+    var eurl= sf_calendar_url_show + "?id={0}&start={2}&end={3}&isallday={4}&title={1}";
+    if (data) {
+      var url = StrFormat(eurl,data);
+      OpenModelWindow(url,{ width: 600, height: 400, caption:sf_calendar_manage,onclose:function(){
+        $("#gridcontainer").reload();
+      }});
+    }
+  }
+  
+  function View2(data)
   {
     var str = "";
     $.each(data, function(i, item){
@@ -330,7 +335,13 @@ $(document).ready(function() {
   
   //Add a new event
   $("#faddbtn").click(function(e) {
-    //var url=sf_calendar_url_edit;
+    var url=sf_calendar_url_edit;
+    OpenModelWindow(url,{ width: 400, height: 600, caption: sf_calendar_create});
+  });
+  
+  //Add a new event
+  $("#faddbtn2").click(function(e) {
+    //var url=sf_calendar_url_add;
     //OpenModelWindow(url,{ width: 500, height: 400, caption: sf_calendar_create});
     <?php if($sf_user->getCalendarUsuarioId()>0): ?>
        var usuario='<?php echo $sf_user->getCalendarUsuarioId();?>';
@@ -340,7 +351,6 @@ $(document).ready(function() {
       crearEvento(usuario);  
         
   });
-  
   //go to today
   $("#showtodaybtn").click(function(e) {
     var p = $("#gridcontainer").gotoDate().BcalGetOp();

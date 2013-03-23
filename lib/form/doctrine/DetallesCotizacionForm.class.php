@@ -15,12 +15,12 @@ class DetallesCotizacionForm extends BaseDetallesCotizacionForm
           unset($this['created_at'], $this['updated_at']);
           $this->widgetSchema['position'] = new sfWidgetFormInputHidden();
           $this->widgetSchema['is_active'] = new sfWidgetFormInputHidden();
-          $this->widgetSchema['subtotal'] = new sfWidgetFormInputHidden();
           $this->widgetSchema['iva'] = new sfWidgetFormInputHidden();
           $this->widgetSchema['cotizacion_id'] = new sfWidgetFormInputHidden();
           $this->widgetSchema['talento_id'] = new sfWidgetFormInputHidden();
           $this->widgetSchema['actividad'] = new sfWidgetFormInputHidden();
           $this->validatorSchema['precio']=new sfValidatorNumber();
           $this->widgetSchema['is_pay_talento'] = new sfWidgetFormInputHidden();
+          $this->widgetSchema['monto_pagado_talento'] = new sfWidgetFormInputHidden();
   }
 }

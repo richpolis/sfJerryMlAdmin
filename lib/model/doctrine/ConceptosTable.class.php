@@ -16,4 +16,45 @@ class ConceptosTable extends Doctrine_Table
     {
         return Doctrine_Core::getTable('Conceptos');
     }
+    public function getCriteriaOrdenada(){
+        $q=Doctrine_Query::create()
+           ->from('Conceptos concepto')
+           ->orderBy('concepto.concepto asc');
+        return $q;
+    }
+    public function getCriteriaOrdenadaPorActualizacion(){
+        $q=Doctrine_Query::create()
+                ->from('Conceptos concepto')
+                ->orderBy('concepto.updated_at DESC');
+        return $q;
+    }
+    public function getCriteriaFiltrarPorDetalleCotizacion($id){
+        $q=$this->getCriteriaOrdenada();
+        $rootAlias = $q->getRootAlias();
+        $q->addWhere($rootAlias .'.id NOT IN (
+            SELECT dcc.concepto_id 
+            FROM DetallesCotizacionConceptos dcc
+            WHERE dcc.detalles_cotizacion_id=?)', $id);     
+        return $q;
+    }
+    
+    public function getCriteriaFiltrarPorCotizacion($id){
+        $q=$this->getCriteriaOrdenada();
+        $rootAlias = $q->getRootAlias();
+        $q->addWhere($rootAlias .'.id NOT IN (
+            SELECT cotc.concepto_id 
+            FROM CotizacionesConceptos cotc
+            WHERE cotc.cotizacion_id=?)', $id);     
+        return $q;
+    }
+    
+    public function getCountFiltrarPorDetalleCotizacion($id){
+        $q=$this->getCriteriaFiltrarPorDetalleCotizacion($id);
+        return $registros=$q->count();
+    }
+    
+    public function getCountFiltrarPorCotizacion($id){
+        $q=$this->getCriteriaFiltrarPorCotizacion($id);
+        return $registros=$q->count();
+    }
 }

@@ -8,17 +8,20 @@
  * @property integer $detalles_cotizacion_id
  * @property integer $concepto_id
  * @property double $precio
+ * @property integer $nivel
  * @property DetallesCotizacion $DetallesCotizacion
  * @property Conceptos $Conceptos
  * 
  * @method integer                     getDetallesCotizacionId()   Returns the current record's "detalles_cotizacion_id" value
  * @method integer                     getConceptoId()             Returns the current record's "concepto_id" value
  * @method double                      getPrecio()                 Returns the current record's "precio" value
+ * @method integer                     getNivel()                  Returns the current record's "nivel" value
  * @method DetallesCotizacion          getDetallesCotizacion()     Returns the current record's "DetallesCotizacion" value
  * @method Conceptos                   getConceptos()              Returns the current record's "Conceptos" value
  * @method DetallesCotizacionConceptos setDetallesCotizacionId()   Sets the current record's "detalles_cotizacion_id" value
  * @method DetallesCotizacionConceptos setConceptoId()             Sets the current record's "concepto_id" value
  * @method DetallesCotizacionConceptos setPrecio()                 Sets the current record's "precio" value
+ * @method DetallesCotizacionConceptos setNivel()                  Sets the current record's "nivel" value
  * @method DetallesCotizacionConceptos setDetallesCotizacion()     Sets the current record's "DetallesCotizacion" value
  * @method DetallesCotizacionConceptos setConceptos()              Sets the current record's "Conceptos" value
  * 
@@ -40,7 +43,19 @@ abstract class BaseDetallesCotizacionConceptos extends sfDoctrineRecord
              ));
         $this->hasColumn('precio', 'double', null, array(
              'type' => 'double',
+             'notnull' => false,
              'default' => 0,
+             ));
+        $this->hasColumn('nivel', 'integer', 1, array(
+             'type' => 'integer',
+             'notnull' => false,
+             'default' => 1,
+             'length' => 1,
+             ));
+
+        $this->option('symfony', array(
+             'form' => true,
+             'filter' => false,
              ));
     }
 

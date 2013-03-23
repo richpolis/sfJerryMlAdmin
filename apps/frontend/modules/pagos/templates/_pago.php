@@ -15,7 +15,7 @@
                     <?php echo $pagos->getReferencia()?>
                 </td>
                 <td>
-                    <label>Lote: </label><br/>
+                    <label>Estado actual: </label><br/>
                     <?php echo ($pagos->getIsCerrado()?"Cerrado":"Abierto")?>
                 </td>
             </tr>

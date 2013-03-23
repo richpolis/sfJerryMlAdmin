@@ -31,3 +31,4 @@ generator:
         title: Editar registro %%seccion%%
       new:     
         title: Nuevo registro
+

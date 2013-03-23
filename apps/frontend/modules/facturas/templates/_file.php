@@ -3,7 +3,7 @@
 <table border="0" width="100%">
     <tr>
         <td>
-            <div class="<?php echo "sf_contratos" ?><?php $form["file"]->hasError() and print ' errors' ?>">
+            <div class="<?php echo "sf_facturas" ?><?php $form["file"]->hasError() and print ' errors' ?>">
                 <?php echo $form["file"]->renderError() ?>
                 <div>
                   <?php echo $form["file"]->renderLabel("Archivo") ?>
@@ -20,10 +20,10 @@
 
         </td>
         <td>
-            <?php if(file_exists(sfConfig::get('sf_upload_dir').'/contratos/'.$form->getObject()->getFile())):?>
-                <a target="_blank" href="/uploads/contratos/<?php echo $form->getObject()->getFile() ?>" title="Descargar contrato">
+            <?php if(file_exists(sfConfig::get('sf_upload_dir').'/facturas/'.$form->getObject()->getFile())):?>
+                <a target="_blank" href="/uploads/facturas/<?php echo $form->getObject()->getFile() ?>" title="Descargar contrato">
                     <img src="/images/comercializacion/contrato.png" class="thumbnail-pdf" />
-                </a> Contrato actual
+                </a> Factura actual
             <?php else:?>
                 &nbsp;
             <?php endif;?>

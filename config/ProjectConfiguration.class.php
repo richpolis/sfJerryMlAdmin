@@ -41,7 +41,5 @@ class ProjectConfiguration extends sfProjectConfiguration
         $this->enablePlugins('sfFormExtraPlugin');
         $this->enablePlugins('sfImageTransformPlugin');
         $this->enablePlugins('ksWdCalendarPlugin');
-        $this->enablePlugins('laiguFeyaSoftCalendarPlugin');
-
   }
 }

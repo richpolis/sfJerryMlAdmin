@@ -7,7 +7,7 @@
   <div id="reportes-disponibles">
       <ul class="ul-reporte">
           <li class="li-reporte">
-              <input type="button" id="repote-pagos-jerryml" value="Reporte de pagos JerryML por cliente"/>
+              <input type="button" id="repote-pagos-jerryml" value="Reporte de pagos JerryML Global"/>
           </li>
           <li class="li-reporte">
               <input type="button" id="repote-pagos-jerryml-por-concepto" value="Reporte de pagos JerryML por concepto"/>
@@ -15,6 +15,9 @@
           <li class="li-reporte">
               <input type="button" id="repote-pagos-talentos" value="Reporte de pagos Talentos"/>
           </li>
+          <!--li class="li-reporte">
+              <input type="button" id="repote-pagos-talentos-por-concepto" value="Reporte de pagos Talento por concepto"/>
+          </li-->
           <li class="li-reporte">
               <input type="button" id="repote-pagos-clientes" value="Reporte de pagos Clientes"/>
           </li>
@@ -54,6 +57,9 @@
      });
      $("#repote-pagos-jerryml-por-concepto").click(function(){
          $.crearFormulario("jerryml-por-concepto"); 
+     });
+     $("#repote-pagos-talentos-por-concepto").click(function(){
+         $.crearFormulario("talentos-por-concepto"); 
      });
  });   
     

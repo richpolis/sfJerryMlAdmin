@@ -1,12 +1,15 @@
 KsWCEvent:
   columns:
     talento_id:       { type: integer }
+    detalles_cotizacion_id: { type: integer }
+    #1.- detalle, 0.- encabezado
+    nivel:            { type: integer(1), notnull: false , default: 1 }
     subject:          { type: varchar(64), notnull: false }
     description:      { type: string(4000), notnull: false }
     start_time:       { type: timestamp, notnull: false }
     end_time:         { type: timestamp, notnull: false }
     is_all_day_event: { type: boolean, default: false }
-    color:            { type: varchar(10) }
+    color:            { type: varchar(10),default: '3' }
     recurring_rule:   { type: varchar(255) }
     lugar_evento:     { type: string(150), notnull: false }
     calle:            { type: string(150), notnull: false }
@@ -18,19 +21,17 @@ KsWCEvent:
     municipio:        { type: string(150), notnull: false }
     estado:           { type: string(150), notnull: false }
     pais:             { type: string(150), notnull: false }
-    status:            { type: integer(1), notnull: false, default: 0 } 
+    status:           { type: integer(1), notnull: false, default: 0 } 
   relations:
-    Talentos: { local: talento_id, foreign: id, foreignAlias: Eventos }
-    Cotizaciones:
-      class: Cotizaciones
-      refClass: CotizacionesEventos
-      local: cotizacion_id
-      foreign: evento_id
-      foreignAlias: Eventos
+    Talentos:         { local: talento_id, foreign: id, foreignAlias: Eventos }
+    DetallesCotizacion:     { local: detalles_cotizacion_id, foreign: id, foreignAlias: Eventos }
+
 
 EventosUsuarios:
   columns:
     user_id:          { type: integer }
+    cotizacion_id:    { type: integer }
+    nivel:            { type: integer(1), notnull: false , default: 1 }
     subject:          { type: varchar(64), notnull: false }
     description:      { type: string(4000), notnull: false }
     start_time:       { type: timestamp, notnull: false }
@@ -41,3 +42,4 @@ EventosUsuarios:
     status:           { type: integer(1), notnull: false, default: 0 } 
   relations:
     User:  { local: user_id, foreign: id, class: sfGuardUser, foreignAlias: Eventos }
+    Cotizaciones:   { local: cotizacion_id, foreign: id, foreignAlias: EventosUsuarios }

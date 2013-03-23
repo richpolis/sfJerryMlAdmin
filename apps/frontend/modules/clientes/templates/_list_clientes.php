@@ -2,7 +2,7 @@
     <thead>
         <tr>
             <th>ID</th>
-            <th>Razon Social</th>
+            <th>Nombre Empresa</th>
             <th>RFC</th>
             <th>Activo?</th>
             <th>Acciones</th>

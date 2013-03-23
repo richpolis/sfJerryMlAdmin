@@ -16,9 +16,13 @@ class DetallesPagosTalentosForm extends BaseDetallesPagosTalentosForm
       $this->widgetSchema['pagos_talentos_id'] = new sfWidgetFormInputHidden();
       $this->widgetSchema['detalles_cotizacion_id'] = new sfWidgetFormInputHidden();
       $this->widgetSchema['user_id'] = new sfWidgetFormInputHidden();
-      $this->widgetSchema['fecha_pago'] = new sfWidgetFormJQueryDate(array(
+      $this->widgetSchema['fecha_pago'] = new sfWidgetFormInputHidden();
+      $this->widgetSchema['iva'] = new sfWidgetFormInputHidden();
+      $this->widgetSchema['isr'] = new sfWidgetFormInputHidden();
+      
+      /*$this->widgetSchema['fecha_pago'] = new sfWidgetFormJQueryDate(array(
             'culture' => 'en',
-      ));
+      ));*/
       
       $choices=Doctrine_Core::getTable('DetallesPagosTalentos')->getTypes();
       

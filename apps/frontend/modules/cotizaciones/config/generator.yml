@@ -16,21 +16,26 @@ generator:
       fields:  
         clientes: {label: Empresa }
         contactos: {label: Contacto }
-        evento: { label: Titulo }
         descripcion: { label: Descripcion }
+        actividad: { label: Actividad/Dias de trabajo }
+        plaza: {label: Plaza/Territorio}
         manager: { label: Personal Manager }
         total: {label: Total }
         is_pay: {label: Pagado }
-        is_active: {label: Mostrar en Dashboard }
-        comisionista: {label: Intermediario }
-        cotizaciones_by_cliente: {label: Cliente, help: Razon social o RFC }
+        is_active: {label: Activa, help: Mostrar en Dashboard }
+        add_comisionistas: {label: Comisionistas ,help: Permitir agregar comisionistas a nivel detalle de cotizacion }
+        _comisionistas: {label: Listado }
+        add_conceptos: {label: Conceptos ,help: Permitir agregar conceptos a nivel detalle de cotizacion }
+        _conceptos: {label: Listado }
+        add_eventos: {label: Eventos , help: Permitir agregar eventos a nivel detalle de cotizacion }
+        cotizaciones_by_cliente: {label: Cliente, help: Nombre Empresa o RFC }
         cotizaciones_by_contacto: {label: Contacto, help: Nombre o apellidos }
         pdf: {label: Archivo }
       list:    
         title: Cotizaciones
         table_method: retrieveBackendCotizacionesList
         sort: [created_at, asc]
-        display: [id,clientes, contactos, manager, evento,_importe_sin_iva,is_pay,string_status]
+        display: [id,clientes, contactos, manager, descripcion,_importe_sin_iva,is_pay,string_status]
         batch_actions: {}
         object_actions:
           show:     { label: Mostrar, action: show  }
@@ -48,17 +53,25 @@ generator:
           _save: {label: Guardar }
           cancelEdit: {label: Cancelar , action: show }
       edit: 
-        title: Editar Cotizacion %%evento%%
+        title: Editar Cotizacion %%descripcion%%
         display:
+          Empresa:     [empresa_id]
           Cliente:     [_cliente_contacto]
           Manager:     [manager_id]
-          Comisionista: [comisionista]
-          Titulo y descripcion:      [evento,descripcion,is_active]
+          Comisionistas: [add_comisionistas,_comisionistas]
+          Evento:      [tipo_cotizacion,descripcion,plaza,vigencia,medios,fecha_desde,fecha_hasta,add_eventos,actividad ]
+          #Conceptos:   [add_conceptos,_conceptos]
+          Conceptos:   [add_conceptos]
+          Pie Cotizacion:   [requerimientos,is_active]
       new:
         title: Crear Cotizacion
         display:
+          Empresa:     [empresa_id]
           Cliente:     [_cliente_contacto]
           Manager:     [manager_id]
-          Comisionista: [comisionista]
-          Titulo y descripcion:      [evento,descripcion,is_active]
+          Comisionistas: [add_comisionistas,_add_comisionistas]
+          Evento:      [tipo_cotizacion,descripcion,plaza,vigencia,medios,fecha_hasta,fecha_desde,actividad, add_eventos]
+          #Conceptos:   [add_conceptos,_add_conceptos]
+          Conceptos:   [add_conceptos]
+          Pie Cotizacion:   [requerimientos,is_active]
           

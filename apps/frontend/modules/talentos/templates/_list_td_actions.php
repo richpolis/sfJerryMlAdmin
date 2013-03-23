@@ -14,15 +14,16 @@
                 <?php echo link_to(__('Activar', array(), 'messages'), 'talentos/active?slug='.$talentos->getSlug(), array()) ?>
             </li>
             <?php endif;?>
-        <?php else: ?>
-            <li class="sf_admin_action_select">
-                <?php echo link_to(__('Seleccionar', array(), 'messages'), 'talentos/ListSelect?slug=' . $talentos->getSlug(), array()) ?>
-            </li>
-        <?php endif; ?>
             <?php if(!$sf_user->getModoPrecotizacion()):?>
             <li class="sf_admin_action_calendario">
                 <?php echo link_to(__('Calendario', array(), 'messages'), 'talentos/ListCalendar?slug=' . $talentos->getSlug(), array()) ?>
             </li>    
             <?php endif;?>
+        <?php else: ?>
+            <li class="sf_admin_action_select">
+                <?php echo link_to(__('Seleccionar', array(), 'messages'), 'talentos/ListSelect?slug=' . $talentos->getSlug(), array()) ?>
+            </li>
+        <?php endif; ?>
+            
     </ul>
 </td>

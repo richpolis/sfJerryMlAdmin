@@ -75,6 +75,12 @@ class DetallesCotizacionTable extends Doctrine_Table
     public function getDetallesCotizacionPorCotizacion($cotizacion){
         $q=$this->getCriteriaOrdenada();
         $rootAlias = $q->getRootAlias();
+        $q->leftJoin($rootAlias . '.Talentos t');
+        $q->leftJoin($rootAlias . '.DetallesCotizacionComisionistas dcco');
+        $q->leftJoin('dcco.Comisionistas co');
+        $q->leftJoin($rootAlias . '.DetallesCotizacionConceptos dcc');
+        $q->leftJoin('dcc.Conceptos concepto');
+        $q->leftJoin($rootAlias . '.Eventos e');
         $q->addWhere($rootAlias.'.cotizacion_id=?',$cotizacion);
         return $q->execute();
     }
@@ -100,8 +106,10 @@ class DetallesCotizacionTable extends Doctrine_Table
     public function getDetallesCotizacionPorPagosTalentos($pago,$pagadas=false){
         $q=$this->createQuery('dc');  
         $rootAlias = $q->getRootAlias();
+        $q->leftJoin($rootAlias . '.Cotizaciones cot');
         $q->leftJoin($rootAlias . '.DetallesPagosTalentos dpt');
         $q->leftJoin('dpt.PagosTalentos pt');
+        $q->leftJoin('pt.Talentos tal');
         //$q->where($rootAlias . '.is_pay_talento=?',$pagadas);
         $q->addWhere('pt.id=?',$pago);
         //$q->addWhere('dp.status<=1');// 0 en captura, 1 aprobada, 2 pagado
@@ -110,14 +118,14 @@ class DetallesCotizacionTable extends Doctrine_Table
         return $q->execute();
     }
     
-    public function getDetallesCotizacionPendientesDePago($pagadas=false){
+    public function getDetallesCotizacionPendientesDePago($mostrar=true){
         $q=$this->createQuery('dc');  
         $rootAlias = $q->getRootAlias();
         $q->leftJoin($rootAlias . '.DetallesPagosTalentos dpt');
         $q->leftJoin($rootAlias . '.Talentos t');
         $q->leftJoin($rootAlias . '.Cotizaciones cot');
         $q->leftJoin('dpt.PagosTalentos pt');
-        $q->where($rootAlias . '.is_pay_talento=?',$pagadas);
+        $q->where($rootAlias . '.is_show_pay_talento=?',$mostrar);
         $user=  sfContext::getInstance()->getUser()->getGuardUser();
         if(!$user->getIsSuperAdmin()){
            $q->addWhere('cot.user_id=?',$user->getId());

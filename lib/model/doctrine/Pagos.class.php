@@ -25,11 +25,11 @@ class Pagos extends BasePagos
             $cot=$dp->getCotizaciones();
              if(count($arregloCotizacion)>0){
                  if(!in_array($cot->getId(), $arregloCotizacion)){
-                    $adeudo+=$cot->getTotal();
+                    $adeudo+=$cot->getSubtotal();
                     $arregloCotizacion[]=$cot->getId();
                  }
              }else{
-                $adeudo+=$cot->getTotal();
+                $adeudo+=$cot->getSubtotal();
                 $arregloCotizacion[]=$cot->getId();
              }
         }

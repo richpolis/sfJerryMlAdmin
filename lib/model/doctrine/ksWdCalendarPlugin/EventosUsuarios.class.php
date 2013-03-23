@@ -12,4 +12,31 @@
  */
 class EventosUsuarios extends PluginEventosUsuarios
 {
+    public function save(\Doctrine_Connection $conn = null) {
+        
+        $this->setIsAllDayEvent(sfRichSys::getFechasTodoElDia($this->getStartTime(), $this->getEndTime()));
+        
+        
+        parent::save($conn);
+    }
+    
+    public function crearEventoDesdeCotizacion(Cotizaciones $cot){
+        $this->setCotizacionId($cot->getId());
+        $this->setUserId($cot->getManagerId());
+        $this->setSubject($cot->getDescripcion());
+        $this->setDescription($cot->getActividad());
+        $this->setStartTime($cot->getFechaDesde());
+        $this->setEndTime($cot->getFechaHasta());
+        $this->setNivel(CotizacionesTable::$NIVEL_COTIZACION);
+        $this->save();
+    }
+    public function actualizarEventoDesdeCotizacion(Cotizaciones $cot){
+        $this->setUserId($cot->getManagerId());
+        $this->setSubject($cot->getDescripcion());
+        $this->setDescription($cot->getActividad());
+        $this->setStartTime($cot->getFechaDesde());
+        $this->setEndTime($cot->getFechaHasta());
+        $this->setNivel(CotizacionesTable::$NIVEL_COTIZACION);
+        $this->save();
+    }
 }

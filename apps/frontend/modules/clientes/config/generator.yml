@@ -14,9 +14,9 @@ generator:
     config:
       actions: ~
       fields:  
-        razon_social: {label: Razon Social}
+        razon_social: {label: Nombre empresa}
         rfc: {label: RFC}
-        cliente_by_razon_social: {label: Empresa , help: Razon Social o RFC }
+        cliente_by_razon_social: {label: Empresa , help: Nombre empresa o RFC }
         cliente_by_contactos: {label: Contacto, help: Nombre o apellidos }
         is_active: { label: 'Activo?', help: 'Para activar o desactivar registro' }
       list:    

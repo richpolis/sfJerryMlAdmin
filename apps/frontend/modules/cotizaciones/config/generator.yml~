@@ -1,0 +1,54 @@
+generator:
+  class: sfDoctrineGenerator
+  param:
+    model_class:           Cotizaciones
+    theme:                 admin
+    non_verbose_templates: true
+    with_show:             false
+    singular:              ~
+    plural:                ~
+    route_prefix:          cotizaciones
+    with_doctrine_route:   true
+    actions_base_class:    sfActions
+
+    config:
+      actions: ~
+      fields:  
+        clientes: {label: Cliente }
+        contactos: {label: Contacto }
+        evento: { label: Evento }
+        descripcion: { label: Descripcion }
+        actividad_general: { label: Actividad General del Evento }
+        lugar_evento: {label: Lugar del Evento}
+        inicia_evento: { label: Inicia, date_format: 'DD-MM-YYYY HH24:MI:SS' }
+        termina_evento: { label: Termina, date_format: 'DD-MM-YYYY HH24:MI:SS' }
+        pdf: {label: Archivo }
+      list:    
+        title: Cotizaciones
+        table_method: retrieveBackendCotizacionesList
+        sort: [inicia_evento, asc]
+        display: [clientes, contactos, evento, lugar_evento,inicia_evento,string_status]
+        object_actions:
+          show: {label: Mostrar, action: show}
+          _edit: {label: Editar}
+          _delete: {label: Eliminar }
+        actions:
+          crear: {label: Nueva Cotizacion, action: crearCotizacion}
+      filter: ~
+      form: ~   
+      edit: 
+        title: Editar Cotizacion %%evento%%
+        display:
+          Cliente:     [_cliente_contacto]
+          NONE:        [manager_id,comisionista]
+          Evento:      [evento,lugar_evento,inicia_evento,termina_evento]
+          Descripcion: [descripcion,actividad_general]
+      new:
+        title: Crear Cotizacion
+        display:
+          Cliente:     [_cliente_contacto]
+          Manager:     [manager_id]
+          Comisionista: [comisionista]
+          Evento:      [evento,lugar_evento,inicia_evento,termina_evento]
+          Descripcion: [descripcion,actividad_general]
+          

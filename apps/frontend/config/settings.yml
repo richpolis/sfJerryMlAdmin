@@ -23,6 +23,9 @@ test:
     etag:                   false
 
 all:
+  .actions:
+    error_404_module: home    # To be called when a 404 error is raised
+    error_404_action: index   # Or when the requested URL doesn't match any route
   .settings:
     # Form security secret (CSRF protection)
     csrf_secret:            UniqueSecret
@@ -40,6 +43,11 @@ all:
         fulldaykey: MMddyyyy
         suffix_file_path: US
         jsdate: m/d/Y H:i
+      culture_es:
+        label: es
+        fulldaykey: MMddyyyy
+        suffix_file_path: ES
+        jsdate: d/m/Y H:i  
     
     enabled_modules:      [default,sfAdminDash,sfGuardAuth, sfGuardGroup, sfGuardUser, sfGuardPermission, ksWdCalendar]
     

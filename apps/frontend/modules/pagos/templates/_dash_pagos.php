@@ -1,9 +1,8 @@
-<?php foreach($cotizaciones as $cotizacion):?>
-
+<?php use_helper('Number') ?>
 <?php 
     $dps=$cotizacion->getDetallesPagos();
     $importe=0;
-    $totalCotizacion=$cotizacion->getTotal();
+    $totalCotizacion=$cotizacion->getSubtotal();
     $pago=null;
     foreach($dps as $dp){
         if($dp->getStatus()==PagosTable::$PAGOS_CALCULADOS){
@@ -11,32 +10,27 @@
         }
         $pago=$dp->getPagos();
     }
-    
 ?>
 <?php if(!$pago==null):?>
-<div class="dash-registro" id="pago-id-<?php echo $pago->getId()?>">
-    <?php if(($totalCotizacion/2)<=$importe):?>
-        <a href="<?php echo url_for("pagos_show",$pago)?>">
-            <img src="/images/dashboard/check.png" class="image-status-dash-registro" />
+<div class="dash-registro" id="pago-cotizacion-id-<?php echo $cotizacion->getId()?>">
+    <?php if($totalCotizacion==$importe):?>
+        <!--a href="#" onclick="$.quitarPagoCliente('<?php echo $cotizacion->getId()?>')"-->
+        <a href="#">    
+            <img src="/images/dashboard/check.png" class="image-status-dash-registro cierre" />
         </a>
-    <?php else:?>
+    <?php else: //if($totalCotizacion<$importe):?>
         <a href="<?php echo url_for("pagos_show",$pago)?>">
-            <img src="/images/dashboard/NEXT.png" class="image-status-dash-registro"/>
+            <img src="/images/dashboard/NEXT.png" class="image-status-dash-registro seguimiento" />
         </a>
     <?php endif?>
     <div class="titulo-dash-registro">
         <?php echo $pago->getClientes();?>
     </div>
     <div class="contenido-dash-registro">
-        "<?php echo $cotizacion->getEvento();?>"
+        "<?php echo $cotizacion->getDescripcion();?>"
     </div>
     <div class="status-dash-registro">
-        <?php if(($totalCotizacion/2)<=$importe):?>
-            Estado 50% Anticipo
-        <?php else:?>
-            Estado En Curso
-        <?php endif;?>
+        <?php echo "Pagado: ".format_currency($importe, 'USD')." adeuda: " .format_currency($totalCotizacion-$importe, 'USD') ; ?> 
     </div>
 </div>
 <?php endif;?>
-<?php endforeach;?>

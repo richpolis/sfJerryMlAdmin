@@ -59,6 +59,38 @@
                 </tr>
                 <tr>
                     <td>
+                        <label for="enviar_cotizacion_adicional_id"><?php echo $form['adicional_id']->renderLabel() ?>:</label>
+                        <br/>
+                        <?php echo $form['adicional_id']->render(array('class' => 'fields_normal')) ?>
+                    </td>
+                    <td>
+                        <?php if ($form['adicional_id']->hasError()): ?>
+                            <span class="errorIcon">
+                                <span class="errorTip" style="left: 30px; display: none; opacity: 1; ">
+                                    <?php echo $form['adicional_id']->getError(); ?>
+                                </span>
+                            </span>  
+                        <?php endif; ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="enviar_cotizacion_extras"><?php echo $form['extras']->renderLabel() ?><span class="star">*</span>:</label>
+                        <br/>
+                        <?php echo $form['extras']->render(array('class' => 'fields_normal')) ?>
+                    </td>
+                    <td>
+                        <?php if ($form['extras']->hasError()): ?>
+                            <span class="errorIcon">
+                                <span class="errorTip" style="left: 30px; display: none; opacity: 1; ">
+                                    <?php echo $form['extras']->getError(); ?>
+                                </span>
+                            </span>  
+                        <?php endif; ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
                       <label for="enviar_cotizacion_subject"><?php echo $form['subject']->renderLabel() ?>:</label>
                         <br/>
                         <?php echo $form['subject']->render(array('class' => 'fields_normal')) ?>

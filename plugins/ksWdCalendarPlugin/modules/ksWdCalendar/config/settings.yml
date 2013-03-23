@@ -6,3 +6,8 @@ all:
         fulldaykey: MMddyyyy
         suffix_file_path: US
         jsdate: m/d/Y H:i
+      culture_es:
+        label: es
+        fulldaykey: ddMMyyyy
+        suffix_file_path: ES
+        jsdate: d/m/Y H:i  

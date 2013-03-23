@@ -25,9 +25,27 @@ else:
     
   <div id='sf_admin_theme_header' style="background-image: url(/images/login/header_background.jpg);height: 46px;border-bottom: none;">
     <?php if(!$sf_user->hayModoActivo()):?>  
-        <a href='<?php echo url_for('homepage') ?>'><?php echo image_tag('/images/login/header.jpg', array('alt' => 'Home')); ?></a>
+        <a style="float: left; margin-left: 10px; width: 130px;" href="#">
+            <img src="/images/login/header.jpg" alt="Home" style="max-width: none;"/>
+        </a>
+      
+        <a style="float: left; margin-left: 10px; padding-top: 10px;" href='<?php echo url_for('homepage') ?>'>
+        <?php echo image_tag('/images/dashboard/dashboard.png', array('alt' => 'Dashboard')); ?>    
+        </a>
+        <a style="float: left; margin-left: 10px; padding-top: 10px;" href='<?php echo url_for("sfGuardUser/listCalendario?id=".$sf_user->getGuardUser()->getId()."&goto=@homepage") ?>'>
+        <?php echo image_tag('/images/dashboard/micalendario.png', array('alt' => 'Mi calendario')); ?>    
+        </a>
+        <a style="float: left; margin-left: 10px; padding-top: 10px;" href='<?php echo url_for('calendario_usuarios') ?>'>
+        <?php echo image_tag('/images/dashboard/calendariojerry.png', array('alt' => 'Calendario Jerry Ml')); ?>    
+        </a>
+        <a style="float: left; margin-left: 10px; padding-top: 10px;" href='<?php echo url_for('calendario_talentos') ?>'>
+        <?php echo image_tag('/images/dashboard/calendariotalento.png', array('alt' => 'Calendario Talento')); ?>    
+        </a>
+      <div style="clear: both"></div>
     <?php else: ?> 
-        <a href="#"><?php echo image_tag('/images/login/header.jpg', array('alt' => 'Home')); ?></a>
+        <a href="#">
+            <img src="/images/login/header.jpg" alt="Home" style="max-width: none;"/>
+        </a>
     <?php endif;?>
   </div>
 

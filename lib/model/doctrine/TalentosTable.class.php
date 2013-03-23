@@ -116,7 +116,31 @@ class TalentosTable extends Doctrine_Table
         $q->leftJoin('pt.DetallesPagosTalentos dpt');
         $q->addWhere('dpt.fecha_pago BETWEEN ? to ?',array($desde,$hasta));
         $q->addWhere('dpt.status=?',$valores['status']);
+        $q->addOrderBy('dpt.detalles_cotizacion_id asc');
         $q->addOrderBy('dpt.fecha_pago asc');
+        
+        if($valores['talento']>0){
+            $q->addWhere($rootAlias . '.id=?',$valores['talento']);
+        }
+        
+        return $q->execute();
+    }
+    
+    public function getHistorialPagosTalentosConceptos(array $valores){
+        $q=$this->getCriteriaOrdenada();
+        $rootAlias = $q->getRootAlias();
+        $desde=$valores['desde']['year']."-".$valores['desde']['month']."-".$valores['desde']['day'];
+        $hasta=$valores['hasta']['year']."-".$valores['hasta']['month']."-".$valores['hasta']['day'];
+        $q->leftJoin($rootAlias . '.PagosTalentos pt');
+        $q->leftJoin($rootAlias . '.DetallesCotizacion dc');
+        $q->leftJoin($rootAlias . '.Eventos evento');
+        $q->leftJoin('pt.DetallesPagosTalentos dpt');
+        $q->leftJoin('dc.DetallesCotizacionConceptos dcc');
+        $q->leftJoin('dcc.Conceptos conc');
+        $q->addWhere('dpt.fecha_pago BETWEEN ? to ?',array($desde,$hasta));
+        $q->addWhere('dpt.status=?',$valores['status']);
+        $q->addOrderBy('dpt.fecha_pago asc');
+        $q->addOrderBy('conc.concepto asc');
         
         if($valores['talento']>0){
             $q->addWhere($rootAlias . '.id=?',$valores['talento']);

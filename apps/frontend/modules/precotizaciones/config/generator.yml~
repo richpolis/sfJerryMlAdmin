@@ -1,0 +1,50 @@
+generator:
+  class: sfDoctrineGenerator
+  param:
+    model_class:           Precotizaciones
+    theme:                 admin
+    non_verbose_templates: true
+    with_show:             false
+    singular:              ~
+    plural:                ~
+    route_prefix:          precotizaciones
+    with_doctrine_route:   true
+    actions_base_class:    sfActions
+
+    config:
+      actions: ~
+      fields:  
+        clientes: {label: Cliente }
+        contactos: {label: Contacto }
+        evento: { label: Evento }
+        descripcion: { label: Descripcion }
+        actividad_general: { label: Actividad General del Evento }
+        lugar_evento: {label: Lugar del Evento}
+        inicia_evento: { label: Inicia, date_format: 'DD-MM-YYYY HH24:MI:SS' }
+        termina_evento: { label: Termina, date_format: 'DD-MM-YYYY HH24:MI:SS' }
+        pdf: {label: Archivo }
+      list:    
+        title: Pre-Cotizaciones
+        table_method: retrieveBackendPreCotizacionesList
+        sort: [inicia_evento, asc]
+        display: [clientes,contactos, evento, lugar_evento,inicia_evento,string_status]
+        object_actions:
+          show: {label: Mostrar, action: show}
+          _edit: {label: Editar}
+          _delete: {label: Eliminar }
+        actions:
+          crear: {label: Nueva PreCotizacion, action: crearPreCotizacion}
+      filter: ~
+      form: ~   
+      edit: 
+        title: Editar Pre-Cotizacion %%evento%%
+        display:
+          Cliente:     [_cliente_contacto]
+          Evento:      [evento,lugar_evento,inicia_evento,termina_evento]
+          Descripcion: [descripcion,actividad_general]
+      new:
+        title: Crear Pre-Cotizacion
+        display:
+          Cliente:     [_cliente_contacto]
+          Evento:      [evento,lugar_evento,inicia_evento,termina_evento]
+          Descripcion: [descripcion,actividad_general]

@@ -1,0 +1,29 @@
+generator:
+  class: sfDoctrineGenerator
+  param:
+    model_class:           Empresas
+    theme:                 admin
+    non_verbose_templates: true
+    with_show:             false
+    singular:              ~
+    plural:                ~
+    route_prefix:          empresas
+    with_doctrine_route:   true
+    actions_base_class:    sfActions
+
+    config:
+      actions: ~
+      fields:  ~
+      list:    
+        title: Empresas Jerry ML
+        actions: 
+          _new:  {  label: Nueva empresa }
+      filter:  ~
+      form:    
+        actions:
+          _list: {label: Regresar a Lista}
+          _save: {label: Guardar }
+      edit:    
+        title: Editar empresa %%empresa%%
+      new:     
+        title: Nueva empresa

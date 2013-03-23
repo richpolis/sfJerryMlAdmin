@@ -1,0 +1,37 @@
+generator:
+  class: sfDoctrineGenerator
+  param:
+    model_class:           Comisionistas
+    theme:                 admin
+    non_verbose_templates: true
+    with_show:             true
+    singular:              ~
+    plural:                ~
+    route_prefix:          comisionistas
+    with_doctrine_route:   true
+    actions_base_class:    sfActions
+
+    config:
+      actions: ~
+      fields:  
+        created_at: { label: Creado, date_format: 'dd/MM/y' }
+      list:    
+        title: Comisionistas
+        sort: [nombre, asc]
+        display: [=nombre,margen,created_at]
+        object_actions:
+          _edit: {label: Editar }
+          _delete: {label: Eliminar }
+        actions: 
+          _new:   { label: Nuevo comisionista}
+      filter:  {}
+      form:
+        actions:
+          _list: {label: Regresar a Lista}
+          _save: {label: Guardar }
+        display:
+          Comisionista: [nombre, margen]
+      edit:    
+        title: Editar comisionista "%%nombre%%"
+      new:     
+        title: Nuevo Comisionista

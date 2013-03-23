@@ -1,4 +1,7 @@
-<?php foreach($precotizaciones as $precotizacion):?>
+<?php foreach($precotizaciones as $key=>$precotizacion):?>
+    <?php if($key>0):?>
+        <hr style="margin: 0;"/>
+    <?php endif;?>
 <div class="dash-registro" id="precotizacion-id-<?php echo $precotizacion->getId()?>">
     <?php if($precotizacion->statusAprobada()):?>
         <a href="#" onclick="$.quitarPrecotizacion('<?php echo $precotizacion->getId()?>')">

@@ -17,14 +17,26 @@ class CotizacionesTable extends Doctrine_Table
         '1' => 'Enviado a cliente',
         '2' => 'Aprobado',
         '-1' =>'Cancelado',
+        '-2' =>'Cotizacion Caida',
         '3' => 'Pagos Liberados',
     );
 
+    static public $tipos_cotizacion = array(
+        '1' => 'DF',
+        '2' => 'FORANEA',
+        '3' => 'CAMPAÑA',
+    );
+    
     public function getTypesStatus()
     {
       return self::$status;
     }
+    public function getTiposCotizacion()
+    {
+      return self::$tipos_cotizacion;
+    }
     
+    static public $CAYO_COTIZACION = -2;      
     static public $CANCELADO = -1;      
     static public $INCOMPLETO = 0;      
     static public $MEDIACION = 1;      
@@ -32,8 +44,15 @@ class CotizacionesTable extends Doctrine_Table
     static public $PAGOS_LIBERADOS = 3;
 
     static public $IVA = 0.16;
-    
     static public $CON_IVA = 1.16;
+    
+    static public $TIPO_COTIZACION_DF = 1;
+    static public $TIPO_COTIZACION_FORANEA = 2;
+    static public $TIPO_COTIZACION_CAMPANA= 3 ;
+    
+    static public $NIVEL_DETALLE    = 1;
+    static public $NIVEL_COTIZACION = 2;
+    static public $NIVEL_TEMPLATE   = 3;
     
     public static function getInstance()
     {
@@ -79,6 +98,8 @@ class CotizacionesTable extends Doctrine_Table
         $q->andWhere($rootAlias.'.is_active=?',$activas);
         return $q;
     }
+    
+    
     public function getUltimasCotizaciones($activas=true){
         $q=$this->getCriteriaUltimasCotizaciones($activas);
         return $q->execute();
@@ -219,10 +240,16 @@ class CotizacionesTable extends Doctrine_Table
     public function getCotizacionConClienteTalentoDetallesForId($id){
       $q=$this->createQuery('a');  
       $rootAlias = $q->getRootAlias();
-      $q->leftJoin($rootAlias . '.Clientes c');
-      $q->leftJoin($rootAlias . '.Contactos s');
-      $q->leftJoin($rootAlias . '.DetallesCotizacion d');
-      $q->leftJoin('d.Talentos t');
+      $q->leftJoin($rootAlias . '.Empresas empresa');
+      $q->leftJoin($rootAlias . '.Clientes cli');
+      $q->leftJoin($rootAlias . '.Contactos contacto');
+      $q->leftJoin($rootAlias . '.Manager mu');
+      $q->leftJoin($rootAlias . '.DetallesCotizacion dc');
+      $q->leftJoin($rootAlias . '.CotizacionesComisionistas cotco');
+      $q->leftJoin('cotco.Comisionistas comisionista');
+      $q->leftJoin($rootAlias . '.CotizacionesConceptos cotc');
+      $q->leftJoin('cotc.Conceptos concepto');
+      $q->leftJoin('dc.Talentos t');
       $q->addWhere($rootAlias.'.id=?',$id);
       return $q->fetchOne();
     }
@@ -256,15 +283,23 @@ class CotizacionesTable extends Doctrine_Table
         return $q->execute();
     }
     
-    public function getCotizacionesPendientesDePago($pagadas=false){
+    public function getCotizacionesPendientesDePago($mostrar=true){
         $q=$this->createQuery('a');  
         $rootAlias = $q->getRootAlias();
         $q->leftJoin($rootAlias . '.Clientes cli');
         $q->leftJoin($rootAlias . '.Contactos co');
         $q->leftJoin($rootAlias . '.DetallesPagos dp');
+        $q->leftJoin('dp.Pagos pago');
+        $q->leftJoin('pago.Clientes clipago');
         $q->leftJoin($rootAlias . '.DetallesCotizacion dc');
+        $q->leftJoin($rootAlias . '.Facturas fact');
+        $q->leftJoin($rootAlias . '.Contratos contrato');
         $q->leftJoin('dc.Talentos t');
-        $q->addWhere($rootAlias . '.is_pay= ?',$pagadas);
+        $q->leftJoin('dc.DetallesPagosTalentos dpt');
+        $q->leftJoin('dpt.PagosTalentos pt');
+        $q->leftJoin('pt.Talentos pttal');
+        //$q->addWhere($rootAlias . '.is_show_pay= ?',$mostrar);
+        $q->andWhere($rootAlias.'.is_active=?',$mostrar);
         $q->addOrderBy('dp.cotizacion_id asc');
         $q->addOrderBy('dp.created_at asc');
         $user=  sfContext::getInstance()->getUser()->getGuardUser();
@@ -275,7 +310,22 @@ class CotizacionesTable extends Doctrine_Table
         return $q->execute();
     }
     
-    
+    public function getCotizacionesSinFacturaAsociada(){
+        $q=$this->createQuery('a');  
+        $rootAlias = $q->getRootAlias();
+        $q->leftJoin($rootAlias . '.Clientes cli');
+        $q->leftJoin($rootAlias . '.Contactos co');
+        $q->leftJoin($rootAlias . '.Facturas fact');
+        $q->addWhere($rootAlias.'.status>=?',CotizacionesTable::$INCOMPLETO);
+        $q->addWhere('fact.cotizacion_id IS NULL');
+        
+        $user=  sfContext::getInstance()->getUser()->getGuardUser();
+        if(!$user->getIsSuperAdmin()){
+           $q->addWhere($rootAlias.'.user_id=?',$user->getId());
+        }
+        
+        return $q->execute();
+    }
     
     public function getCotizacionesPorPagosTalentos($pago,$pagadas=false){
         $q=$this->createQuery('a');  
@@ -311,13 +361,32 @@ class CotizacionesTable extends Doctrine_Table
         $hasta=$valores['hasta']['year']."-".$valores['hasta']['month']."-".$valores['hasta']['day'];
         $q->leftJoin($rootAlias . '.DetallesPagos dp');
         $q->leftJoin($rootAlias . '.DetallesCotizacion dc');
-        $q->leftJoin($rootAlias . '.CotizacionesEventos ce');
+        $q->leftJoin('dc.Eventos e');
         $q->leftJoin($rootAlias . '.Clientes cli');
-        $q->leftJoin('ce.Eventos e');
         $q->addWhere('dp.fecha_pago BETWEEN ? to ?',array($desde,$hasta));
         $q->addWhere($rootAlias . '.is_pay=?',true);
         $q->addOrderBy('dp.fecha_pago asc');
         return $q->execute();
     }
     
+    /* 
+     * reportes recuperados
+     *  */
+    public function getCotizacionesEventosPorCotizacionYTalento($cotizacion,$talento){
+    	$q=$this->getCriteria();
+    	$rootAlias = $q->getRootAlias();
+        $q->leftJoin($rootAlias . '.Cotizaciones cot');
+        $q->leftJoin($rootAlias . '.Eventos e');
+        $q->leftJoin('e.Talentos tal');
+    	$q->where('cot.id=?',$cotizacion);
+        $q->andWhere('tal.id=?',$talento);
+    	return $q->execute();
+    }
+    public function getCotizacionesEventosPorArreglo($arreglo){
+    	$q=$this->getCriteriaOrdenada();
+    	$q->andWhereIn('e.id', $arreglo);
+    	$rootAlias = $q->getRootAlias();
+    	$q->leftJoin($rootAlias . '.Talentos t');
+    	return $q->execute();
+    } 
 }    

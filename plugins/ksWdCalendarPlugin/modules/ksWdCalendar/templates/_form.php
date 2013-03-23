@@ -10,49 +10,34 @@ use_javascripts_for_form($form);
 <input type="hidden" name="sf_method" value="put" />
 <?php endif; ?>
   <table>
-    <!--<tfoot>
+    <tfoot>
       <tr>
         <td colspan="2">
           <?php echo $form->renderHiddenFields(false) ?>
-          &nbsp;<a href="<?php echo url_for('ksWdCalendar/index') ?>">Back to list</a>
-          <?php if (!$form->getObject()->isNew()): ?>
-            &nbsp;<?php echo link_to('Delete', 'ksWdCalendar/delete?id='.$form->getObject()->getId(), array('method' => 'delete', 'confirm' => 'Are you sure?')) ?>
-          <?php endif; ?>
-          <input type="submit" value="Save" />
+         
         </td>
       </tr>
-    </tfoot>-->
-    <tfoot>
-        <tr>
-            <td>
-                <ul>
-                    <li>
-                        <a id="Savebtn" class="imgbtn" href="javascript:void(0);">
-            <span class="Save" title="<?php echo __("Save") ?>"><?php echo __("Save") ?>(<u>S</u>)</span>
-        </a>
-                    </li>
-                    <?php if($form->getObject()->isNew() === false): ?>
-                    <li>
-                    <a id="Deletebtn" class="imgbtn" href="javascript:void(0);">
-            <span class="Delete" title="<?php echo __("Delete") ?>"><?php echo __("Delete") ?>(<u>D</u>)</span>
-        </a>
-       </li>                 
-        <?php endif; ?>
-       <li>
-                    <a id="Closebtn" class="imgbtn" href="javascript:void(0);">
-            <span class="Close" title="<?php echo __("Close") ?>" ><?php echo __("Close") ?></span>
-        </a>
-       </li>
-       
-                </ul>
-            </td>
-        </tr>
-        
-        
-        
     </tfoot>
     <tbody>
       <?php echo $form->renderGlobalErrors() ?>
+      <?php if($form->getObject()->getTalentoId()==0):?>  
+      <tr>
+        <th><?php echo $form['talento_id']->renderLabel() ?></th>
+        <td>
+          <?php echo $form['talento_id']->renderError() ?>
+          <?php echo $form['talento_id'] ?>
+        </td>
+      </tr>
+      <?php else: ?>
+      <tr>
+        <th>Talento</th>
+        <td>
+          <?php echo $form->getObject()->getTalentos(); ?>
+        </td>
+      </tr>
+      
+      <?php endif;?>  
+        
       <tr>
         <th><?php echo $form['subject']->renderLabel() ?></th>
         <td>
@@ -86,13 +71,6 @@ use_javascripts_for_form($form);
         <td>
           <?php echo $form['is_all_day_event']->renderError() ?>
           <?php echo $form['is_all_day_event'] ?>
-        </td>
-      </tr>
-      <tr>
-        <th><?php echo $form['recurring_rule']->renderLabel() ?></th>
-        <td>
-          <?php echo $form['recurring_rule']->renderError() ?>
-          <?php echo $form['recurring_rule'] ?>
         </td>
       </tr>
       <tr>

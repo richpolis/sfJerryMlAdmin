@@ -1,4 +1,4 @@
-<?
+<?php 
 
 
 use_javascript('/ksWdCalendarPlugin/js/jquery.js');

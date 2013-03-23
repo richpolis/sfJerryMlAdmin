@@ -33,13 +33,18 @@ class eventos_usuariosActions extends sfActions
           ->createQuery('a')
           ->execute();
     }
-    
-    /*$this->getResponse()->addJavascript('jquery-1.6.1.min.js');
-    $this->getResponse()->addJavascript('jquery-ui-1.8.13.custom.min.js');
-    $this->getResponse()->removeJavascript('/../sfJqueryReloadedPlugin/js/jquery-1.6.1.min.js');
-    $this->getResponse()->addStylesheet('jquery-ui-1.8.9.custom.css');
-    
-    $this->setLayout('simple_layout');*/
+    if($request->hasParameter('showdate')){
+        $d = new DateTime($request->getParameter('showdate'));
+        $this->showdate=$d->format("Y-m-d");
+    }else{
+        $this->showdate=date("Y-m-d");
+    }    
+  }
+  
+  public function executeCalendarioTodos(sfWebRequest $request){
+      $this->getUser()->setCalendarUsuario(0,"",0);
+      $this->redirect("eventos_usuarios/index");
+      $this->getUser()->setRegresarA("homepage");
   }
   
   public function executeDashboard(sfWebRequest $request){
@@ -141,12 +146,27 @@ class eventos_usuariosActions extends sfActions
   {
     $this->ks_wc_event = Doctrine_Core::getTable('EventosUsuarios')->find(array($request->getParameter('id')));
     $this->forward404Unless($this->ks_wc_event);
+    sfConfig::set('sf_web_debug', false) ;
+    $this->setTemplate('show');    
+    $this->setLayout('layout_empty');
   }
 
   public function executeNew(sfWebRequest $request)
   {
     $this->setLayout(false) ;
-    $this->form = new EventosUsuariosForm();
+    
+    if($this->getUser()->getCalendarUsuarioId()>0){
+        $usuario=$this->getUser()->getCalendarUsuarioId();
+        $evento_usuario=new EventosUsuarios();
+        $evento_usuario->setUserId($usuario);
+        $this->form = new EventosUsuariosForm($evento_usuario);
+    }else{
+        $this->form = new EventosUsuariosForm();
+    }
+    
+    sfConfig::set('sf_web_debug', false) ;
+    $this->setTemplate('new');    
+    $this->setLayout('layout_empty');
   }
 
   public function executeNewAjax(sfWebRequest $request)
@@ -170,7 +190,10 @@ class eventos_usuariosActions extends sfActions
     $this->forward404Unless($request->isMethod(sfRequest::POST));
     $this->form = new EventosUsuariosForm();
     $this->processForm($request, $this->form);
-    $this->setTemplate('update');
+    
+    sfConfig::set('sf_web_debug', false) ;
+    $this->setLayout(false);
+    $this->setTemplate('add');
     
   }
   
@@ -186,7 +209,8 @@ class eventos_usuariosActions extends sfActions
             return $this->renderText("ok");
         }   
     }
-    $this->setTemplate('new');
+    
+    
   }
 
   public function executeEdit(sfWebRequest $request)
@@ -205,12 +229,10 @@ class eventos_usuariosActions extends sfActions
     }
     //$this->forward404Unless($ks_wc_event = Doctrine_Core::getTable('EventosUsuarios')->find(array($request->getParameter('id'))), sprintf('Object ks_wc_event does not exist (%s).', $request->getParameter('id')));
     $this->form = new EventosUsuariosForm($ks_wc_event);
+    
     sfConfig::set('sf_web_debug', false) ;
-    if($this->form->getObject()->isNew()){
-        //$this->renderComponent("eventos_usuarios", "new") ;
-        $this->setTemplate("new") ;
-        return ;
-    }
+    $this->setTemplate('edit');    
+    $this->setLayout('layout_empty');
   }
 
   public function executeEditAjax(sfWebRequest $request)
@@ -234,6 +256,7 @@ class eventos_usuariosActions extends sfActions
     if($request->isXmlHttpRequest()){
         return $this->renderPartial('eventos_usuarios/form_ajax',array('form'=>$this->form,"nombreUsuario"=>$this->nombreUsuario));
     }
+    
   }
   
   public function executeUpdate(sfWebRequest $request){
@@ -281,7 +304,9 @@ class eventos_usuariosActions extends sfActions
     $this->success = true ;
     $this->message = "Event deleted" ;
 
-    //$this->redirect('eventos_usuarios/index');
+    sfConfig::set('sf_web_debug', false) ;
+    $this->setLayout(false);
+    $this->setTemplate('delete');
     
   }
 

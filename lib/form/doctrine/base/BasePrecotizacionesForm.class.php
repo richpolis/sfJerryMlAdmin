@@ -19,6 +19,7 @@ abstract class BasePrecotizacionesForm extends BaseFormDoctrine
       'cliente_id'        => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Clientes'), 'add_empty' => true)),
       'contacto_id'       => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Contactos'), 'add_empty' => true)),
       'user_id'           => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('User'), 'add_empty' => true)),
+      'empresa_id'        => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Empresas'), 'add_empty' => true)),
       'evento'            => new sfWidgetFormInputText(),
       'descripcion'       => new sfWidgetFormInputText(),
       'actividad_general' => new sfWidgetFormInputText(),
@@ -30,7 +31,6 @@ abstract class BasePrecotizacionesForm extends BaseFormDoctrine
       'is_active'         => new sfWidgetFormInputCheckbox(),
       'created_at'        => new sfWidgetFormDateTime(),
       'updated_at'        => new sfWidgetFormDateTime(),
-      'version'           => new sfWidgetFormInputText(),
       'slug'              => new sfWidgetFormInputText(),
     ));
 
@@ -39,6 +39,7 @@ abstract class BasePrecotizacionesForm extends BaseFormDoctrine
       'cliente_id'        => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Clientes'), 'required' => false)),
       'contacto_id'       => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Contactos'), 'required' => false)),
       'user_id'           => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('User'), 'required' => false)),
+      'empresa_id'        => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Empresas'), 'required' => false)),
       'evento'            => new sfValidatorString(array('max_length' => 255)),
       'descripcion'       => new sfValidatorPass(),
       'actividad_general' => new sfValidatorPass(),
@@ -50,7 +51,6 @@ abstract class BasePrecotizacionesForm extends BaseFormDoctrine
       'is_active'         => new sfValidatorBoolean(array('required' => false)),
       'created_at'        => new sfValidatorDateTime(),
       'updated_at'        => new sfValidatorDateTime(),
-      'version'           => new sfValidatorInteger(array('required' => false)),
       'slug'              => new sfValidatorString(array('max_length' => 255, 'required' => false)),
     ));
 

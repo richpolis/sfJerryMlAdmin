@@ -54,6 +54,10 @@
         });
    }
    
+   jQuery.confirmarAprobar=function(Url){
+       $("#dialog-confirmar-pago").attr('url',Url);
+       $("#dialog-confirmar-pago").dialog("open");
+   }
 </script>
 <script>
 $(function() {
@@ -62,7 +66,7 @@ $(function() {
     $( "#dialog-form-detalles-pago" ).dialog({
 	autoOpen: false,
 	height: 350,
-	width: 330,
+	width: 400,
 	modal: true,
 	buttons: {
             "Guardar": function() {
@@ -91,6 +95,23 @@ $(function() {
             //allFields.val( "" ).removeClass( "ui-state-error" );
         }
      });
+     
+     $( "#dialog-confirmar-pago" ).dialog({
+            resizable: false,
+            height:140,
+            modal: true,
+            autoOpen: false,
+            buttons: {
+                "Confirmar pago": function() {
+                    $( "#dialog-confirmar-pago" ).dialog( "close" );
+                    location.href=$( "#dialog-confirmar-pago" ).attr("url");
+                    
+                },
+                Cancelar: function() {
+                    $( "#dialog-confirmar-pago" ).dialog( "close" );
+                }
+            }
+        });
 });
 </script>
 <div id="dialog-form-detalles-pago" title="Detalles Pago">
@@ -138,4 +159,9 @@ $(function() {
 </script>
 <div id="dialog-form-reportes-pagos" title="Pagos">
     
+</div>
+<div id="dialog-confirmar-pago" title="Confirmar aprobar pago">
+    <p>
+        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+        ¿Confirma aprobar pago?</p>
 </div>

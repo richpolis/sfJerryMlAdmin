@@ -19,6 +19,7 @@ abstract class BaseDetallesCotizacionConceptosForm extends BaseFormDoctrine
       'detalles_cotizacion_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('DetallesCotizacion'), 'add_empty' => true)),
       'concepto_id'            => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Conceptos'), 'add_empty' => true)),
       'precio'                 => new sfWidgetFormInputText(),
+      'nivel'                  => new sfWidgetFormInputText(),
       'created_at'             => new sfWidgetFormDateTime(),
       'updated_at'             => new sfWidgetFormDateTime(),
     ));
@@ -28,6 +29,7 @@ abstract class BaseDetallesCotizacionConceptosForm extends BaseFormDoctrine
       'detalles_cotizacion_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('DetallesCotizacion'), 'required' => false)),
       'concepto_id'            => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Conceptos'), 'required' => false)),
       'precio'                 => new sfValidatorPass(array('required' => false)),
+      'nivel'                  => new sfValidatorInteger(array('required' => false)),
       'created_at'             => new sfValidatorDateTime(),
       'updated_at'             => new sfValidatorDateTime(),
     ));

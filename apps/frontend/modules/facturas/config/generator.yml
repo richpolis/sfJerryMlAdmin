@@ -1,0 +1,49 @@
+generator:
+  class: sfDoctrineGenerator
+  param:
+    model_class:           Facturas
+    theme:                 admin
+    non_verbose_templates: true
+    with_show:             false
+    singular:              ~
+    plural:                ~
+    route_prefix:          facturas
+    with_doctrine_route:   true
+    actions_base_class:    sfActions
+
+    config:
+      actions: ~
+      fields:  
+        file: {label: Contrato, help: Maximo tamaño 2MB}
+        created_at: {label: Creado, date_format: 'dd/MM/y' }
+        updated_at: {label: Actualizado, date_format: 'dd/MM/y'}
+        facturas_by_cliente: {label: Cliente, help: Nombre Empresa o RFC }
+        facturas_by_cotizacion: {label: Cotizacion, help: Titulo de cotizacion }
+      list:     
+        title: Facturas
+        table_method: retrieveBackendFacturasList
+        sort:     [created_at, asc]
+        display:  [id,_cliente, cotizaciones, _archivo, created_at,updated_at]
+        batch_actions: {}
+        object_actions:
+          _edit:   { label: Editar }
+          _delete: { label: Eliminar }
+        actions: 
+          _new:  {  label: Nueva factura }
+      filter:  
+        display:  [facturas_by_cliente, facturas_by_cotizacion]  
+      form:    
+        actions:
+          _list: {label: Regresar a Lista}
+          _save: {label: Guardar }
+      edit:    
+        title: Editar registro
+        display:
+          Cotizacion:     [_cliente_cotizacion]
+          Factura:        [_file]
+      new:     
+        title: Nuevo registro
+        display:
+          Cotizacion:     [_cliente_cotizacion]
+          Factura:        [_file]
+

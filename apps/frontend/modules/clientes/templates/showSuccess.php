@@ -16,7 +16,7 @@
             <table width="100%">
                 <tr>
                     <td><label>ID</label><br/><?php echo $clientes->getId();?></td>
-                    <td><label>Razon Social</label><br/><?php echo $clientes->getRazonSocial();?></td>
+                    <td><label>Nombre Empresa</label><br/><?php echo $clientes->getRazonSocial();?></td>
                     <td><label>RFC</label><br/><?php echo $clientes->getRfc();?></td>
                 </tr>
                 <tr>

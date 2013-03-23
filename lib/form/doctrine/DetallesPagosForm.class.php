@@ -17,6 +17,7 @@ class DetallesPagosForm extends BaseDetallesPagosForm
       $this->widgetSchema['cotizacion_id'] = new sfWidgetFormInputHidden();
       $this->widgetSchema['user_id'] = new sfWidgetFormInputHidden();
       $this->widgetSchema['iva'] = new sfWidgetFormInputHidden();
+      $this->widgetSchema['fecha_pago'] = new sfWidgetFormInputHidden();
       
       $choices=Doctrine_Core::getTable('DetallesPagos')->getTypes();
       
@@ -28,9 +29,11 @@ class DetallesPagosForm extends BaseDetallesPagosForm
       
       $this->validatorSchema['tipo_pago'] = new sfValidatorChoice(array('choices' => array_keys($choices),'required' => false));
       
-      $this->widgetSchema['fecha_pago'] = new sfWidgetFormJQueryDate(array(
+      /*$this->widgetSchema['fecha_pago'] = new sfWidgetFormJQueryDate(array(
             'culture' => 'en',
-      ));
+      ));*/
+      
+      
       
       $this->validatorSchema->setPostValidator(
         new sfValidatorCallback(array(
@@ -54,11 +57,11 @@ class DetallesPagosForm extends BaseDetallesPagosForm
       if(!$detalles_pagos==null){
           $cotizacion=Doctrine_Core::getTable('Cotizaciones')->find($values['cotizacion_id']);
       }
-      $total=$cotizacion->getTotal();
-      if ($importe>$total)
+      $subtotal=$cotizacion->getSubtotal();
+      if ($importe>$subtotal)
       {
         setlocale(LC_MONETARY, 'en_US');
-        $sTotal=money_format('%i', $total);
+        $sTotal=money_format('%i', $subtotal);
         $sImporte=money_format('%i', $importe);  
         throw new sfValidatorError($validator, "El importe: $sImporte es mayor al Total por pagar: $sTotal");
       }

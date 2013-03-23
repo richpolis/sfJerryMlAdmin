@@ -60,6 +60,7 @@ sfGuardUser:
       notnull: true
       unique: true
     color: { type: varchar(30), notnull: false, default: ""}
+    firma: { type: varchar(255), notnull: false }
     username:
       type: string(128)
       notnull: true

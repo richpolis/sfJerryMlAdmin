@@ -32,23 +32,30 @@ class DetallesPagosTalentos extends BaseDetallesPagosTalentos
                     $this->setIsr(0);    
                     break;
                 case 2: //recibo
-                    if($this->getIsr()==0)
-                        $this->setIsr($this->getImporte() * CotizacionesTable::$IVA);
+                    $this->setIva($this->getImporte() * CotizacionesTable::$IVA);
+                    $retencionIVA=$this->getIva()*(2/3);
+                    $retencionISR=$this->getImporte()*0.1;
+                    $this->setIsr($retencionISR+$retencionIVA);
                     break;
             }
           
         }
         
+        if(!$this->getFechaPago()){
+           $this->setFechaPago(date("Y-m-d"));
+        }
+        
         if(!$this->isNew()){
-            if(!$this->getFechaPago()){
-                $this->setFechaPago(date("Y-m-d"));
-            }
-            
-            if(!$this->getUserId()){
+           if(!$this->getUserId()){
                 $this->setUserId(sfContext::getInstance()->getUser()->getGuardUser()->getId());
             }
         }
-                
+        
+        if($this->getStatus()==PagosTalentosTable::$APROBADO){
+            $this->setFechaPago(date("Y-m-d"));
+        }elseif($this->getStatus()==PagosTalentosTable::$PAGOS_CALCULADOS){
+            $this->setFechaPago(date("Y-m-d"));
+        }
                 
         parent::save($conn);
         
@@ -94,4 +101,30 @@ class DetallesPagosTalentos extends BaseDetallesPagosTalentos
         }
     }
     
+    public function getImporteAPagar() {
+        //$this->setIva($this->getImporte() * CotizacionesTable::$IVA);
+        //$retencionIVA = $this->getIva() * (2 / 3);
+        //$retencionISR = $this->getImporte() * 0.1;
+        //$this->setIsr($retencionISR + $retencionIVA);
+        return ($this->getImporte()+$this->getIva())-$this->getIsr();
+    }
+    
+    public function getRetencionIva() {
+        if ($this->getMetodoRecibo() == 2) {
+            return $this->getIva() * (2 / 3);
+        } else {//sin dato y factura
+            return 0;
+        }
+    }
+    
+    public function getRetencionIsr() {
+        if ($this->getMetodoRecibo() == 2) {
+            return $this->getImporte() * 0.1;
+        } else {//sin dato y factura
+            return 0;
+        }
+    }
+    public function getSubtotal(){
+        return $this->getImporte()+$this->getIva();
+    }
 }

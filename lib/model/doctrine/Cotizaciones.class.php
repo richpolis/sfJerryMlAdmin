@@ -13,7 +13,7 @@
 class Cotizaciones extends BaseCotizaciones
 {
     public function __toString() {
-        return sprintf("ID: %s .- %s",$this->getId(),$this->getEvento());
+        return sprintf("ID: %s .- %s",$this->getId(),$this->getDescripcion());
     }
     public function getStringStatus(){
         switch($this->getStatus()){
@@ -26,9 +26,24 @@ class Cotizaciones extends BaseCotizaciones
             case 0:
                 return "En captura";
             case -1:
-                return "Cancelado";    
+                return "Cancelado";
+            case -2:
+                return "Se Cayo Cotizacion";    
         }
     }
+    
+    public function getTipoCotizacionString(){
+        $tipos=  Doctrine_Core::getTable('Cotizaciones')->getTiposCotizacion();
+        return $tipos[$this->getTipoCotizacion()];
+    }
+    
+    public function statusIncompleto(){
+        if($this->getStatus()>=CotizacionesTable::$INCOMPLETO)
+            return true;
+        else
+            return false;
+    }
+    
     public function statusAprobada(){
         if($this->getStatus()>=CotizacionesTable::$APROBADA)
             return true;
@@ -54,18 +69,25 @@ class Cotizaciones extends BaseCotizaciones
         $user= sfContext::getInstance()->getUser()->getGuardUser();
         $usuario=$user->getFirstName()." ".$user->getLastName();
         $email=$user->getEmailAddress();
+        $firma=$user->getFirma();
+        $direccion= sfContext::getInstance()->getRequest()->getHost();
         $detalles_cotizacion=$this->getDetallesCotizacion();
-        $eventos=$this->getCotizacionesEventos();
         $cadena="";
         foreach($detalles_cotizacion as $detalle){
             $cadena.=$detalle->getTalentos();
-            foreach($eventos as $evento){
-                if($detalle->getTalentoId()==$evento->getEventos()->getTalentoId()){
+            foreach($detalle->getEventos() as $evento){
+                if($evento->getNivel()==CotizacionesTable::$NIVEL_DETALLE){
                     $cadena.="<br/>";
-                    $cadena.=$evento->getEventos();
+                    $cadena.=$evento;
                 }
             }
             $cadena.="<br/><br/>";
+        }
+
+        if(strlen($firma)==0){
+           $sFirma="$usuario Ejecutivo de Cuenta.<br/>Email: $email.<br/>Teléfonos JerryML a especificar.<br/>";
+        }else{
+           $sFirma="<img src='http://$direccion/uploads/usuarios/$firma'/>"; 
         }
         
 $body = <<<EOD
@@ -82,15 +104,52 @@ $body = <<<EOD
         <br/>
         Atentamente:
         <br/>
-        $usuario Ejecutivo de Cuenta.<br/>
-        Email: $email.<br/>
-        Teléfonos JerryML a especificar.<br/>
+        $sFirma
         </p>
 EOD;
 
     return $body;
     
     }
+    
+    public function getRenderMensaje2(){
+        $contacto = $this->getContactos();
+        $user= sfContext::getInstance()->getUser()->getGuardUser();
+        $usuario=$user->getFirstName()." ".$user->getLastName();
+        $email=$user->getEmailAddress();
+        $firma=$user->getFirma();
+        $direccion= sfContext::getInstance()->getRequest()->getHost();
+        
+        if(strlen($firma)==0){
+           $sFirma="<span style='text-transform:capitalize;'>$usuario</span> Ejecutivo de Cuenta.<br/>Email: $email.<br/>Teléfonos JerryML a especificar.<br/>";
+        }else{
+           $sFirma="<img src='http://$direccion/uploads/usuarios/$firma'/>"; 
+        }
+        
+$body = <<<EOD
+        <p>
+        Estimado {$contacto}<br/>
+
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        Atentamente:
+        <br/>
+        $sFirma
+        </p>
+EOD;
+
+    return $body;
+    
+    }
+    
     public function getCadenaTalentos(){
         $detalles=$this->getDetallesCotizacion();
         $talentos=array();
@@ -117,9 +176,9 @@ EOD;
     public function aprobarCotizacion(){
         //aprobar cotizacion, crea un registro en el cliente para el pago
         //y una entrada en contratos para el contrato que se sube despues. 
-        if($this->getTotal()>0 && $this->validarAprobar()){
+        if($this->getSubtotal()>0 && $this->validarAprobar()){
             $clientes=$this->getClientes();
-            $clientes->setSaldo($clientes->getSaldo()+$this->getTotal());
+            $clientes->setSaldo($clientes->getSaldo()+$this->getSubtotal());
             $clientes->save();
 
             $contrato=Doctrine_Core::getTable('Contratos')->findOneBy('cotizacion_id', $this->getId());
@@ -129,6 +188,16 @@ EOD;
                 //$contrato->setUserId($this->getUser()->getGuardUser()->getId());
                 $contrato->save();
             }
+            
+            $factura=Doctrine_Core::getTable('Facturas')->findOneBy('cotizacion_id', $this->getId());
+            if(!$factura){
+                $factura=new Facturas();
+                $factura->setCotizacionId($this->getId());
+                //$factura->setUserId($this->getUser()->getGuardUser()->getId());
+                $factura->save();
+            }
+            
+            
             $pago_cliente=Doctrine_Core::getTable('Pagos')->getLoteDePagoForClienteId($clientes->getId());
             if(!$pago_cliente){
                 $pago_cliente=new Pagos();
@@ -143,17 +212,18 @@ EOD;
                 }
             }
             if(!$existePagoCotizacion){
+                $user=  sfContext::getInstance()->getUser()->getGuardUser();
                 $detallePago=new DetallesPagos();
                 $detallePago->setPagosId($pago_cliente->getId());
                 //$detallePago->setUserId($this->getUser()->getGuardUser()->getId());
                 $detallePago->setCotizacionId($this->getId());
                 $detallePago->setFechaPago(date('Y-m-d'));
-                $detallePago->setImporte($this->getTotal()/2);
+                $detallePago->setImporte($this->getSubtotal()/2);
                 $detallePago->setTipoPago(1);
                 $detallePago->save();
                 
                 /*$pago_cliente=Doctrine_Core::getTable('Pagos')->getLoteDePagoForClienteId($clientes->getId());*/
-                $pago_cliente->setAdeudo($pago_cliente->getAdeudo()+$this->getTotal());
+                $pago_cliente->setAdeudo($pago_cliente->getAdeudo()+$this->getSubtotal());
                 $pago_cliente->save();
             }
             $this->aprobarEventos();
@@ -174,7 +244,7 @@ EOD;
             if(!$pago==null)
                 $pago->calcular();
             $clientes=$this->getClientes();
-            $clientes->setSaldo($clientes->getSaldo()-$this->getTotal());
+            $clientes->setSaldo($clientes->getSaldo()-$this->getSubtotal());
             $clientes->save();
         }
     }
@@ -200,16 +270,16 @@ EOD;
                     $detallePagoTalento->setPagosTalentosId($pagoTalento->getId());
                     //$detallePagoTalento->setUserId($this->getUser()->getGuardUser()->getId());
                     $detallePagoTalento->setDetallesCotizacionId($dc->getId());
-                    $detallePagoTalento->setImporte($dc->getGananciaTalento());
+                    $detallePagoTalento->setImporte($dc->getGananciaTalentoReal());
                     //$detallePagoTalento->setIva($dc->getGananciaTalento()*.16);
                     $detallePagoTalento->save();
                     
-                    $talento->setSaldo($dc->getGananciaTalento());
+                    $talento->setSaldo($dc->getGananciaTalentoReal());
                     $talento->save();
                     
                     
                     /*$pagoTalento=Doctrine_Core::getTable('PagosTalentos')->getLoteDePagoForTalentoId($talento->getId());*/
-                    $pagoTalento->setAdeudo($pagoTalento->getAdeudo()+$dc->getGananciaTalento());
+                    $pagoTalento->setAdeudo($pagoTalento->getAdeudo()+$dc->getGananciaTalentoReal());
                     $pagoTalento->save();
                 }
                 
@@ -234,14 +304,31 @@ EOD;
     public function calcularPagos(){
         $detalles_pagos=$this->getDetallesPagos();
         $importe=0.0;
+        $importeAprobado=0.0;
+        $importeSinAprobar=0.0;
+        $pago_cliente_id=0;
         foreach ($detalles_pagos as $detalle){
             if($detalle->getStatus()==PagosTable::$PAGOS_CALCULADOS){
                 $importe+=$detalle->getImporte();
+            }elseif($detalle->getStatus()==PagosTable::$APROBADO){
+                $importeAprobado+=$detalle->getImporte();
+            }else{ //PagosTable::$INCOMPLETO
+                $importeSinAprobar+=$detalle->getImporte();
             }
+            $pago_cliente_id=$detalle->getPagosId();
         }
-        if($importe==$this->getTotal()){
+        if($importe==$this->getSubtotal()){
             $this->setIsPay(true);
             $this->save();
+        }elseif(($importeAprobado+$importeSinAprobar)==0){
+            $detallePago=new DetallesPagos();
+            $detallePago->setPagosId($pago_cliente_id);
+            //$detallePago->setUserId($this->getUser()->getGuardUser()->getId());
+            $detallePago->setCotizacionId($this->getId());
+            $detallePago->setFechaPago(date('Y-m-d'));
+            $detallePago->setImporte($this->getSubtotal()-$importe);
+            $detallePago->setTipoPago(2);
+            $detallePago->save();
         }
     }
     
@@ -251,10 +338,8 @@ EOD;
         foreach ($detalles_cotizacion as $detalle){
             if($detalle->getSubtotal()>0){
                 $cont=0;
-                foreach($this->getCotizacionesEventos() as $ce){
-                    if($ce->getEventos()->getTalentoId()==$detalle->getTalentoId()){
-                        $cont++;
-                    }
+                foreach($detalle->getEventos() as $evento){
+                    $cont++;
                 }
                 $valido=($cont>0?true:false);
             }else{
@@ -284,10 +369,8 @@ EOD;
                 $mensaje.="El talento: ".$detalle->getTalentos()." sin importe";
             }else{
                 $cont=0;
-                foreach($this->getEventos() as $evento){
-                    if($evento->getTalentoId()==$detalle->getTalentoId()){
-                        $cont++;
-                    }
+                foreach($detalle->getEventos() as $evento){
+                    $cont++;
                 }
                 if($cont==0){
                     if(strlen($mensaje)>0) $mensaje.=", ";
@@ -299,40 +382,100 @@ EOD;
     }
     
     public function aprobarEventos(){
-        $eventos=$this->getCotizacionesEventos();
-        foreach($eventos as $evento){
-            $evento->getEventos()->mediacionEvento();
-        }
+        foreach($this->getDetallesCotizacion() as $dc){
+            foreach($dc->getEventos() as $evento){
+                $evento->mediacionEvento();
+            }
+        }    
     }
     public function congelarEventos(){
-        $eventos=$this->getCotizacionesEventos();
-        foreach($eventos as $evento){
-            $evento->getEventos()->apartarEvento();
+        foreach($this->getDetallesCotizacion() as $dc){
+            foreach($dc->getEventos() as $evento){
+                $evento->apartarEvento();
+            }
         }
     }
     public function delete(\Doctrine_Connection $conn = null) {
         if(!$this->statusAprobada() && $this->validarCancelarAprobacion()){
-            foreach($this->getCotizacionesEventos() as $ce){
-                $evento=$ce->getEventos();
-                $evento->setSubject("Evento disponible");
-                $evento->setDescription("Evento disponible o eliminar");
-                $evento->setStatus(KsWCEventTable::$DISPONIBLE);
-                $evento->save();
-                $ce->delete();
-            }
-            foreach($this->getDetallesPagos() as $dp){
-                $dp->delete();
-            }
+            $conn = Doctrine_Manager::getInstance()->getCurrentConnection();
+            $conn->beginTransaction();
             
             foreach($this->getDetallesCotizacion() as $dc){
                 $dc->delete();
             }
             
+            foreach($this->getDetallesPagos() as $dp){
+                $dp->delete();
+            }
+            
+            foreach($this->getCotizacionesComisionistas() as $cotco){
+                $cotco->deleteOnly();
+            }
+            
+            foreach($this->getCotizacionesConceptos() as $cotc){
+                $cotc->deleteOnly();
+            }
+            
             parent::delete($conn);
+            $conn->commit();
             return true;
         }else{
             sfContext::getInstance()->getUser()->setFlash("error", "No es posible de eliminar");
         }
     }
     
+    public function save(\Doctrine_Connection $conn = null) {
+        if(!$this->getEmpresaId()){
+            $empresas=  Doctrine_Core::getTable('Empresas')->getEmpresas();
+            $this->setEmpresaId($empresas[0]->getId());
+        }
+        
+       //$this->setRequerimientos($this->getRequerimientosDeConceptos());
+        
+        /*if($this->getActividad()){
+            $this->setActividad(strip_tags($this->getActividad()));
+        }*/
+        
+        parent::save($conn);
+        
+        if($this->getManagerId()){
+            $this->getManager()->addEventoDesdeCotizacion($this);
+        }
+        
+    }
+    
+     
+    public function getRequerimientosDeConceptos(){
+        $sConceptos="";
+        $conceptos=array();
+        foreach($this->getCotizacionesConceptos() as $cotc){
+            $conceptos[]=$cotc->getConceptos()->getRequerimiento();
+        }
+        if(count($conceptos)>0){
+            $sConceptos="<ul>";
+            foreach($conceptos as $concepto){
+                $sConceptos.="<li>".$concepto."</li>";
+            }
+            $sConceptos.="</ul>";
+        }
+        return $sConceptos;
+        
+    }
+    
+    public function actualizarEventos(){
+        $dateInicial=new DateTime($this->getFechaDesde());
+        $dateFinal= new DateTime($this->getFechaHasta());
+        foreach($this->getDetallesCotizacion() as $dc){
+            $dc->actualizarEventosDesdeCotizacion($dateInicial,$dateFinal,$this,$dc);
+        }
+    }
+    
+    public function getActividadLimpia(){
+        if($this->getActividad()){
+            $texto= str_replace("<p>","",$this->getActividad());
+            return str_replace("</p>", "", $texto);
+        }else{
+            return "";
+        }
+    }
 }

@@ -26,6 +26,9 @@ class EventosUsuariosForm extends PluginEventosUsuariosForm
         $this->widgetSchema['user_id'] = new sfWidgetFormInputHidden();
       }
       
+      $this->widgetSchema['cotizacion_id'] = new sfWidgetFormInputHidden();
+      $this->widgetSchema['nivel'] = new sfWidgetFormInputHidden();
+      
       $this->widgetSchema['color'] = new sfWidgetFormInputHidden();
       $this->widgetSchema['recurring_rule'] = new sfWidgetFormInputHidden();
       

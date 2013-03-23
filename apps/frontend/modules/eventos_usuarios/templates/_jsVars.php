@@ -7,6 +7,8 @@ var sf_calendar_url_add_detail = '<?php echo url_for('eventos_usuarios/addDetail
 var sf_calendar_url_list = '<?php echo url_for('eventos_usuarios/list') ?>';
 var sf_calendar_url_delete = '<?php echo url_for('eventos_usuarios/delete') ?>';
 var sf_calendar_url_edit = '<?php echo url_for('eventos_usuarios/edit') ?>';
+var sf_calendar_url_new = '<?php echo url_for('eventos_usuarios/new') ?>';
+var sf_calendar_url_show = '<?php echo url_for('eventos_usuarios/show') ?>';
 
 // Chaines traduisibles
 var sf_calendar_delete = '<?php echo __("Esta seguro de borrar el evento?") ?>';

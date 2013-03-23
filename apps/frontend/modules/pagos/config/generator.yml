@@ -17,7 +17,7 @@ generator:
         clientes:   { label: Empresa }
         referencia: { label: Referencia }
         is_cerrado: { label: Cerrado }
-        pagos_by_cliente: {label: Empresa, help: Razon social o RFC }
+        pagos_by_cliente: {label: Empresa, help: Nombre Empresa o RFC }
         pagos_by_referencia: {label: Referencia, help: Referencia del pago }
         importe: {label: Importe }
         iva: {label: IVA}

@@ -5,8 +5,10 @@
 # # See documentation for your ORM's *:data-load task for more information.
 # 
   
-Conceptos:
-  registro1:
-    concepto: Conduccion
-  registro2:
-    concepto: Twitts
+Comisionistas:
+  comi1:
+    nombre: Ricardo Alcantara
+    margen: 20
+  comi2:
+    nombre: Pilar Alcantara
+    margen: 15

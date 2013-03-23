@@ -19,7 +19,7 @@ class DetallesPagosTalentosTable extends Doctrine_Table
     static public $types = array(
         '0'=> 'Sin Impuesto',
         '1' => 'Factura (IVA)',
-        '2' => 'Recibo (ISR)',
+        '2' => 'Recibo de honorarios',
     );
 
     public function getTypes()

@@ -22,7 +22,7 @@ generator:
         celular: { label: Celular }
         email: { label: Email }
         clientes_contactos: {label: Empresa }
-        contacto_by_cliente: { label: Empresa , help: Razon social o RFC }
+        contacto_by_cliente: { label: Empresa , help: Nombre Empresa o RFC }
         contacto_by_name: {label: Contacto , help: Nombre o apellidos }
         clientes_list: {label: Empresa }
         is_active: { label: 'Activo?', help: 'Para activar o desactivar registro' }

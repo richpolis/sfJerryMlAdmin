@@ -34,14 +34,21 @@ class ksWdCalendarActions extends sfActions
           ->execute();
     }
     
-    /*$this->getResponse()->addJavascript('jquery-1.6.1.min.js');
-    $this->getResponse()->addJavascript('jquery-ui-1.8.13.custom.min.js');
-    $this->getResponse()->removeJavascript('/../sfJqueryReloadedPlugin/js/jquery-1.6.1.min.js');
-    $this->getResponse()->addStylesheet('jquery-ui-1.8.9.custom.css');
+    if($request->hasParameter('showdate')){
+        $d = new DateTime($request->getParameter('showdate'));
+        $this->showdate=$d->format("Y-m-d");
+    }else{
+        $this->showdate=date("Y-m-d");
+    }
     
-    $this->setLayout('simple_layout');*/
   }
 
+  public function executeCalendarioTodos(sfWebRequest $request){
+      $this->getUser()->setCalendarTalento(0,"");
+      $this->getUser()->setRegresarA("@homepage");
+      $this->redirect("ksWdCalendar/index");
+  }
+  
   public function executeList(sfWebRequest $request){
     //die('{"events":[[73773,"go to dinner","11\/16\/2010 18:21","01\/01\/1970 03:18",1,1,0,6,1,"Moore",""],[24322,"project plan review","11\/15\/2010 22:40","01\/01\/1970 03:10",1,0,0,12,1,"Moore",""],[18984,"go to dinner","11\/18\/2010 11:57","01\/01\/1970 02:06",0,1,0,10,1,"Belion",""],[54235,"remote meeting","11\/20\/2010 02:58","01\/01\/1970 02:35",1,0,0,8,1,"Belion",""],[98751,"team meeting","11\/16\/2010 06:15","01\/01\/1970 02:58",1,0,0,10,1,"Newswer",""],[80951,"go to dinner","11\/17\/2010 04:19","01\/01\/1970 02:33",0,0,0,6,1,"Belion",""],[44390,"project plan review","11\/18\/2010 01:49","01\/01\/1970 02:35",0,0,0,12,1,"Lodan",""],[84519,"go to dinner","11\/18\/2010 21:16","01\/01\/1970 02:44",0,0,0,4,1,"Lodan",""],[98796,"remote meeting","11\/20\/2010 13:40","01\/01\/1970 03:10",1,0,0,3,1,"Moore",""],[12343,"team meeting","11\/15\/2010 19:38","01\/01\/1970 03:35",1,0,0,5,1,"Moore",""],[66461,"remote meeting","11\/16\/2010 06:59","01\/01\/1970 03:53",1,0,0,11,1,"Moore",""],[27891,"annual report","11\/17\/2010 02:15","01\/01\/1970 02:56",1,0,0,3,1,"Belion",""],[85772,"team meeting","11\/18\/2010 16:58","01\/01\/1970 02:41",1,0,0,5,1,"Newswer",""],[86508,"annual report","11\/19\/2010 16:00","01\/01\/1970 03:45",1,0,0,6,1,"Bytelin",""],[92041,"project plan review","11\/19\/2010 22:21","01\/01\/1970 02:57",0,0,0,9,1,"Moore",""],[66057,"remote meeting","11\/20\/2010 22:34","01\/01\/1970 02:31",0,1,0,1,1,"Moore",""],[73918,"annual report","11\/18\/2010 16:34","01\/01\/1970 03:29",0,0,0,-1,1,"Newswer",""],[71911,"team meeting","11\/21\/2010 10:53","01\/01\/1970 02:40",1,0,0,8,1,"Bytelin",""],[54304,"project plan review","11\/15\/2010 14:27","01\/01\/1970 02:25",0,0,0,1,1,"Belion",""],[87224,"remote meeting","11\/19\/2010 13:21","01\/01\/1970 02:12",0,0,0,7,1,"Bytelin",""]],"issort":true,"start":"11\/15\/2010 00:00","end":"11\/21\/2010 23:59","error":null}');
 
@@ -149,15 +156,15 @@ class ksWdCalendarActions extends sfActions
   {
     $this->setLayout(false) ;
     if($request->hasParameter('talento_id')){
-        $eu=new KsWCEventForm();
-        $eu->setUserId($request->getParameter('talento_id'));
+        $eu=new KsWCEvent();
+        $eu->setTalentoId($request->getParameter('talento_id'));
         $this->form = new KsWCEventForm($eu);
     }else{
         $this->form = new KsWCEventForm();
     }
     
     if($request->isXmlHttpRequest()){
-        return $this->renderPartial('eventos_usuarios/form_ajax',array('form'=>$this->form));
+        return $this->renderPartial('ksWdCalendar/form_ajax',array('form'=>$this->form));
     }
   }
 
@@ -215,22 +222,22 @@ class ksWdCalendarActions extends sfActions
   public function executeEditAjax(sfWebRequest $request)
   {
     if($request->hasParameter('id') && $request->getParameter('id')>0){  
-        $this->forward404Unless($ks_wc_event = Doctrine_Core::getTable('EventosUsuarios')->find(array($request->getParameter('id'))), sprintf('Object ks_wc_event does not exist (%s).', $request->getParameter('id')));
-        $this->form = new EventosUsuariosForm($ks_wc_event);
+        $this->forward404Unless($ks_wc_event = Doctrine_Core::getTable('KsWCEvent')->find(array($request->getParameter('id'))), sprintf('Object ks_wc_event does not exist (%s).', $request->getParameter('id')));
+        $this->form = new KsWCEventForm($ks_wc_event);
     }else{
-        $ks_wc_event = new EventosUsuarios() ;
+        $ks_wc_event = new KsWCEvent() ;
         $ks_wc_event->setStartTime($request->getParameter('start')) ;
         $ks_wc_event->setEndTime($request->getParameter('end')) ;
         $ks_wc_event->setSubject($request->getParameter('title')) ;
         $ks_wc_event->setDescription($request->getParameter('description')) ;
         $ks_wc_event->setIsAllDayEvent($request->getParameter('isallday')) ;
-        if($this->getUser()->getCalendarUsuarioId()>0){
-            $ks_wc_event->setUserId($this->getUser()->getCalendarUsuarioId());
+        if($this->getUser()->getCalendarTalentoId()>0){
+            $ks_wc_event->setTalentoId($this->getUser()->getCalendarTalentoId());
         }
-        $this->form = new EventosUsuariosForm($ks_wc_event);
+        $this->form = new KsWCEventForm($ks_wc_event);
     }
     if($request->isXmlHttpRequest()){
-        return $this->renderPartial('eventos_usuarios/form_ajax',array('form'=>$this->form));
+        return $this->renderPartial('ksWdCalendar/form_ajax',array('form'=>$this->form));
     }
   }
 
@@ -251,19 +258,33 @@ class ksWdCalendarActions extends sfActions
     $this->setLayout(false);
     $this->setTemplate('update');
   }
+  
+  public function executeUpdateAjax(sfWebRequest $request)
+  {
+    $this->forward404Unless($request->isMethod(sfRequest::POST) || $request->isMethod(sfRequest::PUT));
+    $this->forward404Unless($ks_wc_event = Doctrine_Core::getTable('KsWCEvent')->find(array($request->getParameter('id'))), sprintf('Object ks_wc_event does not exist (%s).', $request->getParameter('id')));
+    $this->form = new KsWCEventForm($ks_wc_event);
+
+    $objecto=$this->processFormAjax($request, $this->form);
+    
+    if($request->isXmlHttpRequest()){
+     if(is_null($objecto)){
+         return $this->renderPartial('ksWdCalendar/form_ajax',array('form'=>$this->form));
+     }else{
+         return $this->renderText("ok");
+     }   
+    }
+
+    $this->setTemplate('edit');
+    
+  }
 
   public function executeDelete(sfWebRequest $request)
   {
     //$request->checkCSRFProtection();
-    $idCotizacion=0;  
     $this->forward404Unless($ks_wc_event = Doctrine_Core::getTable('KsWCEvent')->find(array($request->getParameter('id'))), sprintf('Object ks_wc_event does not exist (%s).', $request->getParameter('id')));
     
     if($ks_wc_event->getStatus()==KsWCEventTable::$PERSONAL){
-        foreach($ks_wc_event->getCotizacionesEventos() as $ce){
-            $idCotizacion=$ce->getCotizacionId();
-            $ce->delete();
-            
-        }
         if($this->getUser()->getModoCotizacion()){
             if($this->getUser()->getCalendarTalentoId()>0){
               $this->getUser()->removeEventos($ks_wc_event->getId(),$this->getUser()->getCalendarTalentoId());
@@ -272,11 +293,7 @@ class ksWdCalendarActions extends sfActions
         
         $ks_wc_event->delete();
         $this->success = true ;
-        if($idCotizacion){
-            $this->message = "Evento eliminado y de la cotizacion: $idCotizacion" ;
-        }else{
-            $this->message = "Evento eliminado" ;
-        }
+        $this->message = "Evento eliminado" ;
         
     }else{
         $this->success = false ;
@@ -286,6 +303,20 @@ class ksWdCalendarActions extends sfActions
     //$this->redirect('sfCalendar/index');
   }
 
+  public function executeDeleteAjax(sfWebRequest $request)
+  {
+    $request->checkCSRFProtection();
+
+    $this->forward404Unless($ks_wc_event = Doctrine_Core::getTable('KsWCEvent')->find(array($request->getParameter('id'))), sprintf('Object ks_wc_event does not exist (%s).', $request->getParameter('id')));
+    $ks_wc_event->delete();
+    
+    if($request->isXmlHttpRequest()){
+        return $this->renderText("delete");
+    }
+    
+    $this->redirect('ksWdCalendar/index');
+  }
+  
   protected function processForm(sfWebRequest $request, sfForm $form)
   {
     $isNew = $form->getObject()->isNew() ;
@@ -334,6 +365,17 @@ class ksWdCalendarActions extends sfActions
       $this->success = false ;
       $this->message = $form->renderGlobalErrors() ;
       $this->data = $form->getObject()->getId();
+    }
+  }
+  protected function processFormAjax(sfWebRequest $request, sfForm $form)
+  {
+    $form->bind($request->getParameter($form->getName()), $request->getFiles($form->getName()));
+    if ($form->isValid()){
+      $ks_wc_event = $form->save();
+      return $ks_wc_event;
+      //$this->redirect('eventos/edit?id='.$ks_wc_event->getId());
+    }else{
+      return null;  
     }
   }
 }

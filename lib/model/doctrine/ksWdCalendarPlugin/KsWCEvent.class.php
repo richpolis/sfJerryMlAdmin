@@ -12,11 +12,17 @@
  */
 class KsWCEvent extends PluginKsWCEvent
 {
+    public function save(\Doctrine_Connection $conn = null) {
+        
+        $this->setIsAllDayEvent(sfRichSys::getFechasTodoElDia($this->getStartTime(), $this->getEndTime()));
+        
+        
+        parent::save($conn);
+    }
     public function __toString() {
-        return sprintf("%s | %s | %s", 
+        return sprintf("%s | %s | ", 
                 $this->getSubject(),
-                sfRichSys::getStringFechasInicialFinal($this->getStartTime(), $this->getEndTime()),
-                $this->getDescription());
+                sfRichSys::getStringFechasInicialFinal($this->getStartTime(), $this->getEndTime()));
     }
     public function getColor(){
         switch($this->getStatus()){
@@ -69,6 +75,68 @@ class KsWCEvent extends PluginKsWCEvent
     
     public function statusApartado(){
         return ($this->getStatus()>KsWCEventTable::$EN_MEDIACION?true:false);
+    }
+    
+    public function getNivelString(){
+        $resp="";
+        switch($this->getNivel()){
+            case CotizacionesTable::$NIVEL_DETALLE:
+               $resp="Detalle";
+                break;
+            case CotizacionesTable::$NIVEL_COTIZACION:
+                $resp="Cotizacion";
+                break;
+            case CotizacionesTable::$NIVEL_TEMPLATE:
+                $resp="Template";
+                break;
+        }
+        return $resp;
+    }
+    
+    public function hasNivelCotizacion(){
+        if($this->getNivel()==CotizacionesTable::$NIVEL_COTIZACION){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    public function hasNivelDetalle(){
+        if($this->getNivel()==CotizacionesTable::$NIVEL_DETALLE){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    public function crearEventoDesdeCotizacion(Cotizaciones $cot,DetallesCotizacion $dc){
+        $this->setDetallesCotizacionId($dc->getId());
+        $this->setTalentoId($dc->getTalentoId());
+        $this->setSubject($cot->getDescripcion());
+        $this->setDescription($cot->getActividad());
+        $this->setStartTime($cot->getFechaDesde());
+        $this->setEndTime($cot->getFechaHasta());
+        $this->setLugarEvento($cot->getPlaza());
+        $this->setNivel(CotizacionesTable::$NIVEL_COTIZACION);
+        $this->save();
+    }
+    public function actualizarEventoDesdeCotizacion(Cotizaciones $cot){
+        $this->setSubject($cot->getDescripcion());
+        $this->setDescription($cot->getActividad());
+        $this->setStartTime($cot->getFechaDesde());
+        $this->setEndTime($cot->getFechaHasta());
+        $this->setLugarEvento($cot->getPlaza());
+        $this->setNivel(CotizacionesTable::$NIVEL_COTIZACION);
+        $this->save();
+    }
+    
+    public function getDescriptionLimpia(){
+        if($this->getDescription()){
+            $texto= str_replace("<p>","",$this->getDescription());
+            return str_replace("</p>", "", $texto);
+        }else{
+            return "";
+        }
     }
     
 }

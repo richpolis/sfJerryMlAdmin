@@ -4,24 +4,8 @@
 # # 
 # # See documentation for your ORM's *:data-load task for more information.
 # 
-Configuracion:
-  precotizaciones:
-    seccion: precotizaciones
-    contenido: Pie de pagina de precotizazion
-    imagen : e77c830035cac04acb3afc803c812aa8beb94062.jpg
-  cotizaciones:
-    seccion: cotizaciones
-    contenido: |
-      <td class="sf_admin_text sf_admin_list_td_contenido">
-      <p><strong> NOTA: Los costos son exclusivos para este evento en las actividades mencionadas y no se podrá ligar al artista con otras marcas ni empresas fuera de lo que se indica en esta cotización. </strong></p>
-      <h3>Consideraciones:</h3>
-      <p>&nbsp;</p>
-      <ul>
-      <li>El precio es en pesos mexicanos.</li>
-      <li>El precio es más I.V.A.</li>
-      <li>Se requiere de un pago del 50% de anticipo a la firma del contrato y el 50% 2 días hábiles antes del evento.</li>
-      <li>El costo deberá ser libre de retenciones.</li>
-      </ul>
-      <p><br> <strong>Costos vigentes 10 días a partir de la fecha del documento.</strong></p></td>
-    imagen : e77c830035cac04acb3afc803c812aa8beb94062.jpg
-
+Empresas:
+  empresa1:
+    empresa: Jerry ML SA de CV
+  empresa2:
+    empresa: Jerry ML 2 SA de CV

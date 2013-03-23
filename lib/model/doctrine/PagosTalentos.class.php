@@ -25,11 +25,11 @@ class PagosTalentos extends BasePagosTalentos
             $dc=$dpt->getDetallesCotizacion();
              if(count($arregloDetallesCotizacion)>0){
                  if(!in_array($dc->getId(), $arregloDetallesCotizacion)){
-                    $adeudo+=$dc->getGananciaTalento();
+                    $adeudo+=$dc->getGananciaTalentoReal();
                     $arregloDetallesCotizacion[]=$dc->getId();
                  }
              }else{
-                $adeudo+=$dc->getGananciaTalento();
+                $adeudo+=$dc->getGananciaTalentoReal();
                 $arregloDetallesCotizacion[]=$dc->getId();
              }
         }

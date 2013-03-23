@@ -18,8 +18,8 @@ generator:
         esta_firmado: {label: Firma, help: Marcar si esta firmado por el cliente }
         created_at: {label: Creado, date_format: 'dd/MM/y' }
         updated_at: {label: Actualizado, date_format: 'dd/MM/y'}
-        contratos_by_cliente: {label: Cliente, help: Razon social o RFC }
-        contratos_by_cotizacion: {label: Contacto, help: Nombre o apellidos }
+        contratos_by_cliente: {label: Cliente, help: Nombre Empresa o RFC }
+        contratos_by_cotizacion: {label: Cotizacion, help: Titulo de cotizacion }
       list:     
         title: Contratos
         table_method: retrieveBackendContratosList
